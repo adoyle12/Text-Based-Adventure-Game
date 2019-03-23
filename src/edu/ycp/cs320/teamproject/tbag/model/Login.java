@@ -2,7 +2,7 @@ package edu.ycp.cs320.teamproject.tbag.model;
 
 public class Login {
 	
-	// Initializing username and password strings
+	// Initializing user name and password strings
 	private String username;
 	private String password;
 	
@@ -25,5 +25,23 @@ public class Login {
 	
 	public String getPassword() {
 		return password;
+	}
+
+	public Boolean setCheckUsername(String username) {
+		if(username == "hello") {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public Boolean setCheckPassword(String password) {
+		if(password == "world") {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
