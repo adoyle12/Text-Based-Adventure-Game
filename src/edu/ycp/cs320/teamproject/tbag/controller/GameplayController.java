@@ -30,5 +30,9 @@ public class GameplayController
 		model.setInput(input);
 	}
 	
+	public String getInput()
+	{
+		return model.getInput();
+	}
 
 }
