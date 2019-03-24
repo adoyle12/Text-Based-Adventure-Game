@@ -11,15 +11,14 @@
 		}
 		
 		td.label {
-			text-align: right;
+			text-align: center;
 		}
 		</style>
 	</head>
-	
-	<c:if test="${! empty errorMessage}">
+	<body>
+		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
-	
 		<form action="${pageContext.servletContext.contextPath}/login" method="post">
 			<table>
 				<tr>
@@ -28,13 +27,14 @@
 				</tr>
 				<tr>
 					<td class="label">Password:</td>
-					<td><input type="text" name="password" size="12" value="${login.password}" /></td>
+					<td><input type="password" name="password" size="12" value="${login.password}" /></td>
 				</tr>
 			</table>
 			<input type="Submit" name="submit" value="Enter">
 		</form>
-		<br/>
-		<br/>
-		<!-- *********************************************!!Add conection to playing page here!!***************************************** -->
-		</body>
+		<c:if test="${login.credentials}">
+			<c:redirect url= "gameplay.jsp">
+			</c:redirect>
+		</c:if>
+	</body>
 </html>
