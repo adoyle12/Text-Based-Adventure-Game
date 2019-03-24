@@ -11,7 +11,7 @@
 		}
 		
 		td.label {
-			text-align: right;
+			text-align: center;
 		}
 		</style>
 	</head>

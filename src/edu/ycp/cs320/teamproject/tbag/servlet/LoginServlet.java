@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs320.teamproject.tbag.controller.LoginController;
 import edu.ycp.cs320.teamproject.tbag.model.Login;
@@ -17,8 +18,8 @@ public class LoginServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
-		System.out.println("Login Servlet: doGet");	
+		
+		System.out.println("login Servlet: doGet");
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
@@ -42,27 +43,23 @@ public class LoginServlet extends HttpServlet{
 
 		// holds the error message text, if there is any
 		String errorMessage = null;
-
 		
 		// decode POSTed form parameters and dispatch to controller
 		try 
 		{
-			String username = getStringFromParameter(req.getParameter("username"));
-			String password = getStringFromParameter(req.getParameter("password"));
+			String username = req.getParameter("username");
+			String password = req.getParameter("password");
 
-			// check for errors in the form data before using is in a calculation
-			if (username == null) 
+			// check for errors in the form data
+			if (username.equals("") || password.equals(""))
 			{
-				errorMessage = "Please specify username";
+				errorMessage = "Please enter credentials"; 
 			}
-			if (password == null) 
+			 //otherwise, data is good, now check credentials
+			else
 			{
-				errorMessage = "Please specify password";
-			}
-			// otherwise, data is good, do the calculation using controller
-			else 
-			{
-				controller.checkID(username, password);//change to user name and password verification methods****************************
+				controller.checkCredentials(username, password);
+				errorMessage = "Invalid credentials";
 			}
 		} 
 		catch (NumberFormatException e) 
@@ -79,18 +76,5 @@ public class LoginServlet extends HttpServlet{
 		
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/login.jsp").forward(req, resp);
-	}
-
-	// gets double from the request with attribute named s
-	private String getStringFromParameter(String s) 
-	{
-		if (s == null || s.equals("")) 
-		{
-			return null;
-		} 
-		else 
-		{
-			return s;
-		}
 	}
 }
