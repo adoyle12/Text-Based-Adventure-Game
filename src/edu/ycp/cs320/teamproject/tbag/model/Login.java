@@ -18,12 +18,14 @@ public class Login {
 	}	
 	public String getUsername() {
 		return username;
-	}	
+	}
+	
+
 	public void setPassword (String password) {
 		this.password = password;
 	}	
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setCredentials()
