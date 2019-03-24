@@ -33,7 +33,7 @@
 			<input type="Submit" name="submit" value="Enter">
 		</form>
 		<c:if test="${login.credentials}">
-			<c:redirect url= "gameplay.jsp">
+			<c:redirect url= "http://localhost:8081/tbag/gameplay">
 			</c:redirect>
 		</c:if>
 	</body>
