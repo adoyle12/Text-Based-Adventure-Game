@@ -11,15 +11,13 @@ public class Gameplay
 	
 	//Inventory, Description, Input
 
-	String input; 		//input from the user
+	private String input; 		//input from the user
 	//Inventory inventory; 	//game inventory
 	//Description description; 	//Thinking this should be it's own class to have a long & short description
 	
-	
-	
 	public Gameplay() 
 	{
-		
+
 	}
 	
 	public void setInput (String input)
