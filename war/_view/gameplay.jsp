@@ -93,6 +93,7 @@
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
 					<table>
 					<tr>
+						<td class="label"><c:out value="${gameplay.story }"/></td>
 						<td class="label">Input:</td>
 						<td><input type="text" name="input" size="12" value="${gameplay.input}" /></td>
 					</tr>
