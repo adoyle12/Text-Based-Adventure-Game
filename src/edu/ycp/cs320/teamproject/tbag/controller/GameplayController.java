@@ -1,7 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
 
-import java.util.ArrayList;
 
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 
@@ -28,13 +27,10 @@ public class GameplayController
 	 * Setting the input from the user
 	 * @param input the input from user
 	 */
-	public void setPage(String input) {
+
+	public void input(String input)
+	{
 		model.setInput(input);
-		model.setStory(input);
-	}
-	
-	public ArrayList<String> getStuff() {
-		return model.getStory();
 	}
 
 }

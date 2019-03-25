@@ -42,10 +42,6 @@ public class GameplayServlet extends HttpServlet
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
-		for(int i=0; i<controller.getStuff().size()-1; i++) {
-			System.out.println(controller.getStuff().get(i));
-		}
-		
 		
 		
 		// holds the error message text, if there is any
@@ -65,7 +61,7 @@ public class GameplayServlet extends HttpServlet
 			// otherwise, data is good, do the calculation using controller
 			else 
 			{
-				controller.setPage(input);
+				controller.input(input);
 			}
 		} 
 		catch (Exception e) 
