@@ -11,7 +11,6 @@ public class Inventory {
 	
 	//reference for a specific item
 	private Item item;
-	private ItemType iType;
 	
 	//creates list for items in inventory
 	public Inventory() {

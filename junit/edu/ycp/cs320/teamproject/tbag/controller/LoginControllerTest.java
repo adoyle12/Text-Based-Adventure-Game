@@ -1,52 +1,36 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ycp.cs320.teamproject.tbag.controller.GuessingGameController;
-import edu.ycp.cs320.teamproject.tbag.model.GuessingGame;
-import edu.ycp.cs320.teamproject.tbag.model.Login;
+
+import edu.ycp.cs320.teamproject.tbag.model.*;
 
 public class LoginControllerTest 
 {
-	private Login loginModel;
-	private LoginController controller;
-	private String username;
-	private String password;
+	private Login model;
+	private LoginController controller; 
 	
 	@Before
 	public void setUp() 
 	{
-		loginModel = new Login();
+		model = new Login();
 		controller = new LoginController();
 		
-		// These are the hard coded username and password
-		username = "hello";
-		password = "world";
-		
-		controller.setModel(loginModel);
+		controller.setModel(model);
 	}
 	
 	@Test
-	public void testSetModel() 
+	public void testCheckCredentials()
 	{
-		loginModel.setPassword(password);
-		loginModel.setUsername(username);
-		controller.setModel(loginModel);
-		assertEquals(password, loginModel.getPassword());
-		assertEquals(username, loginModel.getUsername());
-	}
-	
-	@Test
-	public void testCheckID() {
-		// Test when both are 'correct'
-		assertTrue(controller.checkID(username, password));
+		//These are hard coded in right now to username == "hello" & password == "world"
+		controller.checkCredentials("hello", "world");
+		assertTrue(model.getCredentials()); 
 		
-		// Test when one or more are 'wrong'
-		assertEquals(false, controller.checkID(username, "Planet"));
-		assertEquals(false, controller.checkID("Goodbye", "Planet"));
+		controller.checkCredentials("sherlock", "holmes");
+		assertFalse(model.getCredentials()); 
 	}
 }

@@ -57,7 +57,7 @@ public class GameplayServlet extends HttpServlet
 			// otherwise, data is good, do the calculation using controller
 			else 
 			{
-				controller.setInput(input);
+				controller.input(input);
 			}
 		} 
 		catch (Exception e) 
