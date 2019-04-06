@@ -1,37 +1,30 @@
 package edu.ycp.cs320.teamproject.tbag.model;
 
-import java.util.Random;
-
-public enum Location {
+public class Location 
+{
 	
-	//these specify locations for the player, enemies, and items
+	private int roomNumber; 
+	private Description description; 
 	
-	//this is the initial room the player starts the game in
-	RM0,
+	public void setRoomNumber (int roomNumber)
+	{
+		this.roomNumber = roomNumber; 
+	}
 	
-	RM1,
+	public int getRoomNumber()
+	{
+		return roomNumber; 
+	}
 	
-	RM2,
+	public void setDescription(Description description)
+	{
+		this.description = description; 
+	}
 	
-	RM3,
-	
-	RM4,
-	
-	RM5,
-	
-	RM6,
-	
-	RM7,
-	
-	RM8,
-	
-	INVENTORY,
-	
-	ENEMY;
-	
-	public static Location getRandomLocation() {
-		Random rand = new Random();
-		return values()[rand.nextInt(values().length - 2)];
+	public Description getDescription()
+	{
+		return description; 
 	}
 	
 }
+
