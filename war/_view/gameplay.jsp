@@ -59,6 +59,11 @@
 	</head>
 
 	<body>
+		<%
+			if(session.getAttribute("username") == null){
+				response.sendRedirect("login.jsp");
+			}
+		%>
 		<div class="container">
 		<p class="gamename">The Escape of the Minotaur</p>
 		<img src="labyrinth.jpg" alt="bg" style="width:100%; height: auto;">

@@ -1,11 +1,12 @@
 package edu.ycp.cs320.teamproject.tbag.model;
+import java.util.List;
 
 public class Login {
 	
 	// Initializing user name and password strings
 	private String username;
 	private String password;
-	private Boolean credentials; 
+	private Boolean credentials;
 	
 	//Constructor
 	public Login() {
