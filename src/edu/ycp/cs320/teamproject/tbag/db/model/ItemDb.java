@@ -13,6 +13,7 @@ public class ItemDb {
 	private String name;
 	private int locationID;
 	private int descriptionID;
+	private int itemID;
 	
 	public ItemDb() {
 		
@@ -40,6 +41,14 @@ public class ItemDb {
 	
 	public int getDescriptionID() {
 		return this.descriptionID;
+	}
+	
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+	
+	public int getItemID() {
+		return this.itemID;
 	}
 	
 }

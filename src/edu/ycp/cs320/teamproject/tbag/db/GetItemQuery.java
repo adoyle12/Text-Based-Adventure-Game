@@ -30,7 +30,7 @@ public class GetItemQuery {
 		
 		// check if anything was returned and output the list
 		if (itemList.isEmpty()) {
-			System.out.println("No books found with title <" + name + ">");
+			System.out.println("No item found with name <" + name + ">");
 		}
 		else {
 			for (ItemDb item : itemList) {

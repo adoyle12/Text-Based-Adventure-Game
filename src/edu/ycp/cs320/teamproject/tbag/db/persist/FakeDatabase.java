@@ -39,7 +39,21 @@ public class FakeDatabase implements IDatabase{
 				returnList.add(item);
 			}
 		}
-		
 		return returnList;
+	}
+	
+	public Integer insertItem(String name, int locationID, int descriptionID) {
+		
+		ItemDb item = new ItemDb();
+		
+		item.setItemID(itemList.size() + 1);
+		
+		item.setName(name);
+		item.setLocationID(locationID);
+		item.setDescriptionID(descriptionID);
+		itemList.add(item);
+		
+		// This should return the itemID
+		return item.getItemID();
 	}
 }
