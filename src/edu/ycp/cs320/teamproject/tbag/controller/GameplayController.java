@@ -9,7 +9,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
  */
 public class GameplayController 
 {
-	private Gameplay model; 
+	private Gameplay model = null; 
 	
 	/**
 	 * Set the model

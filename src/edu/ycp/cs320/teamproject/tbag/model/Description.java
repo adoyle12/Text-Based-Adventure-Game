@@ -1,20 +1,27 @@
 package edu.ycp.cs320.teamproject.tbag.model;
 
-public class Description {
-	//description for items
-	private String itemDes;
+public class Description 
+{
+	private String shortDescription; 	//Short descriptions
+	private String longDescription; 	//Long	descriptions
 	
-	//long description for rooms
-	private String roomLong;
+	public void setShort(String shortDescription)
+	{
+		this.shortDescription = shortDescription;
+	}
 	
-	//short description for rooms
-	private String roomShort;
+	public String getShort()
+	{
+		return shortDescription;
+	}
 	
-	//description for characters
-	private String charDes;
+	public void setLong(String longDescription)
+	{
+		this.longDescription = longDescription; 
+	}
 	
-	public Description() {
-		//each reference should then directly access and pull from the database
-		//in order to retrieve the appropriate description as required during gameplay
+	public String getLong()
+	{
+		return longDescription; 
 	}
 }
