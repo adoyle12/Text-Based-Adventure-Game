@@ -19,7 +19,7 @@ public class FakeDatabase implements IDatabase{
 	private List<ItemDb> itemList;
 	
 	public FakeDatabase() {
-		itemList = new ArrayList();
+		itemList = new ArrayList<ItemDb>();
 		
 		populateLists();
 	}
@@ -30,5 +30,16 @@ public class FakeDatabase implements IDatabase{
 		} catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
 		}
+	}
+	
+	public List<ItemDb>getItemByName(String name){
+		List<ItemDb> returnList = new ArrayList<ItemDb>();
+		for(ItemDb item : itemList) {
+			if(item.getName().equals(name)) {
+				returnList.add(item);
+			}
+		}
+		
+		return returnList;
 	}
 }

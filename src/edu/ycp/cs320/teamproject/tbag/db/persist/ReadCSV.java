@@ -1,6 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
-import java.io.BufferedReader; 
+import java.io.BufferedReader;  
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ public class ReadCSV implements Closeable {
 	private BufferedReader reader;
 	
 	public ReadCSV(String resourceName) throws IOException {
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("edu/ycp/cs320/teamproject/tbag/db/persist/res" + resourceName);
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("edu/ycp/cs320/teamproject/tbag/db/persist/res/" + resourceName);
 		if (in == null) {
 			throw new IOException("Couldn't open " + resourceName);
 		}

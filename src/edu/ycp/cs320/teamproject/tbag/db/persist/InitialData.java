@@ -28,10 +28,18 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				ItemDb item = new ItemDb();
+				
+				/*int count = 0;
+				while(true) {
+					if(i.hasNext() == true) {
+						count++;
+					}
+					System.out.println(count);
+					i.next();
+				}*/
 			
-				Integer.parseInt(i.next());
-				item.setName(i.next());				
-				item.setRoomID(Integer.parseInt(i.next()));
+				item.setName(i.next());
+				item.setLocationID(Integer.parseInt(i.next()));
 				item.setDescriptionID(Integer.parseInt(i.next()));
 				itemList.add(item);
 			}

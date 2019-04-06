@@ -11,7 +11,7 @@ package edu.ycp.cs320.teamproject.tbag.db.model;
 
 public class ItemDb {
 	private String name;
-	private int roomID;
+	private int locationID;
 	private int descriptionID;
 	
 	public ItemDb() {
@@ -26,12 +26,12 @@ public class ItemDb {
 		return this.name;
 	}
 	
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
+	public void setLocationID(int locationID) {
+		this.locationID = locationID;
 	}
 	
-	public int getRoomID() {
-		return this.roomID;
+	public int getLocationID() {
+		return this.locationID;
 	}
 	
 	public void setDescriptionID(int descriptionID) {
