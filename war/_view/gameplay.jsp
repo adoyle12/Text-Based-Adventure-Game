@@ -59,6 +59,11 @@
 	</head>
 
 	<body>
+		<%
+			if(session.getAttribute("username") == null){
+				response.sendRedirect("login.jsp");
+			}
+		%>
 		<div class="container">
 		<p class="gamename">The Escape of the Minotaur</p>
 		<img src="labyrinth.jpg" alt="bg" style="width:100%; height: auto;">
@@ -93,6 +98,7 @@
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
 					<table>
 					<tr>
+						<td class="label"><c:out value="${gameplay.story }"/></td>
 						<td class="label">Input:</td>
 						<td><input type="text" name="input" size="12" value="${gameplay.input}" /></td>
 					</tr>

@@ -1,5 +1,7 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
+
+
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 
 /**
@@ -25,10 +27,10 @@ public class GameplayController
 	 * Setting the input from the user
 	 * @param input the input from user
 	 */
+
 	public void input(String input)
 	{
 		model.setInput(input);
 	}
-	
 
 }

@@ -1,11 +1,13 @@
 package edu.ycp.cs320.teamproject.tbag.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs320.teamproject.tbag.controller.GameplayController;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
@@ -13,6 +15,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 public class GameplayServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
+	ArrayList<String> story = new ArrayList<String>();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -39,7 +42,9 @@ public class GameplayServlet extends HttpServlet
 		GameplayController controller = new GameplayController();
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
-
+		
+		
+		
 		// holds the error message text, if there is any
 		String errorMessage = null;
 

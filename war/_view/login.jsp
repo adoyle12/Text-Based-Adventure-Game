@@ -30,7 +30,8 @@
 					<td><input type="password" name="password" size="12" value="${login.password}" /></td>
 				</tr>
 			</table>
-			<input type="Submit" name="submit" value="Enter">
+			<input type="Submit" name="submit" value="Login">
+			<!-- <input type="button" name="submit" value="Register"> ----------------------------------------------------------------->
 		</form>
 		<c:if test="${login.credentials}">
 			<c:redirect url= "http://localhost:8081/tbag/gameplay">
