@@ -99,7 +99,7 @@
 					<table>
 					<c:forEach items="${story}" var="story">
 		        		<tr>
-		           			<td class='label'>${Gameplay.story}</td>			            
+		           			<td class='label'>${Gameplay.output}</td>			            
 		       			</tr>
 	   				</c:forEach>
 					<tr>

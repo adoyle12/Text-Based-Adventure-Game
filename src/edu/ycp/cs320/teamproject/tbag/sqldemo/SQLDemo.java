@@ -40,13 +40,17 @@ public class SQLDemo {
 	// TODO: Here is where you name and specify the location of your Derby SQL database
 	// TODO: Change it here and in DerbyDatabase.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.booksdb.persist
 	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
+	
+	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Connection conn = null;
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-			conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");
+			//conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");	
+			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+
 			conn.setAutoCommit(true);
 	
 			queryLoop(conn);
