@@ -45,9 +45,14 @@ public class SQLDemo {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
+<<<<<<< HEAD
 			conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");
 			//conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			
+=======
+			conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG.git
 			conn.setAutoCommit(true);
 	
 			queryLoop(conn);
