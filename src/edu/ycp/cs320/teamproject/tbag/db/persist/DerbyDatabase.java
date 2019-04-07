@@ -103,8 +103,8 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 		private Connection connect() throws SQLException {
 
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");		
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");		
 //			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true")
 			
 			// Set autocommit() to false to allow the execution of
@@ -130,7 +130,8 @@ public class DerbyDatabase implements IDatabase{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
-					PreparedStatement stmt2 = null;				
+					PreparedStatement stmt2 = null;	
+					PreparedStatement stmt3 = null;
 				
 					try {
 						
@@ -144,7 +145,7 @@ public class DerbyDatabase implements IDatabase{
 		
 								);
 						
-						stmt1.execute(); 
+						stmt1.executeUpdate(); 
 						
 						stmt2 = conn.prepareStatement(
 							"create table inventory (" +
@@ -154,7 +155,17 @@ public class DerbyDatabase implements IDatabase{
 							"   item_name varchar(40) " +
 							")"
 						);	
-						stmt2.execute();
+						stmt2.executeUpdate();
+						
+						stmt3 = conn.prepareStatement(
+							"create table users (" +
+									"	user_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), "	+
+									"	username varchar(20), " +
+									"	password varchar(20) " +
+									")"
+						);
+						stmt3.executeUpdate();
 						
 						System.out.println("tables created");				
 											
@@ -162,6 +173,7 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt3);
 					}
 				}
 			});
