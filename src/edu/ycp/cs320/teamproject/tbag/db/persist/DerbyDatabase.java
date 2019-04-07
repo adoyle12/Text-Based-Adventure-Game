@@ -102,8 +102,8 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 		private Connection connect() throws SQLException {
-			Connection conn = DriverManager.getConnection("jdbc:derby:test1.db;create=true");		
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true")
+			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");		
+//			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true")
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -128,32 +128,31 @@ public class DerbyDatabase implements IDatabase{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
-					PreparedStatement stmt2 = null;
-					PreparedStatement stmt3 = null;				
+					PreparedStatement stmt2 = null;				
 				
 					try {
 						
 						stmt1 = conn.prepareStatement(
 								"create table locations (" +
 								"	location_id integer primary key " +
-										"generated always as identity (start with 1, increment by 1), "	+
-								"	description_short varchart(4000), " +
-								"	description_long varchart(8000) " +
+								"		generated always as identity (start with 1, increment by 1), "	+
+								"	description_short varchar(4000), " +
+								"	description_long varchar(8000) " +
 								")"
 		
 								);
 						
-						stmt1.executeUpdate(); 
+						stmt1.execute(); 
 						
 						stmt2 = conn.prepareStatement(
 							"create table inventory (" +
 							"	item_id integer primary key " +
 									"generated always as identity (start with 1, increment by 1), " +
 							"	location_id integer constraint location_id references locations, " +
-							"   item_name varchar(40), " +
+							"   item_name varchar(40) " +
 							")"
 						);	
-						stmt2.executeUpdate();
+						stmt2.execute();
 						
 						System.out.println("tables created");				
 											
@@ -161,7 +160,6 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
-						DBUtil.closeQuietly(stmt3);
 					}
 				}
 			});
@@ -174,7 +172,7 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
 					List<Location> locationList; 
-					List<Description> descriptionList; 
+					//List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
