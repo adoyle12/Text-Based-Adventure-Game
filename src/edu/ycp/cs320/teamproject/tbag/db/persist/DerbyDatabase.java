@@ -23,6 +23,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.User;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class DerbyDatabase implements IDatabase{
@@ -255,12 +256,14 @@ public class DerbyDatabase implements IDatabase{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
-					List<Location> locationList; 
+					List<Location> locationList;
+					List<User> userList;
 					//List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
+						userList = InitialData.getUsers();
 						//descriptionList = //InitialData.getDescriptions(); 
 						
 					} catch (IOException e) {
@@ -269,6 +272,7 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertItem = null;
 					PreparedStatement insertLocation = null; 
+					PreparedStatement insertUser = null;
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -293,12 +297,21 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertItem.executeBatch();
 						
+						insertUser = conn.prepareStatement("insert into users (username, password) values (?, ?)");
+						for(User user: userList) {
+							insertUser.setString(1, user.getUsername());
+							insertUser.setString(2, user.getPassword());
+							insertUser.addBatch();
+						}
+						insertUser.executeBatch();
+						
 						System.out.println("Item table populated");
 						
 						return true;
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
-						DBUtil.closeQuietly(insertItem);					
+						DBUtil.closeQuietly(insertItem);
+						DBUtil.closeQuietly(insertUser);
 					}
 				}
 			});

@@ -8,6 +8,7 @@ import java.util.List;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class InitialData 
 {
@@ -78,7 +79,7 @@ public class InitialData
 	}
 	
 	public static List<User> getUsers() throws IOException{
-		List<User> userList = new ArrayList<User>();
+		List<User>  userList = new ArrayList<User>();
 		ReadCSV readUsers = new ReadCSV("users.csv");
 		try 
 		{
@@ -93,9 +94,9 @@ public class InitialData
 				}
 				Iterator<String> i = tuple.iterator();
 				User user = new User(); 
-				User.setAgentID(agentID++);
-				User.setUsername(i.next());
-				User.setPassword(i.next());
+				user.setAgentID(agentID++);
+				user.setUsername(i.next());
+				user.setPassword(i.next());
 				userList.add(user);
 				
 				
