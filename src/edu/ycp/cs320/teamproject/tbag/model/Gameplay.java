@@ -3,6 +3,8 @@ package edu.ycp.cs320.teamproject.tbag.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
+
 /**
  * Model class for gameplay
  * @author adoyle 
@@ -15,6 +17,8 @@ public class Gameplay
 	//Inventory, Description, Input
 
 	private String input; 		//input from the user
+	private String output;
+	
 	private ArrayList<String> story = new ArrayList<String>(Arrays.asList("A subtle shift in the current of air flowing through the room stirs your consciousness awake.\r\n" + 
 			"		Another day has passed, enclosed at the center of the labyrinth, which, for centuries, has been the place you call home.\r\n" + 
 			"		Slightly groggy, you stretch and yawn, causing a low rumbling growl to echo through the corridors that stretch beyond this main room.\r\n" + 
@@ -47,13 +51,21 @@ public class Gameplay
 		this.input = input;
 	}
 	
-	public void setStory (String input) {
-		this.story.add(input);
-	}
-	
 	public String getInput()
 	{
 		return input; 
+	}
+	
+	public String getOutput() {
+		return output;
+	}
+	
+	public void setOutput(String output) {
+		this.output = output;
+	}
+	
+	public void setStory (String input) {
+		this.story.add(input);
 	}
 	
 	public ArrayList<String> getStory(){

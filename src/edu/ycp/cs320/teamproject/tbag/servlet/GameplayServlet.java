@@ -32,7 +32,7 @@ public class GameplayServlet extends HttpServlet
 		
 		System.out.println("Gameplay Servlet: doPost");
 		
-		ArrayList<String> story = null;
+		String output = null;
 		String errorMessage = null;
 		/*
 		 * Initiate the controller and model
@@ -42,7 +42,7 @@ public class GameplayServlet extends HttpServlet
 		controller = new GameplayController();
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
-		story = controller.story();
+		
 
 		// decode POSTed form parameters and dispatch to controller
 		try 
@@ -57,8 +57,8 @@ public class GameplayServlet extends HttpServlet
 			// otherwise, data is good, do the calculation using controller
 			else 
 			{
-				controller.input(input);
-				controller.story();
+				controller.setInput(input.toLowerCase());
+				System.out.println(model.getInput());
 			}
 		} 
 		catch (Exception e) 
@@ -66,9 +66,16 @@ public class GameplayServlet extends HttpServlet
 			errorMessage = "No good";		//AD: come back to this
 		}
 		
+		// Do the logic for the input
+		if(model.getInput().contains("move")) {
+			int location_id = controller.getCurrentLocation();
+			controller.setOutput(controller.getLocationDescriptionLong(location_id));
+		}
+		output = model.getOutput();
+		
 		// Add parameters as request attributes
-		req.setAttribute("input", model);
-		req.setAttribute("story", story);
+		req.setAttribute("input", model.getInput());
+		req.setAttribute("output", model.getOutput());
 		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);

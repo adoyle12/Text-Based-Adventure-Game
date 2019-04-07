@@ -42,6 +42,67 @@ public class DerbyDatabase implements IDatabase{
 	private static final int MAX_ATTEMPTS = 10;
 	
 	@Override
+	public Integer getLocationID() {
+		return executeTransaction(new Transaction<Integer>() {
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement locationID = null;
+				ResultSet resultSet = null;
+			try {
+				locationID = connect().prepareStatement(
+						" select location_id, description_short, description_long " +
+						"  from locations, users " +
+						"  where locations.location_id = users.location_id "
+				);
+				resultSet = locationID.executeQuery();
+				
+				resultSet.next();
+				
+				Location location = new Location();
+				
+				loadLocation(location, resultSet, 1);
+				
+				return location.getLocationID();
+			}
+			finally {
+				DBUtil.closeQuietly(resultSet);
+				DBUtil.closeQuietly(locationID);
+			}
+			}
+		});
+	}
+	
+	@Override
+	public Location getLocationDescriptionLong(final int location_id) {
+		return executeTransaction(new Transaction<Location>(){
+			public Location execute(Connection conn) throws SQLException {
+				PreparedStatement longDescription = null;
+				ResultSet resultSet = null;
+				try {
+					longDescription = conn.prepareStatement(
+							"select location_id, description_short, description_long " +
+							" from locations " +
+							" where locations.location_id = ? "
+					);
+					longDescription.setInt(1, location_id);
+				
+					resultSet = longDescription.executeQuery();
+				
+					resultSet.next();
+				
+					Location result = new Location();
+				
+					loadLocation(result, resultSet, 1);
+				
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(longDescription);
+				}
+			}
+		});
+	}
+	
+	@Override
 	// All of the query commands go here:
 	public List<ItemDb>getItemByName(String name){
 		return new ArrayList<ItemDb>();
@@ -107,7 +168,7 @@ public class DerbyDatabase implements IDatabase{
 
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
 			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
+			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
 
 //			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true")
 			
@@ -124,6 +185,13 @@ public class DerbyDatabase implements IDatabase{
 			item.setLocationID(resultSet.getInt(index++));
 			item.setDescriptionID(resultSet.getInt(index++));
 			item.setItemID(resultSet.getInt(index++));
+		}
+		
+		// retrieves Item information from query result set
+		private void loadLocation(Location location, ResultSet resultSet, int index) throws SQLException {
+			location.setLocationID(resultSet.getInt(index++));
+			location.setLongDescription(resultSet.getString(index++));
+			location.setShortDescription(resultSet.getString(index++));
 		}
 		
 		//  creates the item table
