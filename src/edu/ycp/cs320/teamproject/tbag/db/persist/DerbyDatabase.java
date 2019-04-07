@@ -129,7 +129,8 @@ public class DerbyDatabase implements IDatabase{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
-					PreparedStatement stmt2 = null;				
+					PreparedStatement stmt2 = null;	
+					PreparedStatement stmt3 = null;
 				
 					try {
 						
@@ -155,12 +156,23 @@ public class DerbyDatabase implements IDatabase{
 						);	
 						stmt2.execute();
 						
+						stmt3 = conn.prepareStatement(
+							"create table users (" +
+									"	user_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), "	+
+									"	username varchar(20), " +
+									"	password varchar(20) " +
+									")"
+						);
+						stmt3.execute();
+						
 						System.out.println("tables created");				
 											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt3);
 					}
 				}
 			});
