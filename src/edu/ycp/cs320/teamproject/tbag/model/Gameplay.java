@@ -3,6 +3,8 @@ package edu.ycp.cs320.teamproject.tbag.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
+
 /**
  * Model class for gameplay
  * @author adoyle 
@@ -58,5 +60,18 @@ public class Gameplay
 	
 	public ArrayList<String> getStory(){
 		return story;
+	}
+	
+	// Get next location
+	public int getNextLocation(int location_id) {
+		return location_id ++;
+	}
+	
+	public String getLocationDescriptionLong(int location_id) {
+		DerbyDatabase db = new DerbyDatabase();
+		
+		String returnString = db.getLocationDescriptionLong(getNextLocation(location_id));
+		
+		return returnString;
 	}
 }
