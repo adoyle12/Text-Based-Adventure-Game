@@ -60,4 +60,17 @@ public class GameplayController
 		return stories;
 	}
 
+	public String getInfoFromDatabase() {
+		String input = model.getInput();
+		
+		// Make input not case sensitive
+		input = input.toLowerCase();
+		
+		String examine = "examine";
+		
+		if(input.contains(examine)) {
+			//String returnString = db.getRoomDescription();
+		}
+		return input;
+	}
 }
