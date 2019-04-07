@@ -8,6 +8,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
+import edu.ycp.cs320.teamproject.tbag.model.Location;
 
 /**
  * Controller for Gameplay
@@ -16,7 +17,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
  */
 public class GameplayController 
 {
-	private IDatabase db = null;
+	private IDatabase db;
 	private Gameplay model; 
 	
 	public GameplayController() {
@@ -39,18 +40,18 @@ public class GameplayController
 	 * @param input the input from user
 	 */
 
-	public void input(String input)
+	public void setInput(String input)
 	{
 		model.setInput(input);
 	}
 	
-	public ArrayList<String> story(){
-		//TODO:List<String> story = db.loadGame;
-		ArrayList<String> stories = null;
+	public void setOutput(String output){
+		//TODO:List<String> output = db.loadGame;
+		/*ArrayList<String> stories = null;
 		
 		String story = "Garbage";
 		if(story.isEmpty()) {
-			System.out.println("No game found");
+			System.out.println("Not a valid command");
 			return null;
 		}
 		else {
@@ -58,6 +59,9 @@ public class GameplayController
 			stories = model.getStory();
 		}	
 		return stories;
+		*/
+		
+		model.setOutput(output);
 	}
 
 	public String getInfoFromDatabase() {
@@ -72,5 +76,22 @@ public class GameplayController
 			//String returnString = db.getRoomDescription();
 		}
 		return input;
+	}
+	
+	// Get next location
+	public int getNextLocation(int location_id) {
+		return location_id ++;
+	}
+		
+	public String getLocationDescriptionLong(int location_id) {
+		Location location = db.getLocationDescriptionLong(getNextLocation(location_id));
+			
+		String returnString = location.getLongDescription();
+		
+		return returnString;
+	}
+	
+	public int getCurrentLocation() {
+		return db.getLocationID();
 	}
 }

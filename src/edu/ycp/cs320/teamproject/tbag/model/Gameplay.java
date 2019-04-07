@@ -17,6 +17,8 @@ public class Gameplay
 	//Inventory, Description, Input
 
 	private String input; 		//input from the user
+	private String output;
+	
 	private ArrayList<String> story = new ArrayList<String>(Arrays.asList("A subtle shift in the current of air flowing through the room stirs your consciousness awake.\r\n" + 
 			"		Another day has passed, enclosed at the center of the labyrinth, which, for centuries, has been the place you call home.\r\n" + 
 			"		Slightly groggy, you stretch and yawn, causing a low rumbling growl to echo through the corridors that stretch beyond this main room.\r\n" + 
@@ -49,29 +51,24 @@ public class Gameplay
 		this.input = input;
 	}
 	
-	public void setStory (String input) {
-		this.story.add(input);
-	}
-	
 	public String getInput()
 	{
 		return input; 
 	}
 	
+	public String getOutput() {
+		return output;
+	}
+	
+	public void setOutput(String output) {
+		this.output = output;
+	}
+	
+	public void setStory (String input) {
+		this.story.add(input);
+	}
+	
 	public ArrayList<String> getStory(){
 		return story;
-	}
-	
-	// Get next location
-	public int getNextLocation(int location_id) {
-		return location_id ++;
-	}
-	
-	public String getLocationDescriptionLong(int location_id) {
-		DerbyDatabase db = new DerbyDatabase();
-		
-		String returnString = db.getLocationDescriptionLong(getNextLocation(location_id));
-		
-		return returnString;
 	}
 }
