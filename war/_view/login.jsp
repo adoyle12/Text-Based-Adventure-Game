@@ -30,12 +30,22 @@
 					<td><input type="password" name="password" size="12" value="${login.password}" /></td>
 				</tr>
 			</table>
+			<br>
 			<input type="Submit" name="submit" value="Login">
-			<!-- <input type="button" name="submit" value="Register"> ----------------------------------------------------------------->
+		</form>
+		<br>
+		<form action="${pageContext.servletContext.contextPath}/register" method="post">
+				<input type="Button" name="register" value="Register"
+				onclick="redirect()">
 		</form>
 		<c:if test="${login.credentials}">
-			<c:redirect url= "http://localhost:8081/tbag/gameplay">
-			</c:redirect>
+			<c:redirect url= "http://localhost:8081/tbag/gameplay"></c:redirect>
 		</c:if>
+	<script type="text/javascript">
+	    function redirect(){
+	    var address = "http://localhost:8081/tbag/register";
+	    window.location(address);
+	    }
+    </script>
 	</body>
 </html>

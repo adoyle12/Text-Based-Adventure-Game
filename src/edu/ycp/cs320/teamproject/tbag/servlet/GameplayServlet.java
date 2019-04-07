@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs320.teamproject.tbag.controller.GameplayController;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
@@ -15,8 +14,8 @@ import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 public class GameplayServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
-	ArrayList<String> story = new ArrayList<String>();
 
+	private GameplayController controller = null;
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -33,22 +32,18 @@ public class GameplayServlet extends HttpServlet
 		
 		System.out.println("Gameplay Servlet: doPost");
 		
-
+		ArrayList<String> story = null;
+		String errorMessage = null;
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
 		 * Must do this each time since they don't persist between POSTs
 		 */
-		GameplayController controller = new GameplayController();
+		controller = new GameplayController();
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
-		
-		
-		
-		// holds the error message text, if there is any
-		String errorMessage = null;
+		story = controller.story();
 
-		
 		// decode POSTed form parameters and dispatch to controller
 		try 
 		{
@@ -63,6 +58,7 @@ public class GameplayServlet extends HttpServlet
 			else 
 			{
 				controller.input(input);
+				controller.story();
 			}
 		} 
 		catch (Exception e) 
@@ -72,6 +68,7 @@ public class GameplayServlet extends HttpServlet
 		
 		// Add parameters as request attributes
 		req.setAttribute("input", model);
+		req.setAttribute("story", story);
 		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
