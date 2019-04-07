@@ -4,17 +4,28 @@ import java.util.ArrayList;
 
 public class Agent 
 {
-	private Location location; 
+	private int agentID; 
+	private int locationID; 
 	private ArrayList<Item> inventory; 
 	
-	public void setLocation(Location location)
+	public void setAgentID(int agentID)
 	{
-		this.location = location; 
+		this.agentID = agentID; 
 	}
 	
-	public Location getLocation()
+	public int getAgentID()
 	{
-		return location; 
+		return agentID; 
+	}
+	
+	public void setLocationID(int locationID)
+	{
+		this.locationID = locationID; 
+	}
+	
+	public int getLocationID()
+	{
+		return locationID; 
 	}
 	
 	public void addItem(Item item)
