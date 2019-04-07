@@ -1,4 +1,4 @@
-package edu.ycp.cs320.sqldemo;
+package edu.ycp.cs320.teamproject.tbag.sqldemo;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -44,7 +44,7 @@ public class SQLDemo {
 		Connection conn = null;
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-			conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true");
+			conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/tbag.db;create=true");
 			conn.setAutoCommit(true);
 	
 			queryLoop(conn);
