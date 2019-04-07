@@ -17,5 +17,7 @@ public interface IDatabase{
 	public Integer insertItem(String name, int locationID, int descriptionID);
 	public Location getLocationDescriptionLong(int location_id);
 	public Integer getLocationID();
+	
+	public String findPasswordFromUsername(String username);
 }
 

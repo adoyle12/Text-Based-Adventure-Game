@@ -32,6 +32,8 @@ public class LoginServlet extends HttpServlet{
 		System.out.println("login Servlet: doPost");
 		
 
+		String username = null;
+		String password = null;
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
@@ -47,8 +49,8 @@ public class LoginServlet extends HttpServlet{
 		// decode POSTed form parameters and dispatch to controller
 		try 
 		{
-			String username = req.getParameter("username");
-			String password = req.getParameter("password");
+			username = req.getParameter("username");
+			password = req.getParameter("password");
 
 			// check for errors in the form data
 			if (username.equals("") || password.equals(""))
@@ -58,12 +60,13 @@ public class LoginServlet extends HttpServlet{
 			 //otherwise, data is good, now check credentials
 			else
 			{
-				controller.checkCredentials(username, password);
+				controller.credentials(username, password);
 				
 				HttpSession session = req.getSession();
 				session.setAttribute("username", username);
 				
 				errorMessage = "Invalid credentials";
+				
 			}
 		} 
 		catch (NumberFormatException e) 

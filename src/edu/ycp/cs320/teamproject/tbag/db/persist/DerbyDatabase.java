@@ -192,6 +192,7 @@ public class DerbyDatabase implements IDatabase{
 			location.setLongDescription(resultSet.getString(index++));
 			location.setShortDescription(resultSet.getString(index++));
 		}
+	
 		
 		//  creates the item table
 		public void createTables() 
@@ -327,5 +328,40 @@ public class DerbyDatabase implements IDatabase{
 			db.loadInitialData();
 			
 			System.out.println("Library DB successfully initialized!");
+		}
+		
+		@Override
+		public String findPasswordFromUsername(String username) {
+			return executeTransaction(new Transaction<String>() {
+				@Override
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement getPassword = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getPassword = conn.prepareStatement( 
+								" select password from users " +
+								" where users.username = ? " 
+						);
+						getPassword.setString(1, username);
+						
+						resultSet = getPassword.executeQuery();
+						
+						String password = null;
+						
+						if(resultSet.next()) {
+							password = resultSet.getString(1);
+						}
+						
+						System.out.println(password);
+						return password;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getPassword);
+					}
+					
+				}
+			});
 		}
 }
