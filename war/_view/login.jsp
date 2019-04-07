@@ -36,16 +36,10 @@
 		<br>
 		<form action="${pageContext.servletContext.contextPath}/register" method="post">
 				<input type="Button" name="register" value="Register"
-				onclick="redirect()">
+				onclick="window.location = 'http://localhost:8081/tbag/register';">
 		</form>
 		<c:if test="${login.credentials}">
 			<c:redirect url= "http://localhost:8081/tbag/gameplay"></c:redirect>
 		</c:if>
-	<script type="text/javascript">
-	    function redirect(){
-	    var address = "http://localhost:8081/tbag/register";
-	    window.location(address);
-	    }
-    </script>
 	</body>
 </html>
