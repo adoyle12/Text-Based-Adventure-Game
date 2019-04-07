@@ -233,7 +233,8 @@ public class DerbyDatabase implements IDatabase{
 									"	user_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), "	+
 									"	username varchar(20), " +
-									"	password varchar(20) " +
+									"	password varchar(20), " +
+									"	location_id integer "	+
 									")"
 						);
 						stmt3.executeUpdate();
@@ -297,10 +298,11 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertItem.executeBatch();
 						
-						insertUser = conn.prepareStatement("insert into users (username, password) values (?, ?)");
+						insertUser = conn.prepareStatement("insert into users (username, password, location_id) values (?, ?, ?)");
 						for(User user: userList) {
 							insertUser.setString(1, user.getUsername());
 							insertUser.setString(2, user.getPassword());
+							insertUser.setInt(3, user.getLocationID());
 							insertUser.addBatch();
 						}
 						insertUser.executeBatch();

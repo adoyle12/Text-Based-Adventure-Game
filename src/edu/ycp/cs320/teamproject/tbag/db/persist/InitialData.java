@@ -85,6 +85,7 @@ public class InitialData
 		{
 			//auto-generated primary key for location table
 			Integer agentID = 1;
+			Integer userID = 1;
 			while (true) 
 			{
 				List<String> tuple = readUsers.next();
@@ -97,6 +98,7 @@ public class InitialData
 				user.setAgentID(agentID++);
 				user.setUsername(i.next());
 				user.setPassword(i.next());
+				user.setLocationID(userID++);
 				userList.add(user);
 				
 				
