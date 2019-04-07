@@ -12,14 +12,18 @@ public class ItemController
 		this.model = model; 
 	}
 	
+	public void itemID (int itemID)
+	{
+		model.setItemID(itemID);
+	}
 	public void name(String name)
 	{
 		model.setName(name);
 	}
 	
-	public void location(Location location)
+	public void location(int locationID)
 	{
-		model.setLocation(location);
+		model.setLocationID(locationID);
 	}
 }
 

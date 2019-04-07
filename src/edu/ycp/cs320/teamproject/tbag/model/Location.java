@@ -3,28 +3,38 @@ package edu.ycp.cs320.teamproject.tbag.model;
 public class Location 
 {
 	
-	private int roomNumber; 
-	private Description description; 
+	private int locationID; 
+	private String shortDescription; 
+	private String longDescription; 
 	
-	public void setRoomNumber (int roomNumber)
+	public void setLocationID (int locationID)
 	{
-		this.roomNumber = roomNumber; 
+		this.locationID = locationID; 
 	}
 	
-	public int getRoomNumber()
+	public int getLocationID()
 	{
-		return roomNumber; 
+		return locationID; 
 	}
 	
-	public void setDescription(Description description)
+	public void setShortDescription(String shortDescription)
 	{
-		this.description = description; 
+		this.shortDescription = shortDescription; 
 	}
 	
-	public Description getDescription()
+	public String getShortDescription()
 	{
-		return description; 
+		return shortDescription; 
 	}
 	
+	public void setLongDescription(String longDescription)
+	{
+		this.longDescription = longDescription; 
+	}
+	
+	public String getLongDescription()
+	{
+		return longDescription; 
+	}
 }
 

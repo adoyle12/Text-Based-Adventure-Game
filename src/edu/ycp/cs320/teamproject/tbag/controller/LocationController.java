@@ -12,13 +12,18 @@ public class LocationController
 		this.model = model; 
 	}
 	
-	public void roomNumber(int roomNumber)
+	public void locationID(int locationID)
 	{
-		model.setRoomNumber(roomNumber);
+		model.setLocationID(locationID);
 	}
 	
-	public void description(Description description)
+	public void shortDescription(String shortDescription)
 	{
-		model.setDescription(description);
+		model.setShortDescription(shortDescription);
+	}
+	
+	public void longDescription(String longDescription)
+	{
+		model.setLongDescription(longDescription);
 	}
 }

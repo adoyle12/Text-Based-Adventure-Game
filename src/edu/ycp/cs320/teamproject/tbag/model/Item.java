@@ -2,9 +2,19 @@ package edu.ycp.cs320.teamproject.tbag.model;
 
 public class Item 
 {
-	
+	private int itemID; 
 	private String name; 
-	private Location location;
+	private int locationID;
+	
+	public void setItemID(int itemID)
+	{
+		this.itemID = itemID; 
+	}
+	
+	public int getItemID()
+	{
+		return itemID; 
+	}
 	
 	public void setName (String name)
 	{
@@ -16,13 +26,13 @@ public class Item
 		return name; 
 	}
 	
-	public void setLocation(Location location)
+	public void setLocationID(int locationID)
 	{
-		this.location = location; 
+		this.locationID = locationID; 
 	}
 	
-	public Location getLocation()
+	public int getLocationID()
 	{
-		return location; 
+		return locationID; 
 	}
 }

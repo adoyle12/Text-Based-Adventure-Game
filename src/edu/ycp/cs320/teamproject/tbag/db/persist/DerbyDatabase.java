@@ -20,6 +20,9 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.InitialData;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DBUtil;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
+import edu.ycp.cs320.teamproject.tbag.model.Description;
+import edu.ycp.cs320.teamproject.tbag.model.Item;
+import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class DerbyDatabase implements IDatabase{
@@ -118,8 +121,10 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		//  creates the item table
-		public void createTables() {
-			executeTransaction(new Transaction<Boolean>() {
+		public void createTables() 
+		{
+			executeTransaction(new Transaction<Boolean>() 
+			{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement stmt1 = null;
@@ -127,22 +132,36 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt3 = null;				
 				
 					try {
+						
 						stmt1 = conn.prepareStatement(
-							"create table item (" +
-							"   name varchar(40), " +
-							"   locationID integer, " +
-							"   descriptionID integer, " +
-							"	itemID integer primary key " +
-							"		generated always as identity (start with 1, increment by 1), " +
+								"create table locations (" +
+								"	location_id integer primary key " +
+										"generated always as identity (start with 1, increment by 1), "	+
+								"	description_short varchart(4000), " +
+								"	description_long varchart(8000) " +
+								")"
+		
+								);
+						
+						stmt1.executeUpdate(); 
+						
+						stmt2 = conn.prepareStatement(
+							"create table inventory (" +
+							"	item_id integer primary key " +
+									"generated always as identity (start with 1, increment by 1), " +
+							"	location_id integer constraint location_id references locations, " +
+							"   item_name varchar(40), " +
 							")"
 						);	
-						stmt1.executeUpdate();
+						stmt2.executeUpdate();
 						
-						System.out.println("item table created");				
+						System.out.println("tables created");				
 											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(stmt1);
+						DBUtil.closeQuietly(stmt2);
+						DBUtil.closeQuietly(stmt3);
 					}
 				}
 			});
@@ -153,24 +172,41 @@ public class DerbyDatabase implements IDatabase{
 			executeTransaction(new Transaction<Boolean>() {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
-					List<ItemDb> itemList;
+					List<Item> inventory;
+					List<Location> locationList; 
+					List<Description> descriptionList; 
 					
 					try {
-						itemList       = InitialData.getItem();				
+						inventory = InitialData.getInventory();
+						locationList = InitialData.getLocations(); 
+						//descriptionList = //InitialData.getDescriptions(); 
+						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
 
-					PreparedStatement insertItem     = null;
+					PreparedStatement insertItem = null;
+					PreparedStatement insertLocation = null; 
 
 					try {
-						// must completely populate Authors table before populating BookAuthors table because of primary keys
-						insertItem = conn.prepareStatement("insert into item (name, locationID, descriptionID) values (?, ?, ?)");
-						for (ItemDb item : itemList) {
+						// AD: populate locations first since location_id is foreign key in inventory table
+						insertLocation = conn.prepareStatement("insert into locations (description_short, description_long) values (?, ?)" );
+						for (Location location : locationList)
+						{
+							insertLocation.setString(1, location.getShortDescription());
+							insertLocation.setString(2, location.getLongDescription());
+							insertLocation.addBatch();
+						}
+						insertLocation.executeBatch(); 
+						
+						
+						
+						insertItem = conn.prepareStatement("insert into inventory (location_id, item_name) values (?, ?)");
+						for (Item item : inventory) 
+						{
 //							// Auto generate itemID
-							insertItem.setString(1, item.getName());
-							insertItem.setInt(2, item.getLocationID());
-							insertItem.setInt(3, item.getDescriptionID());
+							insertItem.setInt(1, item.getLocationID());
+							insertItem.setString(2, item.getName());
 							insertItem.addBatch();
 						}
 						insertItem.executeBatch();
@@ -179,6 +215,7 @@ public class DerbyDatabase implements IDatabase{
 						
 						return true;
 					} finally {
+						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);					
 					}
 				}

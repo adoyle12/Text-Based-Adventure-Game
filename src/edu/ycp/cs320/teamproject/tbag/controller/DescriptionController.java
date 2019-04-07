@@ -11,6 +11,12 @@ public class DescriptionController
 		this.model = model; 
 	}
 	
+	
+	public void descriptionID(int descriptionID)
+	{
+		model.setDescriptionID(descriptionID);
+	}
+	
 	public void shortDescription(String shortDescription)
 	{
 		model.setShort(shortDescription);
