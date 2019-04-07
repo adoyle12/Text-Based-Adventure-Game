@@ -103,6 +103,7 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 		private Connection connect() throws SQLException {
 
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");		
 //			Connection conn = DriverManager.getConnection("jdbc:derby:C:/CS320-2019-LibraryExample-DB/library.db;create=true")
 			
@@ -144,7 +145,7 @@ public class DerbyDatabase implements IDatabase{
 		
 								);
 						
-						stmt1.execute(); 
+						stmt1.executeUpdate(); 
 						
 						stmt2 = conn.prepareStatement(
 							"create table inventory (" +
@@ -154,7 +155,7 @@ public class DerbyDatabase implements IDatabase{
 							"   item_name varchar(40) " +
 							")"
 						);	
-						stmt2.execute();
+						stmt2.executeUpdate();
 						
 						stmt3 = conn.prepareStatement(
 							"create table users (" +
@@ -164,7 +165,7 @@ public class DerbyDatabase implements IDatabase{
 									"	password varchar(20) " +
 									")"
 						);
-						stmt3.execute();
+						stmt3.executeUpdate();
 						
 						System.out.println("tables created");				
 											
