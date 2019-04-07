@@ -76,6 +76,40 @@ public class InitialData
 		
 		
 	}
+	
+	public static List<User> getUsers() throws IOException{
+		List<User> userList = new ArrayList<User>();
+		ReadCSV readUsers = new ReadCSV("users.csv");
+		try 
+		{
+			//auto-generated primary key for location table
+			Integer agentID = 1;
+			while (true) 
+			{
+				List<String> tuple = readUsers.next();
+				if (tuple == null) 
+				{
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				User user = new User(); 
+				User.setAgentID(agentID++);
+				User.setUsername(i.next());
+				User.setPassword(i.next());
+				userList.add(user);
+				
+				
+			}
+			System.out.println("Users loaded from CSV file");
+			return userList;
+		} 
+		finally 
+		{
+			readUsers.close();
+		}
+		
+		
+	}
 
 	
 }
