@@ -27,7 +27,7 @@
 				</tr>
 				<tr>
 					<td class="label">Password:</td>
-					<td><input type="password" name="password" size="12" value="${login.password}" /></td>
+					<td><input type="password" name="password" size="12" value="${login.password1}" /></td>
 				</tr>
 			</table>
 			<br>

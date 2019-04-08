@@ -9,6 +9,16 @@
 		.error {
 			color: red;
 		}
+		.success {
+				color: blue;
+				font-weight: bold;
+			}
+			
+			.success_title {
+				color: darkblue;
+				font-style: italic;
+				font-weight: bold;			
+			}
 		
 		td.label {
 			text-align: center;
@@ -16,17 +26,30 @@
 		</style>
 	</head>
 	<body>
+	<c:if test="${! empty errorMessage}">
+			<div class="error">${errorMessage}</div>
+		</c:if>
+		
+		<c:if test="${! empty successMessage}">
+			<div class="success">Successfully added <span class="success_title">${successMessage}</span> to Library</div>
+		</c:if>
 	<form action="${pageContext.servletContext.contextPath}/register" method="post">
 		<table>
 				<tr>
 					<td class="label">User Name:</td>
-					<td><input type="text" name="username" size="12" value="${login.username}" /></td>
+					<td><input type="text" name="username" size="12" value="${username}" /></td>
 				</tr>
 				<tr>
 					<td class="label">Password:</td>
-					<td><input type="password" name="password" size="12" value="${login.password}" /></td>
+					<td><input type="password" name="password" size="12" value="${password}" /></td>
 				</tr>
 			</table>
+			<input type="Submit" name="submitinsertuser" value="Add new user">
 	</form>
+	<br>
+		<form action="${pageContext.servletContext.contextPath}/login" method="post">
+			<input type="Button" name="submithome" value="Login page"
+			onclick="window.location = 'http://localhost:8081/tbag/login';">
+		</form>	
 	</body>
 </html>

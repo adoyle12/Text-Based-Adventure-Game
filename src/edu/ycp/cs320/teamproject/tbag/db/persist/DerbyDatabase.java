@@ -116,6 +116,96 @@ public class DerbyDatabase implements IDatabase{
 		return null;
 	}
 	
+	//transaction that inserts new user into user's table
+	//if user already exists then cancel the operation
+	
+	@Override
+	public Integer insertUserIntoUsersTable(final String username, final String password) 
+	{
+		return executeTransaction(new Transaction<Integer>() 
+		{
+			@Override
+			public Integer execute(Connection conn) throws SQLException 
+			{
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null; 
+				PreparedStatement stmt3 = null; 	
+				
+				ResultSet resultSet1 = null;	
+				ResultSet resultSet3 = null; 
+				
+				// for saving user ID
+				Integer user_id = -1;
+				
+				// try to retrieve user_ID (if it exists) from DB, for username passed into query
+				try {
+					stmt1 = conn.prepareStatement(
+							"select user_id from users " +
+							"  where username = ? "
+					);
+					stmt1.setString(1, username);
+					
+					
+					// execute the query, get the result
+					resultSet1 = stmt1.executeQuery();
+
+					
+					// if user was found then inform the user 					
+					if (resultSet1.next())
+					{
+						user_id = -1; 
+						System.out.println("Username already taken");	
+						
+					}
+					else
+					{
+						System.out.println("Creating new user");
+				
+						// insert new user
+						if (user_id <= 0) 
+						{
+							// prepare SQL insert statement to add user to users table
+							stmt2 = conn.prepareStatement(
+									"insert into users (username, password) " +
+									"  values(?, ?) "
+							);
+							stmt2.setString(1, username);
+							stmt2.setString(2, password);
+							
+							// execute the update
+							stmt2.executeUpdate();
+							
+							//Get the new user's id
+							stmt3 = conn.prepareStatement(
+									"select user_id from users " +
+											"  where username = ? "
+							);
+							stmt3.setString(1, username);
+							
+							//execute query and get result
+							resultSet3 = stmt3.executeQuery(); 
+							
+							//should only be one value 
+							resultSet3.next(); 
+							user_id = resultSet3.getInt(1); 
+							System.out.println("New user added");						
+						}
+					}
+										
+					
+					return user_id;
+				} 
+				finally 
+				{
+					DBUtil.closeQuietly(resultSet1);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);	
+				}
+			}
+		});
+		
+	}
+	
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
@@ -193,6 +283,7 @@ public class DerbyDatabase implements IDatabase{
 			location.setLongDescription(resultSet.getString(index++));
 			location.setShortDescription(resultSet.getString(index++));
 		}
+	
 		
 		private void loadItem(Item item, ResultSet resultSet, int index) throws SQLException {
 			item.setItemID(resultSet.getInt(index++));
@@ -335,5 +426,40 @@ public class DerbyDatabase implements IDatabase{
 			db.loadInitialData();
 			
 			System.out.println("Library DB successfully initialized!");
+		}
+		
+		@Override
+		public String findPasswordFromUsername(String username) {
+			return executeTransaction(new Transaction<String>() {
+				@Override
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement getPassword = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getPassword = conn.prepareStatement( 
+								" select password from users " +
+								" where users.username = ? " 
+						);
+						getPassword.setString(1, username);
+						
+						resultSet = getPassword.executeQuery();
+						
+						String password = null;
+						
+						if(resultSet.next()) {
+							password = resultSet.getString(1);
+						}
+						
+						System.out.println(password);
+						return password;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getPassword);
+					}
+					
+				}
+			});
 		}
 }
