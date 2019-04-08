@@ -4,7 +4,7 @@ public class User extends Agent
 {	
 	private String username; 
 	private String password;
-	private Integer location_id;
+	//private Integer location_id;
 	private boolean credentials; 
 	
 	
@@ -29,12 +29,12 @@ public class User extends Agent
 		return this.password;
 	}
 	
-	public void setLocationID(int location_id) {
+	/*public void setLocationID(int location_id) {
 		this.location_id = location_id;
 	}
 	
 	public int getLocationID() {
 		return location_id;
-	}
+	}*/
 	
 }

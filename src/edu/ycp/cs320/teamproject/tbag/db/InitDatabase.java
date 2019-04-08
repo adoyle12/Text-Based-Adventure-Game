@@ -3,8 +3,8 @@ package edu.ycp.cs320.teamproject.tbag.db;
 import java.util.Scanner;
 
 import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
+import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.FakeDatabase;
-//import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 
 //________________________________"Borrowed" From CS320_Example_______________________________________
 
@@ -15,7 +15,7 @@ public class InitDatabase {
 		if (which == 0) {
 			DatabaseProvider.setInstance(new FakeDatabase());
 		} else if (which == 1) {
-			//DatabaseProvider.setInstance(new DerbyDatabase());
+			DatabaseProvider.setInstance(new DerbyDatabase());
 		} else {
 			throw new IllegalArgumentException("Invalid choice: " + which);
 		}

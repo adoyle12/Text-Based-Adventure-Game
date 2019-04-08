@@ -32,7 +32,6 @@ public class GameplayServlet extends HttpServlet
 		
 		System.out.println("Gameplay Servlet: doPost");
 		
-		String output = null;
 		String errorMessage = null;
 		/*
 		 * Initiate the controller and model
@@ -48,6 +47,7 @@ public class GameplayServlet extends HttpServlet
 		try 
 		{
 			String input = getStringFromParameter(req.getParameter("input"));
+			String output = getStringFromParameter(req.getParameter("output"));
 
 			// check for errors in the form data before using is in a calculation
 			if (input == null) 
@@ -58,6 +58,7 @@ public class GameplayServlet extends HttpServlet
 			else 
 			{
 				controller.setInput(input.toLowerCase());
+				controller.setOutput(output);
 				System.out.println(model.getInput());
 			}
 		} 
@@ -70,8 +71,10 @@ public class GameplayServlet extends HttpServlet
 		if(model.getInput().contains("move")) {
 			int location_id = controller.getCurrentLocation();
 			controller.setOutput(controller.getLocationDescriptionLong(location_id));
+			//System.out.println(model.getOutput());
 		}
-		output = model.getOutput();
+		
+		req.setAttribute("gameplay", model);
 		
 		// Add parameters as request attributes
 		req.setAttribute("input", model.getInput());

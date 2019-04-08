@@ -92,6 +92,6 @@ public class GameplayController
 	}
 	
 	public int getCurrentLocation() {
-		return db.getLocationID();
+		return db.getItemLocationID("Dagger");
 	}
 }

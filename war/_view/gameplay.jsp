@@ -97,9 +97,9 @@
 		
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
 					<table>
-					<c:forEach items="${story}" var="story">
+					<c:forEach items="${output}" var="output">
 		        		<tr>
-		           			<td class='label'>${Gameplay.output}</td>			            
+		           			<td class='label'>${gameplay.output}</td>			            
 		       			</tr>
 	   				</c:forEach>
 					<tr>

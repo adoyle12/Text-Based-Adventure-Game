@@ -16,6 +16,6 @@ public interface IDatabase{
 	public List<ItemDb>getItemByName(String name);
 	public Integer insertItem(String name, int locationID, int descriptionID);
 	public Location getLocationDescriptionLong(int location_id);
-	public Integer getLocationID();
+	public Integer getItemLocationID(String itemName);
 }
 
