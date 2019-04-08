@@ -17,5 +17,6 @@ public interface IDatabase{
 	public Integer insertItem(String name, int locationID, int descriptionID);
 	public Location getLocationDescriptionLong(int location_id);
 	public Integer getLocationID();
+	public Integer insertUserIntoUsersTable(String username, String password);
 }
 

@@ -14,6 +14,8 @@ import edu.ycp.cs320.teamproject.tbag.model.Register;
 public class RegisterServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
+	private RegisterController controller = null; 
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -30,23 +32,43 @@ public class RegisterServlet extends HttpServlet{
 		
 		System.out.println("register Servlet: doPost");
 		
-		/*
-		 * Initiate the controller and model
-		 * Set the mode
-		 * Must do this each time since they don't persist between POSTs
-		 */
-		RegisterController controller = new RegisterController();
-		Register model = new Register(); 
-		controller.setModel(model);
-
-		// holds the error message text, if there is any
-		String errorMessage = null;
+		String errorMessage = null; 
+		String successMessage = null;
+		String username = null; 
+		String password = null; 
+		
+		//Decode form parameters and dispatch to controller
+		
+		username = req.getParameter("username"); 
+		password = req.getParameter("password"); 
+		
+		if (username == null || username.equals("") || password == null || password.equals(""))
+		{
+			errorMessage = "Please enter username and password"; 
+		}
+		else
+		{
+			controller = new RegisterController(); 
+			
+			//insert the user
+			if (controller.insertUser(username, password))
+			{
+				successMessage = "User successfully added"; 
+			}
+			else
+			{
+				errorMessage = "User already exists"; 
+			}
+		}
+		
 		
 		// Add parameters as request attributes
-		req.setAttribute("register", model);
+		req.setAttribute("username", username);
+		req.setAttribute("password", password);
 		
-		// this adds the errorMessage text and the result to the response
+		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);
+		req.setAttribute("successMessage", successMessage);
 
 		
 		// Forward to view to render the result HTML document

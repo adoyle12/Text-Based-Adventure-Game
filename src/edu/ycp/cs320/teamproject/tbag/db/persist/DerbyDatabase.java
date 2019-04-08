@@ -24,6 +24,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
+import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class DerbyDatabase implements IDatabase{
@@ -115,6 +116,96 @@ public class DerbyDatabase implements IDatabase{
 		return null;
 	}
 	
+	//transaction that inserts new user into user's table
+	//if user already exists then cancel the operation
+	
+	@Override
+	public Integer insertUserIntoUsersTable(final String username, final String password) 
+	{
+		return executeTransaction(new Transaction<Integer>() 
+		{
+			@Override
+			public Integer execute(Connection conn) throws SQLException 
+			{
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null; 
+				PreparedStatement stmt3 = null; 	
+				
+				ResultSet resultSet1 = null;	
+				ResultSet resultSet3 = null; 
+				
+				// for saving user ID
+				Integer user_id = -1;
+				
+				// try to retrieve user_ID (if it exists) from DB, for username passed into query
+				try {
+					stmt1 = conn.prepareStatement(
+							"select user_id from users " +
+							"  where username = ? "
+					);
+					stmt1.setString(1, username);
+					
+					
+					// execute the query, get the result
+					resultSet1 = stmt1.executeQuery();
+
+					
+					// if user was found then inform the user 					
+					if (resultSet1.next())
+					{
+						user_id = -1; 
+						System.out.println("Username already taken");	
+						
+					}
+					else
+					{
+						System.out.println("Creating new user");
+				
+						// insert new user
+						if (user_id <= 0) 
+						{
+							// prepare SQL insert statement to add user to users table
+							stmt2 = conn.prepareStatement(
+									"insert into users (username, password) " +
+									"  values(?, ?) "
+							);
+							stmt2.setString(1, username);
+							stmt2.setString(2, password);
+							
+							// execute the update
+							stmt2.executeUpdate();
+							
+							//Get the new user's id
+							stmt3 = conn.prepareStatement(
+									"select user_id from users " +
+											"  where username = ? "
+							);
+							stmt3.setString(1, username);
+							
+							//execute query and get result
+							resultSet3 = stmt3.executeQuery(); 
+							
+							//should only be one value 
+							resultSet3.next(); 
+							user_id = resultSet3.getInt(1); 
+							System.out.println("New user added");						
+						}
+					}
+										
+					
+					return user_id;
+				} 
+				finally 
+				{
+					DBUtil.closeQuietly(resultSet1);
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);	
+				}
+			}
+		});
+		
+	}
+	
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
@@ -167,8 +258,8 @@ public class DerbyDatabase implements IDatabase{
 	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH 
 		private Connection connect() throws SQLException {
 
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
-			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
+			Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
 			
 			// Set autocommit() to false to allow the execution of
@@ -328,4 +419,6 @@ public class DerbyDatabase implements IDatabase{
 			
 			System.out.println("Library DB successfully initialized!");
 		}
+
+		
 }
