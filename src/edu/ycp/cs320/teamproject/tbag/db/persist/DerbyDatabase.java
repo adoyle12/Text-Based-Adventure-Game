@@ -24,7 +24,6 @@ import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
-import edu.ycp.cs320.booksdb.persist.DerbyDatabase.Transaction;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class DerbyDatabase implements IDatabase{
@@ -420,10 +419,6 @@ public class DerbyDatabase implements IDatabase{
 			
 			System.out.println("Library DB successfully initialized!");
 		}
-<<<<<<< HEAD
-
-		
-=======
 		
 		@Override
 		public String findPasswordFromUsername(String username) {
@@ -459,5 +454,4 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
->>>>>>> branch 'master' of https://github.com/adoyle12/TBAG.git
 }
