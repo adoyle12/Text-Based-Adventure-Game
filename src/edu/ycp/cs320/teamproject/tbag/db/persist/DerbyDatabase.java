@@ -462,4 +462,10 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+
+		@Override
+		public Integer getLocationID() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 }
