@@ -48,7 +48,8 @@
 	</form>
 	<br>
 		<form action="${pageContext.servletContext.contextPath}/login" method="post">
-			<input type="Submit" name="submithome" value="Login page">
+			<input type="Button" name="submithome" value="Login page"
+			onclick="window.location = 'http://localhost:8081/tbag/login';">
 		</form>	
 	</body>
 </html>
