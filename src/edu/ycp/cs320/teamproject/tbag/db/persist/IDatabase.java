@@ -17,6 +17,11 @@ public interface IDatabase{
 	public Integer insertItem(String name, int locationID, int descriptionID);
 	public Location getLocationDescriptionLong(int location_id);
 	public Integer getLocationID();
+<<<<<<< HEAD
 	public Integer insertUserIntoUsersTable(String username, String password);
+=======
+	
+	public String findPasswordFromUsername(String username);
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG.git
 }
 
