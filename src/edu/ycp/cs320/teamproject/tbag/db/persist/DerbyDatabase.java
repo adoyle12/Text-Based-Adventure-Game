@@ -358,13 +358,13 @@ public class DerbyDatabase implements IDatabase{
 					List<Item> inventory;
 					List<Location> locationList;
 					List<User> userList;
-					//List<Description> descriptionList; 
+					List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						userList = InitialData.getUsers();
-						//descriptionList = //InitialData.getDescriptions(); 
+						descriptionList = //InitialData.getDescriptions(); 
 						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -407,7 +407,6 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Tables populated");
 						
-						return true;
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);

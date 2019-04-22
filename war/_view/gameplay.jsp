@@ -11,6 +11,17 @@
 			color: red;
 		}
 		
+		.container p.gamename {
+			position: absolute;
+			top: 0;
+			background: rgb(0, 0, 0);
+			background: rgba(0, 0, 0, 0.5);
+			color: #f1f1f1;
+			width: 100%;
+			text-align: center;
+			font-size: 80px;
+		}
+		
 		body {
 			background-color: black;
 		}
@@ -34,25 +45,16 @@
 			color: #f1f1f1;
 			width: 100%;
 			padding: 60px;
+		}
+		
+		span.text {
+			display: block;
+			padding: 10px;
+			text-align: left;
 		}	
 		
 		p {
 			text-indent: 50px;
-		}
-		
-		.container p.gamename {
-			position: absolute;
-			top: 0;
-			background: rgb(0, 0, 0);
-			background: rgba(0, 0, 0, 0.5);
-			color: #f1f1f1;
-			width: 100%;
-			text-align: center;
-			font-size: 80px;
-		}
-		
-		td.label {
-  			text-align: left;
 		}
 		
 		</style>
@@ -99,12 +101,11 @@
 					<table>
 					<c:forEach items="${output}" var="output">
 		        		<tr>
-		           			<td class='label'>${gameplay.output}</td>			            
+		           			<td><span class='text'>${gameplay.output}</span></td>			            
 		       			</tr>
 	   				</c:forEach>
 					<tr>
-						<td class="label">Input:</td>
-						<td><input type="text" name="input" size="12" value="${gameplay.input}" /></td>
+						<td><span class='text'>Input:<input type="text" name="input" size="12" value="${gameplay.input}" /></span></td>
 					</tr>
 					</table>
 				</form>
