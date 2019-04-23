@@ -260,7 +260,8 @@ public class DerbyDatabase implements IDatabase{
 
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
 			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -363,7 +364,7 @@ public class DerbyDatabase implements IDatabase{
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						userList = InitialData.getUsers();
-						//descriptionList = //InitialData.getDescriptions(); 
+						//descriptionList = //InitialData.getDescriptions();
 						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -406,12 +407,12 @@ public class DerbyDatabase implements IDatabase{
 						
 						System.out.println("Tables populated");
 						
-						return true;
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
 						DBUtil.closeQuietly(insertUser);
 					}
+					return true;
 				}
 			});
 		}

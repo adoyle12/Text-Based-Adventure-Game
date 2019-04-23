@@ -1,6 +1,5 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
-import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 
 public class LocationController 
