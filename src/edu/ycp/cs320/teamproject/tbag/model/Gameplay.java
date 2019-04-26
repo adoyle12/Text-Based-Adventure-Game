@@ -11,13 +11,10 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
  * Only the controller should be allowed to call the set methods
  *
  */
-public class Gameplay 
-{
+public class Gameplay {
 	
-	//Inventory, Description, Input
-
 	private String input; 		//input from the user
-	private String output;
+	private String output;		//initial story and story as a result of user input
 	
 	private ArrayList<String> story = new ArrayList<String>(Arrays.asList("A subtle shift in the current of air flowing through the room stirs your consciousness awake.\r\n" + 
 			"		Another day has passed, enclosed at the center of the labyrinth, which, for centuries, has been the place you call home.\r\n" + 
@@ -37,9 +34,6 @@ public class Gameplay
 			"		fill your mind, the desire to leave the labyrinth, take back what is rightfully yours, and enact revenge on\r\n" + 
 			"		those that tormented you becomes too strong to ignore. A load roar escapes your throat, rattling the huge\r\n" + 
 			"		wooden door at the front of the room. How will you manage to escape the labyrinth? What do you do first?"));
-	
-	//Inventory inventory; 	//game inventory
-	//Description description; 	//Thinking this should be it's own class to have a long & short description
 	
 	public Gameplay() 
 	{

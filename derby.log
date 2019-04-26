@@ -1,18 +1,11 @@
 ----------------------------------------------------------------
-<<<<<<< HEAD
-Sun Apr 07 20:45:03 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0169-fa67-d852-0000039139c8 
-on database directory C:\Users\kille\Desktop\TBAG.db with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
-Loaded from file:/C:/Users/kille/Desktop/Home%20drive/CS320-spring2019/Workplace/CS320_Derby/lib/derby.jar
-=======
-Sun Apr 07 20:15:56 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0169-fa4d-2db6-0000037423a0 
-on database directory C:\Users\Duncan\Desktop\TBAG.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
-Loaded from file:/C:/Users/Duncan/Desktop/Spring2019/CS320/CS320_Derby/CS320_Derby/lib/derby.jar
->>>>>>> branch 'master' of git@github.com:adoyle12/TBAG.git
+Mon Apr 22 12:25:35 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-45dd-f499-00000df3bbe8 
+on database directory C:\Users\jlrhi\Desktop\TBAG.db with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/C:/CS320/CS320_Derby/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_181-b13
-user.dir=C:\Users\kille\git\TBAG
+java.runtime.version=1.8.0_201-b09
+user.dir=C:\Users\jlrhi\git\TBAG-jlrhineFork
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

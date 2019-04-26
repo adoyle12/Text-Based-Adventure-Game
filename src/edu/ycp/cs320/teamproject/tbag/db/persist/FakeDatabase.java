@@ -7,11 +7,10 @@
  */
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ycp.cs320.teamproject.tbag.db.persist.InitialData;
+import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class FakeDatabase implements IDatabase{
@@ -25,11 +24,11 @@ public class FakeDatabase implements IDatabase{
 	}
 
 	public void populateLists() {
-		try {
+		/*try {
 			itemList.addAll(InitialData.getItem());
 		} catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
-		}
+		}*/
 	}
 	
 	public List<ItemDb>getItemByName(String name){
@@ -55,5 +54,35 @@ public class FakeDatabase implements IDatabase{
 		
 		// This should return the itemID
 		return item.getItemID();
+	}
+
+	@Override
+	public Location getLocationDescriptionLong(int location_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getItemLocationID(String itemName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLocationID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertUserIntoUsersTable(String username, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String findPasswordFromUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
