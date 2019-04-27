@@ -37,7 +37,7 @@ public class GameplayController
 	 * @param input the input from user
 	 */
 
-	public void setInput(String input)
+	public void input(String input)
 	{
 		model.setInput(input);
 	}
