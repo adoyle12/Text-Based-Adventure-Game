@@ -43,26 +43,27 @@ public class DerbyDatabase implements IDatabase{
 	private static final int MAX_ATTEMPTS = 10;
 	
 	@Override
-	public Integer getLocationID() {
+	public Integer getItemLocationID(String name) {
 		return executeTransaction(new Transaction<Integer>() {
 			public Integer execute(Connection conn) throws SQLException {
 				PreparedStatement locationID = null;
 				ResultSet resultSet = null;
 			try {
 				locationID = connect().prepareStatement(
-						" select location_id, description_short, description_long " +
-						"  from locations, users " +
-						"  where locations.location_id = users.location_id "
+						" select location_id " +
+						"  from inventory " +
+						"  where item_name = ? "
 				);
+				locationID.setString(1, name);
+				
 				resultSet = locationID.executeQuery();
 				
-				resultSet.next();
+				Item item = new Item();
 				
-				Location location = new Location();
-				
-				loadLocation(location, resultSet, 1);
-				
-				return location.getLocationID();
+				if(resultSet.next()) {
+					item.setLocationID(resultSet.getInt(1));
+				}
+				return item.getLocationID();
 			}
 			finally {
 				DBUtil.closeQuietly(resultSet);
@@ -82,17 +83,17 @@ public class DerbyDatabase implements IDatabase{
 					longDescription = conn.prepareStatement(
 							"select location_id, description_short, description_long " +
 							" from locations " +
-							" where locations.location_id = ? "
+							" where location_id = ? "
 					);
 					longDescription.setInt(1, location_id);
 				
 					resultSet = longDescription.executeQuery();
 				
-					resultSet.next();
-				
 					Location result = new Location();
-				
-					loadLocation(result, resultSet, 1);
+					
+					if(resultSet.next()) {
+						loadLocation(result, resultSet, 1);
+					}
 				
 					return result;
 				} finally {
@@ -259,7 +260,8 @@ public class DerbyDatabase implements IDatabase{
 
 			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
 			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -283,6 +285,12 @@ public class DerbyDatabase implements IDatabase{
 			location.setShortDescription(resultSet.getString(index++));
 		}
 	
+		
+		private void loadItem(Item item, ResultSet resultSet, int index) throws SQLException {
+			item.setItemID(resultSet.getInt(index++));
+			item.setLocationID(resultSet.getInt(index++));
+			item.setName(resultSet.getString(index++));
+		}
 		
 		//  creates the item table
 		public void createTables() 
@@ -312,7 +320,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt2 = conn.prepareStatement(
 							"create table inventory (" +
 							"	item_id integer primary key " +
-									"generated always as identity (start with 1, increment by 1), " +
+							"		generated always as identity (start with 1, increment by 1), " +
 							"	location_id integer constraint location_id references locations, " +
 							"   item_name varchar(40) " +
 							")"
@@ -325,6 +333,7 @@ public class DerbyDatabase implements IDatabase{
 									"		generated always as identity (start with 1, increment by 1), "	+
 									"	username varchar(20), " +
 									"	password varchar(20) " +
+									//"	location_id integer constraint location_id references locations "	+
 									")"
 						);
 						stmt3.executeUpdate();
@@ -355,7 +364,7 @@ public class DerbyDatabase implements IDatabase{
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						userList = InitialData.getUsers();
-						//descriptionList = //InitialData.getDescriptions(); 
+						//descriptionList = //InitialData.getDescriptions();
 						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -396,14 +405,14 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertUser.executeBatch();
 						
-						System.out.println("Item table populated");
+						System.out.println("Tables populated");
 						
-						return true;
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
 						DBUtil.closeQuietly(insertUser);
 					}
+					return true;
 				}
 			});
 		}
@@ -453,5 +462,11 @@ public class DerbyDatabase implements IDatabase{
 					
 				}
 			});
+		}
+
+		@Override
+		public Integer getLocationID() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }

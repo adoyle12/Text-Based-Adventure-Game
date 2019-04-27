@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
+import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
@@ -85,6 +86,7 @@ public class InitialData
 		{
 			//auto-generated primary key for location table
 			Integer agentID = 1;
+			Integer userID = 1;
 			while (true) 
 			{
 				List<String> tuple = readUsers.next();
@@ -97,6 +99,7 @@ public class InitialData
 				user.setAgentID(agentID++);
 				user.setUsername(i.next());
 				user.setPassword(i.next());
+				user.setLocationID(userID++);
 				userList.add(user);
 				
 				
@@ -110,6 +113,11 @@ public class InitialData
 		}
 		
 		
+	}
+
+	public static List<Description> getDescriptions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

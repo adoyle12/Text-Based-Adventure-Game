@@ -1,8 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +30,6 @@ public class GameplayServlet extends HttpServlet
 		
 		System.out.println("Gameplay Servlet: doPost");
 		
-		String output = null;
 		String errorMessage = null;
 		/*
 		 * Initiate the controller and model
@@ -45,33 +42,31 @@ public class GameplayServlet extends HttpServlet
 		
 
 		// decode POSTed form parameters and dispatch to controller
-		try 
-		{
 			String input = getStringFromParameter(req.getParameter("input"));
 
-			// check for errors in the form data before using is in a calculation
+			//check for errors in the form data before using is in a calculation
 			if (input == null) 
 			{
-				errorMessage = "Please select a command";
+				errorMessage = "Please select a command.";
 			}
-			// otherwise, data is good, do the calculation using controller
+			//otherwise, data is good, do the calculation using controller
 			else 
 			{
 				controller.setInput(input.toLowerCase());
-				System.out.println(model.getInput());
+				
+				//do the logic for the input
+				//if user enters valid input
+				if(model.getInput().contains("move")) {
+					int location_id = controller.getCurrentLocation();
+					controller.setOutput(controller.getLocationDescriptionLong(location_id));
+				}
+				//or if user enters invalid input
+				else {
+					errorMessage = "I don't understand you. Try a different command.";
+				}
 			}
-		} 
-		catch (Exception e) 
-		{
-			errorMessage = "No good";		//AD: come back to this
-		}
 		
-		// Do the logic for the input
-		if(model.getInput().contains("move")) {
-			int location_id = controller.getCurrentLocation();
-			controller.setOutput(controller.getLocationDescriptionLong(location_id));
-		}
-		output = model.getOutput();
+		req.setAttribute("gameplay", model);
 		
 		// Add parameters as request attributes
 		req.setAttribute("input", model.getInput());
