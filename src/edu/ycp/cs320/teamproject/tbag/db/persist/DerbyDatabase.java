@@ -22,6 +22,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
+import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
@@ -248,10 +249,14 @@ public class DerbyDatabase implements IDatabase{
 		private Connection connect() throws SQLException {
 
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
-			Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
+
+			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 
+			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
+			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -286,6 +291,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement stmt1 = null;
 					PreparedStatement stmt2 = null;	
 					PreparedStatement stmt3 = null;
+					PreparedStatement stmt4 = null;
 				
 					try {
 						
@@ -300,6 +306,18 @@ public class DerbyDatabase implements IDatabase{
 								);
 						
 						stmt1.executeUpdate(); 
+						
+						stmt4 = conn.prepareStatement(
+							"create table jointLocations (" +
+							" 	fk_location_id integer constraint fk_location_id references locations(location_id),  " +
+							" 	location_north integer, " +
+							" 	location_south integer, " +
+							" 	location_east integer, " +
+							" 	location_west integer " +
+							")"
+								
+						);
+						stmt4.executeUpdate();
 						
 						stmt2 = conn.prepareStatement(
 							"create table inventory (" +
@@ -329,6 +347,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(stmt1);
 						DBUtil.closeQuietly(stmt2);
 						DBUtil.closeQuietly(stmt3);
+						DBUtil.closeQuietly(stmt4);
 					}
 				}
 			});
@@ -342,12 +361,14 @@ public class DerbyDatabase implements IDatabase{
 					List<Item> inventory;
 					List<Location> locationList;
 					List<User> userList;
+					List<JointLocations> jointLocationsList;
 					//List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						userList = InitialData.getUsers();
+						jointLocationsList = InitialData.getJointLocations();
 						//descriptionList = //InitialData.getDescriptions();
 						
 					} catch (IOException e) {
@@ -357,6 +378,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertItem = null;
 					PreparedStatement insertLocation = null; 
 					PreparedStatement insertUser = null;
+					PreparedStatement insertJointLocations = null;
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -369,7 +391,17 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertLocation.executeBatch(); 
 						
-						
+						insertJointLocations = conn.prepareStatement("insert into jointLocations (fk_location_id, location_north, location_south, location_east, location_west) values (?, ?, ?, ?, ?)" );
+						for (JointLocations jointLocations: jointLocationsList)
+						{
+							insertJointLocations.setInt(1, jointLocations.getLocationID());
+							insertJointLocations.setInt(2, jointLocations.getLocationNorth());
+							insertJointLocations.setInt(3, jointLocations.getLocationSouth());
+							insertJointLocations.setInt(4, jointLocations.getLocationEast());
+							insertJointLocations.setInt(5, jointLocations.getLocationWest());
+							insertJointLocations.addBatch();
+						}
+						insertJointLocations.executeBatch();
 						
 						insertItem = conn.prepareStatement("insert into inventory (location_id, item_name) values (?, ?)");
 						for (Item item : inventory) 

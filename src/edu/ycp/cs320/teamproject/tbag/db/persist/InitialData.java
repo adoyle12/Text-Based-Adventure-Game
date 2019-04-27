@@ -7,6 +7,7 @@ import java.util.List;
 
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
+import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
@@ -30,7 +31,7 @@ public class InitialData
 				Iterator<String> i = tuple.iterator();
 				Item item = new Item();
 				
-				item.setItemID(itemID++); 
+				item.setItemID(itemID++);
 				item.setLocationID(Integer.parseInt(i.next()));
 				item.setName(i.next());
 				inventory.add(item);
@@ -59,7 +60,7 @@ public class InitialData
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Location location = new Location(); 
+				Location location = new Location();
 				location.setLocationID(locationID++);
 				location.setShortDescription(i.next());
 				location.setLongDescription(i.next());
@@ -75,6 +76,39 @@ public class InitialData
 			readLocations.close();
 		}
 		
+		
+	}
+	
+	public static List<JointLocations> getJointLocations() throws IOException{
+		List<JointLocations> jointLocationsList = new ArrayList<JointLocations>();
+		ReadCSV readLocations = new ReadCSV("jointLocations.csv");
+		try 
+		{ 
+			while (true)
+			{
+				List<String> tuple = readLocations.next();
+				if (tuple == null)
+				{
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				JointLocations jointLocations = new JointLocations();
+				jointLocations.setLocationID(Integer.parseInt(i.next()));
+				jointLocations.setLocationNorth(Integer.parseInt(i.next()));
+				jointLocations.setLocationSouth(Integer.parseInt(i.next()));
+				jointLocations.setLocationEast(Integer.parseInt(i.next()));
+				jointLocations.setLocationWest(Integer.parseInt(i.next()));
+				
+				jointLocationsList.add(jointLocations);
+				
+			}
+			System.out.println("JointLocations loaded from CSV file");
+			return jointLocationsList;
+		} 
+		finally 
+		{
+			readLocations.close();
+		}
 		
 	}
 	
