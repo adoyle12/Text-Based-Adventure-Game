@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ----------------------------------------------------------------
 <<<<<<< HEAD
 Fri Apr 26 20:02:58 EDT 2019:
@@ -26,3 +27,5 @@ os.version=10.14.4
 >>>>>>> branch 'master' of https://github.com/adoyle12/TBAG.git
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
+=======
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG.git
