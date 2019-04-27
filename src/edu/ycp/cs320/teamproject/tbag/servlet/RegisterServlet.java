@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 //import javax.servlet.http.HttpSession;
 
 import edu.ycp.cs320.teamproject.tbag.controller.RegisterController;
-import edu.ycp.cs320.teamproject.tbag.model.Register;
 
 public class RegisterServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
