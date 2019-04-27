@@ -24,7 +24,6 @@ import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
-import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class DerbyDatabase implements IDatabase{
 	
@@ -104,17 +103,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-	@Override
-	// All of the query commands go here:
-	public List<ItemDb>getItemByName(String name){
-		return new ArrayList<ItemDb>();
-	}
 	
-	@Override
-	public Integer insertItem(String name, int locationID, int descriptionID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	//transaction that inserts new user into user's table
 	//if user already exists then cancel the operation
@@ -258,10 +247,12 @@ public class DerbyDatabase implements IDatabase{
 	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH 
 		private Connection connect() throws SQLException {
 
+
 			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
 			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
+
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
@@ -271,10 +262,9 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		// retrieves Item information from query result set
-		private void loadItem(ItemDb item, ResultSet resultSet, int index) throws SQLException {
+		private void loadItem(Item item, ResultSet resultSet, int index) throws SQLException {
 			item.setName(resultSet.getString(index++));
 			item.setLocationID(resultSet.getInt(index++));
-			item.setDescriptionID(resultSet.getInt(index++));
 			item.setItemID(resultSet.getInt(index++));
 		}
 		
@@ -286,11 +276,6 @@ public class DerbyDatabase implements IDatabase{
 		}
 	
 		
-		private void loadItem(Item item, ResultSet resultSet, int index) throws SQLException {
-			item.setItemID(resultSet.getInt(index++));
-			item.setLocationID(resultSet.getInt(index++));
-			item.setName(resultSet.getString(index++));
-		}
 		
 		//  creates the item table
 		public void createTables() 
@@ -466,6 +451,13 @@ public class DerbyDatabase implements IDatabase{
 
 		@Override
 		public Integer getLocationID() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public Integer insertItem(String name, int locationID, int descriptionID) {
 			// TODO Auto-generated method stub
 			return null;
 		}

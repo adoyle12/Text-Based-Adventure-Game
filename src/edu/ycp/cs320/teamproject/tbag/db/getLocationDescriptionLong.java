@@ -10,7 +10,6 @@ package edu.ycp.cs320.teamproject.tbag.db;
 import java.util.List;
 import java.util.Scanner;
 
-import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
 import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
