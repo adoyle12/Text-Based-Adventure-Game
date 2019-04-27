@@ -56,9 +56,20 @@ public class GameplayServlet extends HttpServlet
 				
 				//do the logic for the input
 				//if user enters valid input
-				if(model.getInput().contains("move")) {
-					int location_id = controller.getCurrentLocation();
-					controller.setOutput(controller.getLocationDescriptionLong(location_id));
+				if(model.getInput().contains("move") || model.getInput().contains("east")) {
+					// Check if movement is valid
+					
+					// Display that you have moved
+					
+					//
+					
+					
+					//int location_id = controller.getCurrentLocation();
+					//controller.setOutput(controller.getLocationDescriptionLong(location_id));
+				}
+				if(model.getInput().contains("move") || model.getInput().contains("west")) {
+					//int location_id = controller.getCurrentLocation();
+					//controller.setOutput(controller.getLocationDescriptionLong(location_id));
 				}
 				//or if user enters invalid input
 				else {
