@@ -132,7 +132,7 @@ public class InitialData
 				user.setAgentID(agentID++);
 				user.setUsername(i.next());
 				user.setPassword(i.next());
-				user.setLocationID(userID++);
+				user.setLocationID(userID);
 				userList.add(user);
 				
 				

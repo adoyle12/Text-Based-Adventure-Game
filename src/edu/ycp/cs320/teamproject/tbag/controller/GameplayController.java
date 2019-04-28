@@ -44,4 +44,12 @@ public class GameplayController
 	public void displayMap() {
 		model.displayMap();
 	}
+	
+	public int moveTo(String username, int direction) {
+		int currentLocation = db.getUserLocation(username);
+		int nextLocation = model.moveTo(currentLocation, direction);
+		db.setUserLocation(nextLocation);
+		
+		return nextLocation;
+	}
 }
