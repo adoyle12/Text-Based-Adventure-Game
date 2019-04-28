@@ -55,6 +55,10 @@ public class GameplayServlet extends HttpServlet
 			{
 				controller.input(input.toLowerCase());
 			}
+			
+		if(input.contains("move") && input.contains("east")) {
+			controller.displayMap();
+		}
 		
 		req.setAttribute("gameplay", model);
 		

@@ -40,4 +40,8 @@ public class GameplayController
 		output = db.getInputs();
 		model.setOutput(output);
 	}
+	
+	public void displayMap() {
+		model.displayMap();
+	}
 }

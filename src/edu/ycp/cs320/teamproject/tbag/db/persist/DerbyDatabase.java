@@ -1,5 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -241,12 +242,13 @@ public class DerbyDatabase implements IDatabase{
 	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH 
 		private Connection connect() throws SQLException {
 
-
-			Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
-			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
-			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
-
+			 File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
+			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
+			 //Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
+			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
+			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
+			 //System.out.println(folderTxt.toString());
+			 Connection conn = DriverManager.getConnection(folderTxt.toString());
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
