@@ -304,6 +304,7 @@ public class DerbyDatabase implements IDatabase{
 			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 			File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
 			 //System.out.println(folderTxt.toString());
+			
 			 Connection conn = DriverManager.getConnection(folderTxt.toString());
 			
 			// Set autocommit() to false to allow the execution of
