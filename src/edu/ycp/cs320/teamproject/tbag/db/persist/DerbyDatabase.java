@@ -294,32 +294,25 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 	
-	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH 
 		private Connection connect() throws SQLException {
 
-			 
-			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
-			 //Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
-			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
-			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
-<<<<<<< HEAD
 			String resourcePath = null; 
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
 				resourcePath = "jdbc:derby:C:/TBAG.db;create=true";
-			} else if(operatingSystem.equals("Mac")) {
-				resourcePath = "jdbc:derby:/Users/TBAG.db;create=true";
+			} else if(operatingSystem.equals("Mac OS X")) {
+				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true";
 			} else {
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}
 			 Connection conn = DriverManager.getConnection(resourcePath);
-=======
-			File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
+
+			//File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
 			 //System.out.println(folderTxt.toString());
 			
-			 Connection conn = DriverManager.getConnection(folderTxt.toString());
->>>>>>> branch 'master' of https://github.com/adoyle12/TBAG
+			 //Connection conn = DriverManager.getConnection(folderTxt.toString());
+
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.

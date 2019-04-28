@@ -48,18 +48,13 @@ public class SQLDemo {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");
-			//conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");	
-			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
-			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
-			
 			String resourcePath = null; 
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
 				resourcePath = "jdbc:derby:C:/TBAG.db;create=true";
-			} else if(operatingSystem.equals("Mac")) {
-				resourcePath = "jdbc:derby:/Users/TBAG.db;create=true";
+			} else if(operatingSystem.equals("Mac OS X")) {
+				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true";
 			} else {
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}
