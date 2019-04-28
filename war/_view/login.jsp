@@ -129,7 +129,7 @@
 					</tr>
 					<tr>
 						<td class="label">Password:</td>
-						<td><input type="password" name="password" size="12" value="${login.password1}" /></td>
+						<td><input type="password" name="password" size="12" value="${login.JSPPassword}" /></td>
 					</tr>
 				</table>
 				<br>
