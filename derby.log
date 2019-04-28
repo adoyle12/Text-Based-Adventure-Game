@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat Apr 27 13:24:08 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-5fd3-5deb-000006556a68 
+on database directory /Users/adoyle/Desktop/TBAG.db with class loader sun.misc.Launcher$AppClassLoader@36baf30c 
+Loaded from file:/Users/adoyle/Desktop/School/YorkCollege/Spring2019/SoftwareEngineering/Archives/CS320_Derby/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_201-b09
+user.dir=/Users/adoyle/git/TBAG
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.4
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

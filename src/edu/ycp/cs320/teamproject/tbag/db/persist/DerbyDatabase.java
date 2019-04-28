@@ -43,6 +43,61 @@ public class DerbyDatabase implements IDatabase{
 	private static final int MAX_ATTEMPTS = 10;
 	
 	@Override
+	public Integer findUserIDFromUsername(final String username) 
+	{
+		return executeTransaction(new Transaction<Integer>() 
+		{
+			@Override
+			public Integer execute(Connection conn) throws SQLException 
+			{
+				PreparedStatement stmt1 = null;
+				
+				ResultSet resultSet1 = null; 
+				
+				// for saving user ID
+				Integer user_id = null;
+				
+				// try to retrieve user_ID (if it exists) from DB, for username passed into query
+				try 
+				{
+					stmt1 = conn.prepareStatement(
+							"select user_id from users " +
+							"  where username = ? "
+					);
+					stmt1.setString(1, username);
+					
+					
+					// execute the query, get the result
+					resultSet1 = stmt1.executeQuery();
+
+					
+					// if user was found then update user_ID					
+					if (resultSet1.next())
+					{
+						user_id = resultSet1.getInt(1);
+						System.out.println("User found");	
+						
+					}
+					else
+					{
+						System.out.println("User does not exist, try registering user");
+						user_id = 0; 
+					}
+					
+					return user_id; 
+				
+				}
+				finally
+				{
+					DBUtil.closeQuietly(resultSet1);
+					DBUtil.closeQuietly(stmt1);
+				}
+			}
+				
+		});
+	}
+	
+	@Override
 	public Integer getItemLocationID(String name) {
 		return executeTransaction(new Transaction<Integer>() {
 			public Integer execute(Connection conn) throws SQLException {
@@ -249,7 +304,7 @@ public class DerbyDatabase implements IDatabase{
 		private Connection connect() throws SQLException {
 
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/Duncan/Desktop/TBAG.db;create=true");	
-			//Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
+			Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");		
 			//Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
 
@@ -488,4 +543,6 @@ public class DerbyDatabase implements IDatabase{
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		
 }
