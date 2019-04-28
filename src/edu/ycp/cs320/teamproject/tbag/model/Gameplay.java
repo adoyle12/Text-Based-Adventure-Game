@@ -35,9 +35,6 @@ public class Gameplay {
 	
 	public void setOutput(ArrayList<String> output2) {
 		this.output = output2;
-		for(int i=0; i<output2.size(); i++) {
-			System.out.println(output2.get(i));
-		}
 	}
 	
 	public void displayMap() {
