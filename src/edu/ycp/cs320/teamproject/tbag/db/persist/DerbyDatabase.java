@@ -595,11 +595,12 @@ public class DerbyDatabase implements IDatabase{
 						
 						
 						Boolean found = false;
+						String command = new String();
 						
 						while(resultSet.next()) {
 							found = true;
 							
-							String command = new String();
+							
 							command = resultSet.getString(2);
 							
 							results.add(command);
