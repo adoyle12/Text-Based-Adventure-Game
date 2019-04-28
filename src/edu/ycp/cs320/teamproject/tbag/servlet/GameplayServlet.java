@@ -54,6 +54,7 @@ public class GameplayServlet extends HttpServlet
 			else 
 			{
 				controller.input(input.toLowerCase());
+				controller.output();
 			}
 			
 		if(input.contains("move")) {

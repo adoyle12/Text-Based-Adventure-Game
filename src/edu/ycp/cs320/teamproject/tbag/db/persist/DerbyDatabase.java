@@ -302,6 +302,7 @@ public class DerbyDatabase implements IDatabase{
 			 //Connection conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");
 			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			 //Connection conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
+<<<<<<< HEAD
 			String resourcePath = null; 
 			String operatingSystem = System.getProperty("os.name");
 			
@@ -313,6 +314,12 @@ public class DerbyDatabase implements IDatabase{
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}
 			 Connection conn = DriverManager.getConnection(resourcePath);
+=======
+			File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
+			 //System.out.println(folderTxt.toString());
+			
+			 Connection conn = DriverManager.getConnection(folderTxt.toString());
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG
 			
 			// Set autocommit() to false to allow the execution of
 			// multiple queries/statements as part of the same transaction.
