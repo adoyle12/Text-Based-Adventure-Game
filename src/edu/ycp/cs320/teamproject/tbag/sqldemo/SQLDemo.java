@@ -1,6 +1,7 @@
 package edu.ycp.cs320.teamproject.tbag.sqldemo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,6 +52,9 @@ public class SQLDemo {
 			//conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");	
 			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
+			File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
+			//System.out.println(folderTxt.toString());
+			conn = DriverManager.getConnection(folderTxt.toString());
 
 			conn.setAutoCommit(true);
 	

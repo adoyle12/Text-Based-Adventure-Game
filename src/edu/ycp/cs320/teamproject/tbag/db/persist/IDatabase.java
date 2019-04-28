@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 
 public interface IDatabase{
-
+	
+	public Integer findUserIDFromUsername(String username); 
 	public Integer insertItem(String name, int locationID, int descriptionID);
 	public Location getLocationDescriptionLong(int location_id);
 	public Integer getItemLocationID(String itemName);
