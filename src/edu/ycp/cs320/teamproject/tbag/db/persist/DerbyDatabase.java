@@ -645,8 +645,9 @@ public class DerbyDatabase implements IDatabase{
 						
 						Integer currentLocation = null;
 						
-						if(resultSet.next() == true) {
-							currentLocation = resultSet.getInt(3);
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+							//System.out.println(currentLocation);
 						}
 						
 						if(currentLocation == null) {
@@ -665,8 +666,52 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public void setUserLocation(int location) {
-			// TODO Auto-generated method stub
-			
+		public Integer setUserLocation(int location, String username) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement setUserLocation = null;
+					PreparedStatement returnCurrentLocation = null;
+					ResultSet resultSet = null;
+					
+					try {
+						setUserLocation = conn.prepareStatement( 
+								" update users " +
+								" 	set user_location_id = ? " +
+								"	where users.username = ? "
+							
+						);
+						setUserLocation.setInt(1, location);
+						setUserLocation.setString(2, username);
+						
+						setUserLocation.execute();
+						
+						returnCurrentLocation = conn.prepareStatement( 
+								" select users.user_location_id " +
+								" 	from users " +
+								"	where users.username = ? "
+							
+						);
+						returnCurrentLocation.setString(1, username);
+						
+						resultSet = returnCurrentLocation.executeQuery();
+						
+						Integer currentLocation = null;
+						
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+						} if(currentLocation == null) {
+							System.out.println("No Location Found? Where are you?");
+						}
+						return currentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(setUserLocation);
+						DBUtil.closeQuietly(returnCurrentLocation);
+					}
+					
+				}
+			});
 		}
 }

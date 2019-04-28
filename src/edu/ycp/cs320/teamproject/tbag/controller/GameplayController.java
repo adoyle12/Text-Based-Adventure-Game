@@ -48,8 +48,9 @@ public class GameplayController
 	public int moveTo(String username, int direction) {
 		int currentLocation = db.getUserLocation(username);
 		int nextLocation = model.moveTo(currentLocation, direction);
-		db.setUserLocation(nextLocation);
+		int moveLocation = db.setUserLocation(nextLocation, username);
 		
+		System.out.println("Moved to room #" + moveLocation);
 		return nextLocation;
 	}
 }

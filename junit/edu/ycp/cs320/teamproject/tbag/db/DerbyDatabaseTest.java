@@ -85,9 +85,21 @@ public class DerbyDatabaseTest
 			//ID's should match
 			assertEquals(user_id, matchingID, 0.0001); 
 		}
+	}
+	@Test
+	public void testUserLocation() {
+		System.out.println("Testing Setting and Getting User Location");
 		
+		String username = "vince";
+		Integer locationID = -1;
+		Integer afterLocationID = -2;
 		
+		locationID = db.setUserLocation(7, username);
+		//System.out.println(locationID);
 		
+		afterLocationID = db.getUserLocation(username);
+		
+		assertEquals(locationID, afterLocationID);
 	}
 
 }
