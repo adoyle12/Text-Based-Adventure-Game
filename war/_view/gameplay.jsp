@@ -80,11 +80,9 @@
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
 					<table>
-						<c:forEach items="${output}" var="output">
-		        			<tr>
-		           				<td><span class='text'>${gameplay.output}</span></td>			            
-		       				</tr>
-	   					</c:forEach>
+	        			<tr>
+	           				<td><span class='text'>${gameplay.output}</span></td>	            
+	       				</tr>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" value="${gameplay.input}" /></span></td>
 						</tr>

@@ -1,6 +1,8 @@
 package edu.ycp.cs320.teamproject.tbag.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +56,7 @@ public class GameplayServlet extends HttpServlet
 			else 
 			{
 				controller.input(input.toLowerCase());
+				controller.output();
 			}
 		
 		req.setAttribute("gameplay", model);

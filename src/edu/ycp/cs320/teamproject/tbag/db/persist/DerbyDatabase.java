@@ -13,7 +13,6 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.InitialData;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DBUtil;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
-import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
