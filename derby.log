@@ -1,5 +1,6 @@
 ----------------------------------------------------------------
 <<<<<<< HEAD
+<<<<<<< HEAD
 Sun Apr 28 16:54:05 EDT 2019:
 Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-65b9-eea4-000006a17cb0 
 on database directory C:\TBAG.db with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
@@ -10,13 +11,27 @@ Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 
 on database directory /Users/adoyle/Desktop/TBAG.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
 Loaded from file:/Users/adoyle/Desktop/School/YorkCollege/Spring2019/SoftwareEngineering/Archives/CS320_Derby/lib/derby.jar
 >>>>>>> branch 'master' of https://github.com/adoyle12/TBAG
+=======
+Sun Apr 28 17:20:10 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-65d1-d019-000006956e60 
+on database directory /Users/adoyle/Desktop/TBAG.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
+Loaded from file:/Users/adoyle/Desktop/School/YorkCollege/Spring2019/SoftwareEngineering/Archives/CS320_Derby/lib/derby.jar
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG
 java.vendor=Oracle Corporation
+<<<<<<< HEAD
 <<<<<<< HEAD
 java.runtime.version=1.8.0_181-b13
 user.dir=C:\Users\kille\git\TBAG
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
+=======
+java.runtime.version=1.8.0_201-b09
+user.dir=/Users/adoyle/git/TBAG
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.14.4
+>>>>>>> branch 'master' of https://github.com/adoyle12/TBAG
 =======
 java.runtime.version=1.8.0_201-b09
 user.dir=/Users/adoyle/git/TBAG
