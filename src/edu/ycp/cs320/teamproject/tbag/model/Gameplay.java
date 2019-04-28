@@ -40,11 +40,17 @@ public class Gameplay {
 		}
 	}
 	
+	// Display where each mapTile can move to
 	public void displayMap() {
 		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 4; j++) {
-				System.out.println(jointLocationID[i][j]);
+				System.out.println(jointLocationID[i][j] + ",");
 			}
 		}
+	}
+	
+	// Get the location_id that is direction(north="0", south="1", east="2", west="3") of the current location
+	public int moveTo(int location, int direction) {
+		return this.jointLocationID[location][direction];
 	}
 }

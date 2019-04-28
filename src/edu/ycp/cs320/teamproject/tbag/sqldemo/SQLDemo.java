@@ -52,9 +52,18 @@ public class SQLDemo {
 			//conn = DriverManager.getConnection("jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true");	
 			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/kille/Desktop/TBAG.db;create=true");
 			//conn = DriverManager.getConnection("jdbc:derby:C:/Users/jlrhi/Desktop/TBAG.db;create=true");
-			File folderTxt = new File("jdbc:derby:" + File.separator + "TBAG.db;create=true");
-			//System.out.println(folderTxt.toString());
-			conn = DriverManager.getConnection(folderTxt.toString());
+			
+			String resourcePath = null; 
+			String operatingSystem = System.getProperty("os.name");
+			
+			if(operatingSystem.equals("Windows 10")) {
+				resourcePath = "jdbc:derby:C:/TBAG.db;create=true";
+			} else if(operatingSystem.equals("Mac")) {
+				resourcePath = "jdbc:derby:/Users/TBAG.db;create=true";
+			} else {
+				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
+			}
+			 conn = DriverManager.getConnection(resourcePath);
 
 			conn.setAutoCommit(true);
 	
