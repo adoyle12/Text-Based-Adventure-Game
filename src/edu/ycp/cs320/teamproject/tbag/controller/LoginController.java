@@ -17,8 +17,8 @@ public class LoginController {
 	public void credentials(String username, String password) {
 		String dbPassword = db.findPasswordFromUsername(username);
 		String jspPassword = password;
-		model.setPassword1(jspPassword);
-		model.setPassword2(dbPassword);
+		model.setJSPPassword(jspPassword);
+		model.setDBPassword(dbPassword);
 		model.setCredentials();
 	}
 		

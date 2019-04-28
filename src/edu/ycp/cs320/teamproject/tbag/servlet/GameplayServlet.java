@@ -31,6 +31,7 @@ public class GameplayServlet extends HttpServlet
 		System.out.println("Gameplay Servlet: doPost");
 		
 		String errorMessage = null;
+		
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
@@ -53,28 +54,6 @@ public class GameplayServlet extends HttpServlet
 			else 
 			{
 				controller.input(input.toLowerCase());
-				
-				//do the logic for the input
-				//if user enters valid input
-				if(model.getInput().contains("move") || model.getInput().contains("east")) {
-					// Check if movement is valid
-					
-					// Display that you have moved
-					
-					//
-					
-					
-					//int location_id = controller.getCurrentLocation();
-					//controller.setOutput(controller.getLocationDescriptionLong(location_id));
-				}
-				if(model.getInput().contains("move") || model.getInput().contains("west")) {
-					//int location_id = controller.getCurrentLocation();
-					//controller.setOutput(controller.getLocationDescriptionLong(location_id));
-				}
-				//or if user enters invalid input
-				else {
-					errorMessage = "I don't understand you. Try a different command.";
-				}
 			}
 		
 		req.setAttribute("gameplay", model);

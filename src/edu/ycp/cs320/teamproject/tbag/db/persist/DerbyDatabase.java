@@ -1,10 +1,3 @@
-/**
- * 
- */
-/**
- * @author Vincent Maresca
- *
- */
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
 import java.io.IOException;
@@ -20,7 +13,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.InitialData;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DBUtil;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
-import edu.ycp.cs320.teamproject.tbag.model.Description;
+import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
@@ -276,23 +269,26 @@ public class DerbyDatabase implements IDatabase{
 			location.setShortDescription(resultSet.getString(index++));
 		}
 	
+//		private void loadCommand(Gameplay gameplay, ResultSet resultSet, int index) throws SQLException{
+//			gameplay.setInput(resultSet.getString(index++));
+//		}
 		
-		
-		//  creates the item table
+		//  creates the tables
 		public void createTables() 
 		{
 			executeTransaction(new Transaction<Boolean>() 
 			{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt1 = null;
-					PreparedStatement stmt2 = null;	
-					PreparedStatement stmt3 = null;
-					PreparedStatement stmt4 = null;
+					PreparedStatement createLocationsStmt = null;
+					PreparedStatement createInventoryStmt = null;	
+					PreparedStatement createUsersStmt = null;
+					PreparedStatement createJointLocationsStmt = null;
+					PreparedStatement createInputsStmt = null;
 				
 					try {
 						
-						stmt1 = conn.prepareStatement(
+						createLocationsStmt = conn.prepareStatement(
 								"create table locations (" +
 								"	location_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), "	+
@@ -302,21 +298,9 @@ public class DerbyDatabase implements IDatabase{
 		
 								);
 						
-						stmt1.executeUpdate(); 
+						createLocationsStmt.executeUpdate(); 
 						
-						stmt4 = conn.prepareStatement(
-							"create table jointLocations (" +
-							" 	fk_location_id integer constraint fk_location_id references locations(location_id),  " +
-							" 	location_north integer, " +
-							" 	location_south integer, " +
-							" 	location_east integer, " +
-							" 	location_west integer " +
-							")"
-								
-						);
-						stmt4.executeUpdate();
-						
-						stmt2 = conn.prepareStatement(
+						createInventoryStmt = conn.prepareStatement(
 							"create table inventory (" +
 							"	item_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +
@@ -324,9 +308,9 @@ public class DerbyDatabase implements IDatabase{
 							"   item_name varchar(40) " +
 							")"
 						);	
-						stmt2.executeUpdate();
+						createInventoryStmt.executeUpdate();
 						
-						stmt3 = conn.prepareStatement(
+						createUsersStmt = conn.prepareStatement(
 							"create table users (" +
 									"	user_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), "	+
@@ -335,16 +319,38 @@ public class DerbyDatabase implements IDatabase{
 									//"	location_id integer constraint location_id references locations "	+
 									")"
 						);
-						stmt3.executeUpdate();
+						createUsersStmt.executeUpdate();
+						
+						createJointLocationsStmt = conn.prepareStatement(
+								"create table jointLocations (" +
+								" 	fk_location_id integer constraint fk_location_id references locations(location_id),  " +
+								" 	location_north integer, " +
+								" 	location_south integer, " +
+								" 	location_east integer, " +
+								" 	location_west integer " +
+								")"
+									
+							);
+						createJointLocationsStmt.executeUpdate();
+						
+						createInputsStmt = conn.prepareStatement(
+								"   create table commands (" +
+								"	command_id integer primary key " +
+								" 		generated always as identity (start with 1, increment by 1),  " +
+								" 	command varchar(30) " +
+								")"
+						);
+						createInputsStmt.executeUpdate();
 						
 						System.out.println("tables created");				
 											
 						return true;
 					} finally {
-						DBUtil.closeQuietly(stmt1);
-						DBUtil.closeQuietly(stmt2);
-						DBUtil.closeQuietly(stmt3);
-						DBUtil.closeQuietly(stmt4);
+						DBUtil.closeQuietly(createLocationsStmt);
+						DBUtil.closeQuietly(createInventoryStmt);
+						DBUtil.closeQuietly(createUsersStmt);
+						DBUtil.closeQuietly(createJointLocationsStmt);
+						DBUtil.closeQuietly(createInputsStmt);
 					}
 				}
 			});
@@ -465,7 +471,6 @@ public class DerbyDatabase implements IDatabase{
 							password = resultSet.getString(1);
 						}
 						
-						System.out.println(password);
 						return password;
 					}
 					finally {
@@ -488,5 +493,75 @@ public class DerbyDatabase implements IDatabase{
 		public Integer insertItem(String name, int locationID, int descriptionID) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public Boolean addUserInput(String input) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement addInput = null;
+					
+					try {
+						addInput = conn.prepareStatement( 
+								"insert into commands (command) " +
+								"  values(?) " 
+						);
+						addInput.setString(1, input);
+						
+						addInput.executeUpdate();
+					}
+					finally {
+						DBUtil.closeQuietly(addInput);
+					}
+					return null;
+					
+				}
+			});
+			
+		}
+
+		@Override
+		public ArrayList<String> getInputs() {
+			return executeTransaction(new Transaction<ArrayList<String>>() {
+				@Override
+				public ArrayList<String> execute(Connection conn) throws SQLException {
+					PreparedStatement getInputs = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getInputs = conn.prepareStatement( 
+								" select * from commands "
+						);
+						
+						ArrayList<String> results = new ArrayList<String>();
+						
+						resultSet = getInputs.executeQuery();
+						
+						
+						Boolean found = false;
+						
+						while(resultSet.next()) {
+							found = true;
+							
+							String command = new String();
+							command = resultSet.getString(2);
+							
+							results.add(command);
+						}
+						
+						if(!found) {
+							System.out.println("No commands found!");
+						}
+						
+						return results;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getInputs);
+					}
+					
+				}
+			});
 		}
 }
