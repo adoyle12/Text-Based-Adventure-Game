@@ -35,6 +35,11 @@ public class GameplayController
 		{
 			errorMessage = "Please select a command.";
 		}
+		else 
+		{
+			input(input);
+			output();
+		}
 		//otherwise, data is good, do the calculation using controller
 				
 		// _________Movement_____________
@@ -54,10 +59,6 @@ public class GameplayController
 		} if (input.contains("map")) {
 			displayMap();
 		}
-		// Store the input last so it shows up below the output
-		input(input);
-		output();
-		
 		return errorMessage;
 	}
 	
