@@ -2,6 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<%@page import ="java.util.ArrayList" %>
+
+<% ArrayList<String> inputs = (ArrayList<String>)request.getAttribute("output"); %>
+
 <html>
 	<head>
 		<title>Game Play</title>
@@ -80,9 +84,11 @@
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
 					<table>
-		        			<tr>
-		           				<td><span class='text'>${gameplay.output}</span></td>			            
-		       				</tr>
+						<c:forEach items="${gameplay.output}" var="string">
+							<tr>
+								<td>${string}</td>
+							</tr>
+						</c:forEach>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" value="${gameplay.input}" /></span></td>
 						</tr>

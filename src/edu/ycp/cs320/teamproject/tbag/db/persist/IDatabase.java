@@ -1,6 +1,8 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
 import java.util.ArrayList;
+//import java.util.ArrayList;
+import java.util.List;
 
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 
