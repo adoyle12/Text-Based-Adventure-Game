@@ -578,6 +578,32 @@ public class DerbyDatabase implements IDatabase{
 			});
 			
 		}
+		
+		@Override
+		public Boolean addUserOutput(String output) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement addOutput = null;
+					
+					try {
+						addOutput = conn.prepareStatement( 
+								"insert into commands (command) " +
+								"  values(?) " 
+						);
+						addOutput.setString(1, output);
+						
+						addOutput.executeUpdate();
+					}
+					finally {
+						DBUtil.closeQuietly(addOutput);
+					}
+					return null;
+					
+				}
+			});
+			
+		}
 
 		@Override
 		public ArrayList<String> getInputs() {

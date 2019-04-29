@@ -28,17 +28,14 @@ public class GameplayController
 	
 	public String gameLogic(String input, String username) {
 		String errorMessage = null;
+		input = input.toLowerCase();
+		
 		//check for errors in the form data before using is in a calculation
 		if (input == null) 
 		{
 			errorMessage = "Please select a command.";
 		}
 		//otherwise, data is good, do the calculation using controller
-		else 
-		{
-			input(input.toLowerCase());
-			output();
-		}
 				
 		// _________Movement_____________
 		if(input.contains("move")) {
@@ -57,6 +54,9 @@ public class GameplayController
 		} if (input.contains("map")) {
 			displayMap();
 		}
+		// Store the input last so it shows up below the output
+		input(input);
+		output();
 		
 		return errorMessage;
 	}
@@ -84,9 +84,26 @@ public class GameplayController
 	public int moveTo(String username, int direction) {
 		int currentLocation = db.getUserLocation(username);
 		int nextLocation = model.moveTo(currentLocation, direction);
-		int moveLocation = db.setUserLocation(nextLocation, username);
-		
-		System.out.println("Moved to room #" + moveLocation);
+		if(currentLocation == nextLocation) {
+			System.out.println("Can't move that way");
+			
+			
+			ArrayList<String> output = new ArrayList<String>();
+			output.add("Can't move that way");
+			db.addUserOutput("Can't move that way");
+			model.addOutput(output);
+			
+		} else {
+			int moveLocation = db.setUserLocation(nextLocation, username);
+			System.out.println("Moved to room #" + moveLocation);
+			db.addUserOutput("Moved to room #" + moveLocation);
+			
+			
+			ArrayList<String> output = new ArrayList<String>();
+			output.add("Moved to room #" + moveLocation);
+			model.addOutput(output);
+			
+		}
 		return nextLocation;
 	}
 }

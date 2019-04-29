@@ -21,5 +21,6 @@ public interface IDatabase{
 	public Integer pickupItem(String itemName, String username);
 	public Integer dropItem(String itemName, String username);
 	public Integer setItemLocation(String itemName, String username);
+	public Boolean addUserOutput(String output);
 }
 

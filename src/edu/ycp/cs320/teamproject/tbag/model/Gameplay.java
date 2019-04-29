@@ -17,7 +17,7 @@ public class Gameplay {
 	
 	public Gameplay() 
 	{
-		
+		output = new ArrayList<String>();
 	}
 	
 	public void setInput (String input)
@@ -36,6 +36,10 @@ public class Gameplay {
 	
 	public void setOutput(ArrayList<String> output2) {
 		this.output = output2;
+	}
+	
+	public void addOutput(ArrayList<String> output2) {
+		this.output.addAll(output2);
 	}
 	
 	// Display where each mapTile can move to
