@@ -13,6 +13,19 @@
 			.error {
 				color: red;
 			}
+			body {
+				background-color: black;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			.container {
+				position: relative;
+				margin: 0 auto;
+			}
+			td.label {
+				text-align: center;
+			}
 			#bg {
 				position: fixed;
 				top: -50%;
@@ -30,23 +43,18 @@
 				min-width: 50%;
 				min-height: 50%;
 			}
-			.container p.gamename {
+			.title {
+				position: fixed;
 				color: #f1f1f1;
 				width: 100%;
 				text-align: center;
 				line-height: 0.1;
+				text-shadow: 2px 1px darkgreen;
+			}
+			p.gamename {
+				color: #f1f1f1;
 				font-size: 80px;
 				text-shadow: 3px 2px green;
-			}
-			body {
-				background-color: black;
-			}
-			* {
-				box-sizing: border-box;
-			}
-			.container {
-				position: relative;
-				margin: 0 auto;
 			}
 			.container .content {
 				position: fixed;
@@ -62,8 +70,17 @@
 				padding: 10px;
 				text-align: left;
 			}
-			p {
-				text-indent: 50px;
+			input[type=text] {
+				margin: auto;
+			}		
+			input[type=text]:focus {
+				background-color: lightgreen;
+			}	
+			input[type=password] {
+				margin: auto;
+			}	
+			input[type=password]:focus {
+				background-color: lightgreen;
 			}
 		</style>
 	</head>
@@ -77,7 +94,9 @@
 			<img src="labyrinth.jpg" alt="">
 		</div>
 		<div class="container">
-			<p class="gamename">The Escape of the Minotaur</p>
+			<div class="title">
+				<p class="gamename">The Escape of the Minotaur</p>
+			</div>
 			<div class="content">
 				<c:if test="${! empty errorMessage}">
 					<div class="error">${errorMessage}</div>

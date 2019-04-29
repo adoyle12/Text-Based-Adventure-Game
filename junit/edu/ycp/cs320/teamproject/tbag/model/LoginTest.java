@@ -24,8 +24,10 @@ public class LoginTest
 	@Test
 	public void testSetPassword()
 	{
-		model.setPassword("password");
-		assertEquals("password", model.getPassword());
+		model.setDBPassword("password");
+		model.setJSPPassword("password");
+		assertEquals("password", model.getDBPassword());
+		assertEquals("password", model.getJSPPassword());
 	}
 	
 	@Test
@@ -33,12 +35,14 @@ public class LoginTest
 	{
 		//credentials are currently hard coded to only pass for username == "hello" and password == "world" 
 		 model.setUsername("hello");
-		 model.setPassword("world");
+		 model.setDBPassword("world");
+		 model.setJSPPassword("world");
 		 model.setCredentials();
 		 assertTrue(model.getCredentials());
 		 
 		 model.setUsername("John");
-		 model.setPassword("Watson");
+		 model.setDBPassword("Watson");
+		 model.setJSPPassword("Wrong");
 		 model.setCredentials();
 		 assertFalse(model.getCredentials()); 
 	}

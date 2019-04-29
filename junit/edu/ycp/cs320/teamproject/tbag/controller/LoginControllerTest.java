@@ -27,10 +27,10 @@ public class LoginControllerTest
 	public void testCheckCredentials()
 	{
 		//These are hard coded in right now to username == "hello" & password == "world"
-		controller.checkCredentials("hello", "world");
+		controller.credentials("hello", "world");
 		assertTrue(model.getCredentials()); 
 		
-		controller.checkCredentials("sherlock", "holmes");
+		controller.credentials("sherlock", "holmes");
 		assertFalse(model.getCredentials()); 
 	}
 }

@@ -8,97 +8,81 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Login</title>
 		<style type="text/css">
-		
-		#bg {
-			position: fixed;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-		}
-		
-		#bg img {
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			margin: auto;
-			min-width: 50%;
-			min-height: 50%;
-		}
-		
-		.container {
-			position: relative;
-			margin: 0 auto;
-		}
-		
-		.title {
-			position: fixed;
-			color: #f1f1f1;
-			width: 100%;
-			text-align: center;
-			line-height: 0.1;
-			text-shadow: 2px 1px darkgreen;
-		}
-		
-		p.gamename {
-			color: #f1f1f1;
-			font-size: 80px;
-			text-shadow: 3px 2px green;
-		}
-		
-		.container p.intro {
-			position: absolute;
-			top: 200px;
-			background: rgb(0, 0, 0);
-			background: rgba(0, 0, 0, 0.5);
-			color: #f1f1f1;
-			width: 100%;
-			text-align: center;
-			font-size: 30px;
-		}
-		
-		.container .content {
-			position: fixed;
-			bottom: 0;
-			color: #f1f1f1;
-			width: 100%;
-			padding: 60px;
-		}
-		
-		input[type=text] {
-			margin: auto;
-		}
-		
-		input[type=text]:focus {
-			background-color: lightgreen;
-		}
-		
-		input[type=password] {
-			margin: auto;
-		}
-		
-		input[type=password]:focus {
-			background-color: lightgreen;
-		}
-		
-		.error {
-			color: red;
-		}
-		
-		body {
-			background-color: black;
-		}
-		
-		* {
-			box-sizing: border-box;
-		}
-		
-		td.label {
-			text-align: center;
-		}
-		
+			.error {
+				color: red;
+			}
+			body {
+				background-color: black;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			.container {
+				position: relative;
+				margin: 0 auto;
+			}
+			td.label {
+				text-align: center;
+			}
+			#bg {
+				position: fixed;
+				top: -50%;
+				left: -50%;
+				width: 200%;
+				height: 200%;
+			}	
+			#bg img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+				min-width: 50%;
+				min-height: 50%;
+			}
+			.title {
+				position: fixed;
+				color: #f1f1f1;
+				width: 100%;
+				text-align: center;
+				line-height: 0.1;
+				text-shadow: 2px 1px darkgreen;
+			}
+			p.gamename {
+				color: #f1f1f1;
+				font-size: 80px;
+				text-shadow: 3px 2px green;
+			}
+			.container p.intro {
+				position: absolute;
+				top: 200px;
+				background: rgb(0, 0, 0);
+				background: rgba(0, 0, 0, 0.5);
+				color: #f1f1f1;
+				width: 100%;
+				text-align: center;
+				font-size: 30px;
+			}
+			.container .content {
+				position: fixed;
+				bottom: 0;
+				color: #f1f1f1;
+				width: 100%;
+				padding: 60px;
+			}
+			input[type=text] {
+				margin: auto;
+			}		
+			input[type=text]:focus {
+				background-color: lightgreen;
+			}	
+			input[type=password] {
+				margin: auto;
+			}	
+			input[type=password]:focus {
+				background-color: lightgreen;
+			}
 		</style>
 	</head>
 	
