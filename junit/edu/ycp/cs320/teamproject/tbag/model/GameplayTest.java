@@ -23,5 +23,4 @@ public class GameplayTest
 		assertEquals("input", model.getInput()); 
 	}
 	
-	
 }

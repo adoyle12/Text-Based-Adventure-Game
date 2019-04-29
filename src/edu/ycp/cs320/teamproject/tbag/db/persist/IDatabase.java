@@ -16,5 +16,7 @@ public interface IDatabase{
 	public ArrayList<String> getInputs();
 	public Integer getUserLocation(String username);
 	public Integer setUserLocation(int location, String username);
+	public Integer pickupItem(String itemName, String username);
+	public Integer dropItem(String itemName, String username);
 }
 

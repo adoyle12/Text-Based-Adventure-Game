@@ -7,18 +7,18 @@
  */
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 
 import edu.ycp.cs320.teamproject.tbag.model.Location;
-import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
+//import edu.ycp.cs320.teamproject.tbag.db.model.ItemDb;
 
 public class FakeDatabase implements IDatabase{
 	
-	private List<ItemDb> itemList;
+	
 	
 	public FakeDatabase() {
-		itemList = new ArrayList<ItemDb>();
+		
 		
 		populateLists();
 	}
@@ -31,7 +31,7 @@ public class FakeDatabase implements IDatabase{
 		}*/
 	}
 	
-	public List<ItemDb>getItemByName(String name){
+	/*public List<ItemDb>getItemByName(String name){
 		List<ItemDb> returnList = new ArrayList<ItemDb>();
 		for(ItemDb item : itemList) {
 			if(item.getName().equals(name)) {
@@ -39,9 +39,9 @@ public class FakeDatabase implements IDatabase{
 			}
 		}
 		return returnList;
-	}
+	}*/
 	
-	public Integer insertItem(String name, int locationID, int descriptionID) {
+	/*public Integer insertItem(String name, int locationID, int descriptionID) {
 		
 		ItemDb item = new ItemDb();
 		
@@ -54,7 +54,7 @@ public class FakeDatabase implements IDatabase{
 		
 		// This should return the itemID
 		return item.getItemID();
-	}
+	}*/
 
 	@Override
 	public Location getLocationDescriptionLong(int location_id) {
@@ -68,11 +68,7 @@ public class FakeDatabase implements IDatabase{
 		return null;
 	}
 
-	@Override
-	public Integer getLocationID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public Integer insertUserIntoUsersTable(String username, String password) {
@@ -82,6 +78,54 @@ public class FakeDatabase implements IDatabase{
 
 	@Override
 	public String findPasswordFromUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer findUserIDFromUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean addUserInput(String input) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<String> getInputs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getUserLocation(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer setUserLocation(int location, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertItem(String name, int locationID, int descriptionID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer pickupItem(String itemName, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer dropItem(String itemName, String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}

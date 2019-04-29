@@ -714,4 +714,16 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+
+		@Override
+		public Integer pickupItem(String itemName, String username) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Integer dropItem(String itemName, String username) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 }
