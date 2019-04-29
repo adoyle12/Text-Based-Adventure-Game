@@ -28,37 +28,46 @@ public class GameplayController
 	
 	public String gameLogic(String input, String username) {
 		String errorMessage = null;
-		input = input.toLowerCase();
 		
 		//check for errors in the form data before using is in a calculation
 		if (input == null) 
 		{
 			errorMessage = "Please select a command.";
+			System.out.println(errorMessage);
+			db.addUserOutput(errorMessage);
+			output();
 		}
 		else 
 		{
+			//otherwise, data is good, do the calculation using controller
+			input = input.toLowerCase();
 			input(input);
-			output();
-		}
-		//otherwise, data is good, do the calculation using controller
-				
-		// _________Movement_____________
-		if(input.contains("move")) {
-			if(input.contains("north")) {
-				moveTo(username, 0);
+			
+			// _________Movement_____________
+			if(input.contains("move")) {
+				if(input.contains("north")) {
+					moveTo(username, 0);
+				}
+				else if(input.contains("south")) {
+					moveTo(username, 1);
+				}
+				else if(input.contains("east")) {
+					moveTo(username, 2);
+				} 
+				else if(input.contains("west")){
+					moveTo(username, 3);
+				} else {
+					System.out.println("Unknown direction");
+					db.addUserOutput("Unknown direction");
+				}
+			} else if (input.contains("map")) {
+				displayMap();
+			} else {
+				System.out.println("Unknown command");
+				db.addUserOutput("Unknown command");
 			}
-			else if(input.contains("south")) {
-				moveTo(username, 1);
-			}
-			else if(input.contains("east")) {
-				moveTo(username, 2);
-			}
-			else {
-				moveTo(username, 3);
-			}
-		} if (input.contains("map")) {
-			displayMap();
-		}
+		}		
+		output();
 		return errorMessage;
 	}
 	
