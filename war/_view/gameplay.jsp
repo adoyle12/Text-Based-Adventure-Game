@@ -83,12 +83,16 @@
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
+				<div style="overflow-y:scroll; height: 400px">
 					<table>
 						<c:forEach items="${gameplay.output}" var="string">
 							<tr>
 								<td>${string}</td>
 							</tr>
 						</c:forEach>
+					</table>
+				</div>
+					<table>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" value="${gameplay.input}" /></span></td>
 						</tr>
