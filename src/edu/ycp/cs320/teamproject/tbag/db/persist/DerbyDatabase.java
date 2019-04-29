@@ -366,7 +366,7 @@ public class DerbyDatabase implements IDatabase{
 							"create table inventory (" +
 							"	item_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +
-							"	location_id integer constraint location_id references locations, " +
+							"	item_location_id integer constraint item_location_id references locations, " +
 							"   item_name varchar(40) " +
 							")"
 						);	
@@ -469,7 +469,7 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertJointLocations.executeBatch();
 						
-						insertItem = conn.prepareStatement("insert into inventory (location_id, item_name) values (?, ?)");
+						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name) values (?, ?)");
 						for (Item item : inventory) 
 						{
 //							// Auto generate itemID
@@ -717,13 +717,128 @@ public class DerbyDatabase implements IDatabase{
 
 		@Override
 		public Integer pickupItem(String itemName, String username) {
-			// TODO Auto-generated method stub
-			return null;
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement pickupItem = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// Get user's location
+						int userLocationID = getUserLocation(username);
+						
+						pickupItem = conn.prepareStatement( 
+								" select inventory.item_location_id " +
+								" 	from inventory " +
+								"	where inventory.item_name = ? "
+							
+						);
+						pickupItem.setString(1, itemName);
+						
+						resultSet = pickupItem.executeQuery();
+						
+						Integer currentLocation = null;
+						
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+							//System.out.println(currentLocation);
+						}
+						
+						if(currentLocation == null) {
+							System.out.println("No Location Found? Where are you?");
+						}
+						
+						return currentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(pickupItem);
+					}
+					
+				}
+			});
 		}
 
 		@Override
 		public Integer dropItem(String itemName, String username) {
-			// TODO Auto-generated method stub
-			return null;
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getLocationID = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getLocationID = conn.prepareStatement( 
+								" select users.user_location_id " +
+								" 	from users " +
+								"	where users.username = ? "
+							
+						);
+						getLocationID.setString(1, username);
+						
+						resultSet = getLocationID.executeQuery();
+						
+						Integer currentLocation = null;
+						
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+							//System.out.println(currentLocation);
+						}
+						
+						if(currentLocation == null) {
+							System.out.println("No Location Found? Where are you?");
+						}
+						
+						return currentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getLocationID);
+					}
+					
+				}
+			});
+		}
+
+		@Override
+		public Integer setItemLocation(String itemName, String username) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement setItemLocation = null;
+					ResultSet resultSet = null;
+					
+					try {
+						setItemLocation = conn.prepareStatement( 
+								" update inventory " +
+								" 	set item_location_id = ? " +
+								"	where users.username = ? "
+							
+						);
+						
+						setItemLocation.setString(2, username);
+						
+						resultSet = setItemLocation.executeQuery();
+						
+						Integer currentLocation = null;
+						
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+							//System.out.println(currentLocation);
+						}
+						
+						if(currentLocation == null) {
+							System.out.println("No Location Found? Where are you?");
+						}
+						
+						return currentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(setItemLocation);
+					}
+					
+				}
+			});
 		}
 }

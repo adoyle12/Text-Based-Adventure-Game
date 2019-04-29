@@ -43,42 +43,13 @@ public class GameplayServlet extends HttpServlet
 		
 
 		// decode POSTed form parameters and dispatch to controller
-			String input = getStringFromParameter(req.getParameter("input"));
+		String input = getStringFromParameter(req.getParameter("input"));
 
-			//check for errors in the form data before using is in a calculation
-			if (input == null) 
-			{
-				errorMessage = "Please select a command.";
-			}
-			//otherwise, data is good, do the calculation using controller
-			else 
-			{
-				controller.input(input.toLowerCase());
-				controller.output();
-			}
-
-			// Get the current user from the session
-			String username = req.getSession().getAttribute("username").toString();
-			
-		// _________Movement_____________
-		if(input.contains("move")) {
-			if(input.contains("north")) {
-				controller.moveTo(username, 0);
-			}
-			else if(input.contains("south")) {
-				controller.moveTo(username, 1);
-			}
-			else if(input.contains("east")) {
-				controller.moveTo(username, 2);
-			}
-			else {
-				controller.moveTo(username, 3);
-			}
-		} if(input.contains("map")) {
-			controller.displayMap();
-		}
+		// Get the current user from the session
+		String username = req.getSession().getAttribute("username").toString();
 		
-		
+		// Do all the game logic
+		controller.gameLogic(input, username);
 		
 		req.setAttribute("gameplay", model);
 		

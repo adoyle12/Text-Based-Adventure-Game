@@ -26,6 +26,41 @@ public class GameplayController
 		db = DatabaseProvider.getInstance();
 	}
 	
+	public String gameLogic(String input, String username) {
+		String errorMessage = null;
+		//check for errors in the form data before using is in a calculation
+		if (input == null) 
+		{
+			errorMessage = "Please select a command.";
+		}
+		//otherwise, data is good, do the calculation using controller
+		else 
+		{
+			input(input.toLowerCase());
+			output();
+		}
+				
+		// _________Movement_____________
+		if(input.contains("move")) {
+			if(input.contains("north")) {
+				moveTo(username, 0);
+			}
+			else if(input.contains("south")) {
+				moveTo(username, 1);
+			}
+			else if(input.contains("east")) {
+				moveTo(username, 2);
+			}
+			else {
+				moveTo(username, 3);
+			}
+		} if (input.contains("map")) {
+			displayMap();
+		}
+		
+		return errorMessage;
+	}
+	
 	public void setModel(Gameplay model)
 	{
 		this.model = model; 
