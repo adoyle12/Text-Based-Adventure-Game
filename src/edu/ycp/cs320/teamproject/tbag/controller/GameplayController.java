@@ -61,6 +61,7 @@ public class GameplayController
 					db.addUserOutput("Unknown direction");
 				}
 			} else if (input.contains("map")) {
+				// This prints out the locationID's and the jointLocations
 				displayMap();
 			} else {
 				System.out.println("Unknown command");
