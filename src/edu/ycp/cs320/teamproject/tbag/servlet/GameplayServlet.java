@@ -56,23 +56,27 @@ public class GameplayServlet extends HttpServlet
 				controller.input(input.toLowerCase());
 				controller.output();
 			}
+
+			// Get the current user from the session
+			String username = req.getSession().getAttribute("username").toString();
 			
-//		if(input.contains("move")) {
-//			if(input.contains("north")) {
-//				controller.moveTo(0);
-//			}
-//			else if(input.contains("south")) {
-//				controller.moveTo(1);
-//			}
-//			else if(input.contains("east")) {
-//				controller.moveTo(2);
-//			}
-//			else {
-//				controller.moveTo(3);
-//			}
-//		} if(input.contains("map")) {
-//			controller.displayMap();
-//		}
+		// _________Movement_____________
+		if(input.contains("move")) {
+			if(input.contains("north")) {
+				controller.moveTo(username, 0);
+			}
+			else if(input.contains("south")) {
+				controller.moveTo(username, 1);
+			}
+			else if(input.contains("east")) {
+				controller.moveTo(username, 2);
+			}
+			else {
+				controller.moveTo(username, 3);
+			}
+		} if(input.contains("map")) {
+			controller.displayMap();
+		}
 		
 		
 		

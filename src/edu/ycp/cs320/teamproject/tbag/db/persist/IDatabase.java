@@ -17,6 +17,6 @@ public interface IDatabase{
 	public Boolean addUserInput(String input);
 	public ArrayList<String> getInputs();
 	public Integer getUserLocation(String username);
-	public void setUserLocation(int location);
+	public Integer setUserLocation(int location, String username);
 }
 
