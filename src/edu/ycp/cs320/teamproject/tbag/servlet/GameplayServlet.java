@@ -56,7 +56,7 @@ public class GameplayServlet extends HttpServlet
 				controller.input(input.toLowerCase());
 				controller.output();
 			}
-			
+
 			// Get the current user from the session
 			String username = req.getSession().getAttribute("username").toString();
 			
@@ -85,6 +85,7 @@ public class GameplayServlet extends HttpServlet
 		// Add parameters as request attributes
 		req.setAttribute("input", model.getInput());
 		req.setAttribute("output", model.getOutput());
+		req.setAttribute("size", model.getOutput().size());
 		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
