@@ -94,27 +94,45 @@ public class GameplayController
 	
 	public int moveTo(String username, int direction) {
 		int currentLocation = db.getUserLocation(username);
-		int nextLocation = model.moveTo(currentLocation, direction);
+		int nextLocation = -1;
+		if(direction == 0) {
+			nextLocation = db.getJointLocationNorth(currentLocation);
+		} else if(direction == 1) {
+			nextLocation = db.getJointLocationSouth(currentLocation);
+		} else if(direction == 2) {
+			nextLocation = db.getJointLocationEast(currentLocation);
+		} else {
+			nextLocation = db.getJointLocationWest(currentLocation);
+		}
 		if(currentLocation == nextLocation) {
 			System.out.println("Can't move that way");
-			
 			
 			ArrayList<String> output = new ArrayList<String>();
 			output.add("Can't move that way");
 			db.addUserOutput("Can't move that way");
 			model.addOutput(output);
-			
 		} else {
-			int moveLocation = db.setUserLocation(nextLocation, username);
-			System.out.println("Moved to room #" + moveLocation);
-			db.addUserOutput("Moved to room #" + moveLocation);
+			db.setUserLocation(nextLocation, username);
+			String roomDescription = null;
+			if(db.getPlayerHasBeen(nextLocation, username) == 0) {
+				roomDescription = db.getLocationDescriptionLong(nextLocation);
+				db.setPlayerHasBeen(nextLocation, username, 1);
+			} else if(db.getPlayerHasBeen(nextLocation, username) == 1) {
+				roomDescription = db.getLocationDescriptionShort(nextLocation);
+			}
+			db.addUserOutput(roomDescription);
 			
-			
+			// This adds the output into the model
+			// Do we need the output in the model though?
 			ArrayList<String> output = new ArrayList<String>();
-			output.add("Moved to room #" + moveLocation);
+			output.add(roomDescription);
 			model.addOutput(output);
 			
 		}
+		if(nextLocation == -1) {
+			System.out.println("Movement failed");
+		}
+		
 		return nextLocation;
 	}
 }

@@ -64,6 +64,7 @@ public class InitialData
 				location.setLocationID(locationID++);
 				location.setShortDescription(i.next());
 				location.setLongDescription(i.next());
+				location.setPlayerHasBeen(Integer.parseInt(i.next()));
 				locationList.add(location); 
 				
 				

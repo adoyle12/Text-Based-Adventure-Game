@@ -56,11 +56,7 @@ public class FakeDatabase implements IDatabase{
 		return item.getItemID();
 	}*/
 
-	@Override
-	public Location getLocationDescriptionLong(int location_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Integer getItemLocationID(String itemName) {
@@ -126,6 +122,30 @@ public class FakeDatabase implements IDatabase{
 
 	@Override
 	public Integer dropItem(String itemName, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLocationDescriptionLong(int location_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLocationDescriptionShort(int location_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer setItemLocation(String itemName, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean addUserOutput(String output) {
 		// TODO Auto-generated method stub
 		return null;
 	}

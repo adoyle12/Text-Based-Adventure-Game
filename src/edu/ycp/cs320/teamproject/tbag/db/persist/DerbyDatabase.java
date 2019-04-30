@@ -122,39 +122,6 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-	@Override
-	public Location getLocationDescriptionLong(final int location_id) {
-		return executeTransaction(new Transaction<Location>(){
-			public Location execute(Connection conn) throws SQLException {
-				PreparedStatement longDescription = null;
-				ResultSet resultSet = null;
-				try {
-					longDescription = conn.prepareStatement(
-							"select location_id, description_short, description_long " +
-							" from locations " +
-							" where location_id = ? "
-					);
-					longDescription.setInt(1, location_id);
-				
-					resultSet = longDescription.executeQuery();
-				
-					Location result = new Location();
-					
-					if(resultSet.next()) {
-						loadLocation(result, resultSet, 1);
-					}
-				
-					return result;
-				} finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(longDescription);
-				}
-			}
-		});
-	}
-	
-	
-	
 	//transaction that inserts new user into user's table
 	//if user already exists then cancel the operation
 	
@@ -355,7 +322,8 @@ public class DerbyDatabase implements IDatabase{
 								"	location_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), "	+
 								"	description_short varchar(4000), " +
-								"	description_long varchar(8000) " +
+								"	description_long varchar(8000), " +
+								"	player_has_been integer" +
 								")"
 		
 								);
@@ -400,7 +368,7 @@ public class DerbyDatabase implements IDatabase{
 								"   create table commands (" +
 								"	command_id integer primary key " +
 								" 		generated always as identity (start with 1, increment by 1),  " +
-								" 	command varchar(30) " +
+								" 	command varchar(10000) " +
 								")"
 						);
 						createInputsStmt.executeUpdate();
@@ -448,11 +416,12 @@ public class DerbyDatabase implements IDatabase{
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
-						insertLocation = conn.prepareStatement("insert into locations (description_short, description_long) values (?, ?)" );
+						insertLocation = conn.prepareStatement("insert into locations (description_short, description_long, player_has_been) values (?, ?, ?)" );
 						for (Location location : locationList)
 						{
 							insertLocation.setString(1, location.getShortDescription());
 							insertLocation.setString(2, location.getLongDescription());
+							insertLocation.setInt(3, location.getPlayerHasBeen());
 							insertLocation.addBatch();
 						}
 						insertLocation.executeBatch(); 
@@ -740,7 +709,8 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
-
+		
+		//TODO: This also needs some work
 		@Override
 		public Integer pickupItem(String itemName, String username) {
 			return executeTransaction(new Transaction<Integer>() {
@@ -825,7 +795,70 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+		
+		@Override
+		public String getLocationDescriptionLong(final int location_id) {
+			return executeTransaction(new Transaction<String>(){
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement longDescription = null;
+					ResultSet resultSet = null;
+					try {
+						longDescription = conn.prepareStatement(
+								"select description_long " +
+								" from locations " +
+								" where location_id = ? "
+						);
+						longDescription.setInt(1, location_id);
+					
+						resultSet = longDescription.executeQuery();
+					
+						String result = new String();
+						
+						if(resultSet.next()) {
+							result = resultSet.getString("description_long");
+						}
+					
+						return result;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(longDescription);
+					}
+				}
+			});
+		}
+		
+		@Override
+		public String getLocationDescriptionShort(final int location_id) {
+			return executeTransaction(new Transaction<String>(){
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement shortDescription = null;
+					ResultSet resultSet = null;
+					try {
+						shortDescription = conn.prepareStatement(
+								"select description_short " +
+								" from locations " +
+								" where location_id = ? "
+						);
+						shortDescription.setInt(1, location_id);
+					
+						resultSet = shortDescription.executeQuery();
+					
+						String result = new String();
+						
+						if(resultSet.next()) {
+							result = resultSet.getString("description_short");
+						}
+					
+						return result;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(shortDescription);
+					}
+				}
+			});
+		}
 
+		// TODO: This method doesn't look right
 		@Override
 		public Integer setItemLocation(String itemName, String username) {
 			return executeTransaction(new Transaction<Integer>() {
@@ -864,6 +897,265 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(setItemLocation);
 					}
 					
+				}
+			});
+		}
+
+		@Override
+		public Integer getJointLocationNorth(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getJointLocationNorth = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getJointLocationNorth = conn.prepareStatement( 
+								" select location_north " +
+								" 	from jointLocations " +
+								"	where jointLocations.fk_location_id = ? "
+							
+						);
+						
+						
+						getJointLocationNorth.setInt(1, currentLocation);
+						
+						resultSet = getJointLocationNorth.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_north");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getJointLocationNorth);
+					}	
+				}
+			});
+		}
+
+		@Override
+		public Integer getJointLocationSouth(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getJointLocationSouth = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getJointLocationSouth = conn.prepareStatement( 
+								" select location_south " +
+								" 	from jointLocations " +
+								"	where jointLocations.fk_location_id = ? "
+							
+						);
+						
+						
+						getJointLocationSouth.setInt(1, currentLocation);
+						
+						resultSet = getJointLocationSouth.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_south");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getJointLocationSouth);
+					}	
+				}
+			});
+		}
+
+		@Override
+		public Integer getJointLocationEast(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getJointLocationEast = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getJointLocationEast = conn.prepareStatement( 
+								" select location_east " +
+								" 	from jointLocations " +
+								"	where jointLocations.fk_location_id = ? "
+							
+						);
+						
+						
+						getJointLocationEast.setInt(1, currentLocation);
+						
+						resultSet = getJointLocationEast.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_east");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getJointLocationEast);
+					}	
+				}
+			});
+		}
+
+		@Override
+		public Integer getJointLocationWest(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getJointLocationWest = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getJointLocationWest = conn.prepareStatement( 
+								" select location_west " +
+								" 	from jointLocations " +
+								"	where jointLocations.fk_location_id = ? "
+							
+						);
+						
+						
+						getJointLocationWest.setInt(1, currentLocation);
+						
+						resultSet = getJointLocationWest.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_west");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getJointLocationWest);
+					}	
+				}
+			});
+		}
+
+		@Override
+		public Integer getPlayerHasBeen(int location, String username) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getPlayerHasBeen = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getPlayerHasBeen = conn.prepareStatement( 
+								" select player_has_been " +
+								" 	from locations, users " +
+								"	where locations.location_id = ? and users.username = ? "
+							
+						);
+						
+						
+						getPlayerHasBeen.setInt(1, location);
+						getPlayerHasBeen.setString(2, username);
+						
+						resultSet = getPlayerHasBeen.executeQuery();
+						
+						Integer hasBeen = null;
+						
+						if(resultSet.next()) {
+							hasBeen = resultSet.getInt("player_has_been");
+						}
+						
+						if(hasBeen == null) {
+							System.out.println("The player never existed... Error in getPlayerHasBeen method");
+						}
+						
+						return hasBeen;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getPlayerHasBeen);
+					}	
+				}
+			});
+		}
+
+		@Override
+		public Integer setPlayerHasBeen(int location, String username, int flag) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement setPlayerHasBeen = null;
+					PreparedStatement checkPlayerHasBeen = null;
+					ResultSet resultSet = null;
+					
+					try {
+						setPlayerHasBeen = conn.prepareStatement( 
+								" update locations " +
+								" 	set player_has_been = ? " +
+								"	where locations.location_id = ? "
+						);
+						
+						setPlayerHasBeen.setInt(1, flag);
+						setPlayerHasBeen.setInt(2, location);
+						
+						setPlayerHasBeen.executeUpdate();
+						
+						checkPlayerHasBeen = conn.prepareStatement( 
+								" select player_has_been " +
+								" 	from locations, users " +
+								"	where locations.location_id = ? and users.username = ? "
+							
+						);
+						
+						
+						checkPlayerHasBeen.setInt(1, location);
+						checkPlayerHasBeen.setString(2, username);
+						
+						resultSet = checkPlayerHasBeen.executeQuery();
+						
+						Integer hasBeen = null;
+						
+						if(resultSet.next()) {
+							hasBeen = resultSet.getInt("player_has_been");
+						}
+						if(hasBeen == null) {
+							System.out.println("The player never existed... Error in setPlayerHasBeen method");
+						}
+						
+						return hasBeen;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(setPlayerHasBeen);
+					}	
 				}
 			});
 		}

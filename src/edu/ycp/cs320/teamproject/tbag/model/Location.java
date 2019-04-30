@@ -6,6 +6,7 @@ public class Location
 	private int locationID; 
 	private String shortDescription; 
 	private String longDescription; 
+	private int playerHasBeen;
 	
 	public void setLocationID (int locationID)
 	{
@@ -35,6 +36,17 @@ public class Location
 	public String getLongDescription()
 	{
 		return longDescription; 
+	}
+	
+	// Integer (either 1 or 0) to see if the player has been to this location yet
+	public void setPlayerHasBeen (Integer flag)
+	{
+		this.playerHasBeen = flag; 
+	}
+	
+	public int getPlayerHasBeen()
+	{
+		return playerHasBeen; 
 	}
 	
 }
