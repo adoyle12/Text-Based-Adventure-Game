@@ -43,7 +43,7 @@ public class RegisterServlet extends HttpServlet{
 		
 		if (username == null || username.equals("") || password == null || password.equals(""))
 		{
-			errorMessage = "Please enter username and password"; 
+			errorMessage = "Please Enter Username and Password"; 
 		}
 		else
 		{
@@ -52,11 +52,11 @@ public class RegisterServlet extends HttpServlet{
 			//insert the user
 			if (controller.insertUser(username, password))
 			{
-				successMessage = "User successfully added"; 
+				successMessage = "User Successfully Added"; 
 			}
 			else
 			{
-				errorMessage = "User already exists"; 
+				errorMessage = "User Already Exists"; 
 			}
 		}
 		

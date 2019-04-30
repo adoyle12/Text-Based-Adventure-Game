@@ -24,12 +24,12 @@ public class RegisterController
 		//check if the insertion succeeded
 		if (user_id > 0)
 		{
-			System.out.println("New user: (ID: " + user_id + ") successfully added to Users table");
+			System.out.println("New user: (ID: " + user_id + ") Successfully Added to Users Table");
 			return true; 
 		}
 		else
 		{
-			System.out.println("Failed to insert new user");
+			System.out.println("Failed to Insert New User");
 			return false; 
 		}
 	}

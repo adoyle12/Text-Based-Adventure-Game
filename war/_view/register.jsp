@@ -6,6 +6,22 @@
 	<head>
 		<title>Register</title>
 		<style type="text/css">
+			.error {
+				color: red;
+			}
+			body {
+				background-color: black;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			.container {
+				position: relative;
+				margin: 0 auto;
+			}
+			td.label {
+				text-align: center;
+			}
 			#bg {
 				position: fixed;
 				top: -50%;
@@ -23,10 +39,6 @@
 				min-width: 50%;
 				min-height: 50%;
 			}
-			.container {
-				position: relative;
-				margin: 0 auto;
-			}
 			.container p.register {
 				position: absolute;
 				background: rgb(0, 0, 0);
@@ -43,38 +55,26 @@
 				width: 100%;
 				padding: 40px;
 			}
-			input[type=text] {
-				margin: auto;
-			}
-			input[type=text]:focus {
-				background-color: lightgreen;
-			}
-			input[type=password] {
-				margin: auto;
-			}
-			input[type=password]:focus {
-				background-color: lightgreen;
-			}
-			.error {
-				color: red;
-			}
-			body {
-				background-color: black;
-			}
-			* {
-				box-sizing: border-box;
-			}
 			.success {
-					color: blue;
+					color: #09D308;
 					font-weight: bold;
 				}
 			.success_title {
-				color: darkblue;
+				color: #09D308;
 				font-style: italic;
 				font-weight: bold;			
 			}
-			td.label {
-				text-align: center;
+			input[type=text] {
+				margin: auto;
+			}		
+			input[type=text]:focus {
+				background-color: lightgreen;
+			}	
+			input[type=password] {
+				margin: auto;
+			}	
+			input[type=password]:focus {
+				background-color: lightgreen;
 			}
 		</style>
 	</head>
@@ -91,7 +91,7 @@
 				<div class="error">${errorMessage}</div>
 			</c:if>
 			<c:if test="${! empty successMessage}">
-				<div class="success">Successfully added <span class="success_title">${successMessage}</span> to Library</div>
+				<div class="success"><span class="success_title">${successMessage}</span></div>
 			</c:if>
 			<form action="${pageContext.servletContext.contextPath}/register" method="post">
 				<table>
