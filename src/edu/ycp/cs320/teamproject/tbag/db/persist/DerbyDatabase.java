@@ -245,6 +245,36 @@ public class DerbyDatabase implements IDatabase{
 		
 	}
 	
+	@Override
+	public Integer deleteUserFromUsersTable(final int user_id) 
+	{
+		return executeTransaction(new Transaction<Integer>()
+		{
+			@Override
+			public Integer execute(Connection conn) throws SQLException
+			{
+				PreparedStatement stmt1 = null; 
+				
+				try
+				{
+					stmt1 = conn.prepareStatement(
+							"delete from users where user_id = ?"
+							); 
+					
+					stmt1.setInt(1, user_id);
+					stmt1.executeUpdate(); 
+					System.out.println("Deleted user with ID number: " + user_id);
+					return user_id; 	
+				}
+				
+				finally
+				{
+					DBUtil.closeQuietly(stmt1);
+				}
+			}
+		});
+	}
+	
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
@@ -867,4 +897,6 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+
+		
 }

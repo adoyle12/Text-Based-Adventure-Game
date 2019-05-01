@@ -67,8 +67,6 @@ public class DerbyDatabaseTest
 		
 		assertEquals(-1, user_id, 0.0001); 
 		
-		
-		
 		//Okay now insert a new user 
 		
 		username = "tester"; 
@@ -84,7 +82,9 @@ public class DerbyDatabaseTest
 			
 			//ID's should match
 			assertEquals(user_id, matchingID, 0.0001); 
+			db.deleteUserFromUsersTable(user_id); 
 		}
+		
 	}
 	@Test
 	public void testUserLocation() {
