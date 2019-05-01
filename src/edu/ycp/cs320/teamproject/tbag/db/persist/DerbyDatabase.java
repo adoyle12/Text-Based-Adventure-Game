@@ -482,7 +482,7 @@ public class DerbyDatabase implements IDatabase{
 						insertUser = conn.prepareStatement("insert into users (username, password, user_location_id) values (?, ?, ?)");
 						for(User user: userList) {
 							insertUser.setString(1, user.getUsername());
-							insertUser.setString(2, user.getPassword());
+							insertUser.setString(2, user.getDBPassword());
 							insertUser.setInt(3, user.getLocationID());
 							insertUser.addBatch();
 						}

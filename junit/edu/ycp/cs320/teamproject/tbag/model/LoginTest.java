@@ -6,12 +6,12 @@ import org.junit.Test;
 
 public class LoginTest
 {
-	private Login model;
+	private User model;
 	
 	@Before
 	public void setUp() 
 	{
-		model = new Login();
+		model = new User();
 	}
 	
 	@Test

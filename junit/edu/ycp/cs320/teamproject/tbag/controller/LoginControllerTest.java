@@ -11,14 +11,14 @@ import edu.ycp.cs320.teamproject.tbag.model.*;
 
 public class LoginControllerTest 
 {
-	private Login model;
-	private LoginController controller; 
+	private User model;
+	private UserController controller; 
 	
 	@Before
 	public void setUp() 
 	{
-		model = new Login();
-		controller = new LoginController();
+		model = new User();
+		controller = new UserController();
 		
 		controller.setModel(model);
 	}
