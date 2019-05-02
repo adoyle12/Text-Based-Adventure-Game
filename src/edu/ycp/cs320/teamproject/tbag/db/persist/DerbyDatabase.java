@@ -798,7 +798,7 @@ public class DerbyDatabase implements IDatabase{
 						getLocationID = conn.prepareStatement( 
 								" select users.user_location_id " +
 								" 	from users " +
-								"	where users.username = ? "
+								"	where users.username = ? " 
 							
 						);
 						getLocationID.setString(1, username);

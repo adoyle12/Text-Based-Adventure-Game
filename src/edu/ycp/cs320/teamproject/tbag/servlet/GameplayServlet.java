@@ -49,6 +49,7 @@ public class GameplayServlet extends HttpServlet
 		String username = req.getSession().getAttribute("username").toString();
 		
 		// Do all the game logic
+		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
 		controller.gameLogic(input, username);
 		
 		req.setAttribute("gameplay", model);
