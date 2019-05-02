@@ -102,7 +102,7 @@
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
-				<div style="overflow-y:scroll; height: 400px">
+				<div id="output" style="overflow-y:scroll; height: 400px;">
 					<table>
 						<c:forEach items="${gameplay.output}" var="string">
 							<tr>
@@ -119,5 +119,13 @@
 				</form>
 			</div>
 		</div>
+		
+		<script>
+			document.addEventListener('DOMContentLoaded', function scrollToBottom()
+			{
+				var element = document.querySelector('#output');
+				element.scrollTop = element.scrollHeight;
+			});
+		</script>
 	</body>
 </html>
