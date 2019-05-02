@@ -1,6 +1,5 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -172,8 +171,8 @@ public class DerbyDatabase implements IDatabase{
 						{
 							// prepare SQL insert statement to add user to users table
 							stmt2 = conn.prepareStatement(
-									"insert into users (username, password) " +
-									"  values(?, ?) "
+									"insert into users (username, password, user_location_id) " +
+									"  values(?, ?, 1) "
 							);
 							stmt2.setString(1, username);
 							stmt2.setString(2, password);

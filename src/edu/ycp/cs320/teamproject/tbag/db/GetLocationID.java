@@ -7,7 +7,6 @@
  */
 package edu.ycp.cs320.teamproject.tbag.db;
 
-import java.util.List;
 import java.util.Scanner;
 
 import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
