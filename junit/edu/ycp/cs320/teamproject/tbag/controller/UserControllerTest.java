@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import edu.ycp.cs320.teamproject.tbag.model.*;
 
-public class LoginControllerTest 
+public class UserControllerTest 
 {
 	private User model;
 	private UserController controller; 
@@ -27,9 +27,11 @@ public class LoginControllerTest
 	public void testCheckCredentials()
 	{
 		//These are hard coded in right now to username == "hello" & password == "world"
+		//tests when credentials are accurate
 		controller.credentials("hello", "world");
 		assertTrue(model.getCredentials()); 
 		
+		//tests when credentials are inaccurate
 		controller.credentials("sherlock", "holmes");
 		assertFalse(model.getCredentials()); 
 	}
