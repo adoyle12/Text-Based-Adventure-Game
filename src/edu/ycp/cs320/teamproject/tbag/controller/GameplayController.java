@@ -43,7 +43,7 @@ public class GameplayController
 			input = input.toLowerCase();
 			input(input);
 			
-			// _________Movement_____________
+			// ___________________Movement_______________________
 			if(input.contains("move")) {
 				if(input.contains("north")) {
 					moveTo(username, 0);
@@ -63,6 +63,67 @@ public class GameplayController
 			} else if (input.contains("map")) {
 				// This prints out the locationID's and the jointLocations
 				displayMap();
+				
+			//__________________Picking up items___________________
+			} else if (input.contains("pickup")) {
+				if (input.contains("sword")) {
+					pickupItem("sword", username);
+				} else if (input.contains("dagger")) {
+					pickupItem("dagger", username);
+				} else if (input.contains("shield")) {
+					pickupItem("shield", username);
+				} else if (input.contains("green potion")) {
+					pickupItem("green potion", username);
+				} else if (input.contains("stick")) {
+					pickupItem("stick", username);
+				} else if (input.contains("potion of redbull")) {
+					pickupItem("potion of redbull", username);
+				} else if (input.contains("bigger stick")) {
+					pickupItem("bigger stick", username);
+				} else if (input.contains("pointy peice of paper")) {
+					pickupItem("pointy peice of paper", username);
+				} else if (input.contains("big boss's broken broom")) {
+					pickupItem("big boss's broken broom", username);
+				} else if (input.contains("glue in a jar")) {
+					pickupItem("glue in a jar", username);
+				} else if (input.contains("bag of things")) {
+					pickupItem("bag of things", username);
+				} else if (input.contains("weaponized math")) {
+					pickupItem("weaponized math", username);
+				} else {
+					System.out.println("Unknown item name");
+					db.addUserOutput("Unknown item name");
+				}
+			//_________________Drop Item_____________________
+			} else if(input.contains("drop")) {
+				if (input.contains("sword")) {
+					dropItem("sword", username);
+				} else if (input.contains("dagger")) {
+					dropItem("dagger", username);
+				} else if (input.contains("shield")) {
+					dropItem("shield", username);
+				} else if (input.contains("green potion")) {
+					dropItem("green potion", username);
+				} else if (input.contains("stick")) {
+					dropItem("stick", username);
+				} else if (input.contains("potion of redbull")) {
+					dropItem("potion of redbull", username);
+				} else if (input.contains("bigger stick")) {
+					dropItem("bigger stick", username);
+				} else if (input.contains("pointy peice of paper")) {
+					dropItem("pointy peice of paper", username);
+				} else if (input.contains("big boss's broken broom")) {
+					dropItem("big boss's broken broom", username);
+				} else if (input.contains("glue in a jar")) {
+					dropItem("glue in a jar", username);
+				} else if (input.contains("bag of things")) {
+					dropItem("bag of things", username);
+				} else if (input.contains("weaponized math")) {
+					dropItem("weaponized math", username);
+				} else {
+					System.out.println("Unknown item name");
+					db.addUserOutput("Unknown item name");
+				} 
 			} else {
 				System.out.println("Unknown command");
 				db.addUserOutput("Unknown command");
@@ -134,5 +195,43 @@ public class GameplayController
 		}
 		
 		return nextLocation;
+	}
+	
+	public int pickupItem(String itemName, String username) {
+		Integer returnInt = null;
+		
+		returnInt = db.pickupItem(itemName, username);
+		
+		if(returnInt == 0) {
+			System.out.println("Could not pickup item");
+			db.addUserOutput("Could not pickup item");
+		} else if(returnInt == 1) {
+			System.out.println("Picked up " + itemName);
+			db.addUserOutput("Picked up " + itemName);
+		} else if(returnInt == null) {
+			System.out.println("Error: Failure occured in itemPickup method");
+			db.addUserOutput("Error: Failure occured in itemPickup method");
+		}
+		
+		return returnInt;
+	}
+	
+	public int dropItem(String itemName, String username) {
+		Integer returnInt = null;
+		
+		returnInt = db.dropItem(itemName, username);
+		
+		if(returnInt == 0) {
+			System.out.println("Could not drop item, arms are no good");
+			db.addUserOutput("Could not drop item, arms are no good");
+		} else if(returnInt == 1) {
+			System.out.println("Dropped " + itemName + " on the floor");
+			db.addUserOutput("Dropped " + itemName + " on the floor");
+		} else if(returnInt == null) {
+			System.out.println("Error: Failure occured in dropItem");
+			db.addUserOutput("Error: Failure occured in dropItem");
+		}
+		
+		return returnInt;
 	}
 }

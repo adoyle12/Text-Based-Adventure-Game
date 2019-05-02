@@ -20,7 +20,7 @@ public interface IDatabase{
 	
 	public String getLocationDescriptionLong(int location_id);
 	public String getLocationDescriptionShort(int location_id);
-	public Integer setItemLocation(String itemName, String username);
+	public Integer setItemLocation(String itemName, int location);
 	public Integer getItemLocationID(String itemName);
 	public Integer getUserLocation(String username);
 	public Integer setUserLocation(int location, String username);

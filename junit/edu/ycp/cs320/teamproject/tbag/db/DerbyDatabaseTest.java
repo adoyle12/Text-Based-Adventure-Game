@@ -26,7 +26,6 @@ public class DerbyDatabaseTest
 		
 		
 	}
-
 	
 	@Test
 	public void testFindUserIDFromUsername()
@@ -44,10 +43,10 @@ public class DerbyDatabaseTest
 		//try to find user that does exist
 		username = "alex"; 
 		
-		user_id = db.findUserIDFromUsername(username); 
+		user_id = db.findUserIDFromUsername(username);
 		
 		//AD's user_id should = 3
-		assertEquals(3, user_id, 0.0001); 
+		assertEquals(3, user_id, 0.0001);
 		
 	}
 	
