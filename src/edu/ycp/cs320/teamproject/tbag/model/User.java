@@ -1,40 +1,61 @@
 package edu.ycp.cs320.teamproject.tbag.model;
 
-public class User extends Agent
-{	
-	private String username; 
-	private String password;
-	//private Integer location_id;
-	private boolean credentials; 
+public class User extends Agent {
 	
+	// Initializing user name and password strings
+	private String username;
+	private String JSPPassword;
+	private String DBPassword;
+	private Boolean credentials;
+	private int locationID;
 	
-	public void setUsername (String username) 
-	{
+	//Constructor
+	public User() {
+		
+	}
+	
+	//Getters and setters for user name and password
+	public void setUsername (String username) {
 		this.username = username;
 	}	
 	
-	public String getUsername() 
-	{
+	public String getUsername() {
 		return username;
 	}
 	
-
-	public void setPassword (String password) 
-	{
-		this.password = password;
+	public void setJSPPassword (String password) {
+		this.JSPPassword = password;
 	}	
-	
-	public String getPassword() 
+	public void setDBPassword (String password) {
+		this.DBPassword = password;
+	}	
+	public String getJSPPassword() {
+		return this.JSPPassword;
+	}
+	public String getDBPassword() {
+		return this.DBPassword;
+	}
+
+	public void setCredentials()
 	{
-		return this.password;
+		if(JSPPassword.equals(DBPassword)) {
+			credentials = true;
+		}
+		else {
+			credentials = false;
+		}
 	}
 	
-	/*public void setLocationID(int location_id) {
-		this.location_id = location_id;
+	public Boolean getCredentials()
+	{
+		return credentials; 
+	}
+	
+	public void setLocationID(int locationID) {
+		this.locationID = locationID;
 	}
 	
 	public int getLocationID() {
-		return location_id;
-	}*/
-	
+		return locationID;
+	}
 }

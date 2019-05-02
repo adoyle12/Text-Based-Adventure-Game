@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.ycp.cs320.teamproject.tbag.controller.LoginController;
-import edu.ycp.cs320.teamproject.tbag.model.Login;
+import edu.ycp.cs320.teamproject.tbag.controller.UserController;
+import edu.ycp.cs320.teamproject.tbag.model.User;
 
 
 public class LoginServlet extends HttpServlet{
@@ -39,8 +39,8 @@ public class LoginServlet extends HttpServlet{
 		 * Set the mode
 		 * Must do this each time since they don't persist between POSTs
 		 */
-		LoginController controller = new LoginController();
-		Login model = new Login(); 
+		UserController controller = new UserController();
+		User model = new User(); 
 		controller.setModel(model);
 
 		// holds the error message text, if there is any

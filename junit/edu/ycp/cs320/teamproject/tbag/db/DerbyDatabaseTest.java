@@ -83,6 +83,7 @@ public class DerbyDatabaseTest
 			
 			//ID's should match
 			assertEquals(user_id, matchingID, 0.0001); 
+			db.deleteUserFromUsersTable(user_id);
 		}
 	}
 	@Test

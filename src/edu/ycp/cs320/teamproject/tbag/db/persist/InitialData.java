@@ -132,7 +132,8 @@ public class InitialData
 				User user = new User(); 
 				user.setAgentID(agentID++);
 				user.setUsername(i.next());
-				user.setPassword(i.next());
+				user.setDBPassword(i.next());
+				user.setJSPPassword(i.next());
 				user.setLocationID(userID);
 				userList.add(user);
 				
