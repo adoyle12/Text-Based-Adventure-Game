@@ -124,6 +124,12 @@ public class GameplayController
 					System.out.println("Unknown item name");
 					db.addUserOutput("Unknown item name");
 				} 
+			} else if(input.contains("examine")) {
+				if (input.contains("room") || input.contains("location")) {
+					examineRoom(username);
+				} else {
+					System.out.println("Specify what to examine");
+				}
 			} else {
 				System.out.println("Unknown command");
 				db.addUserOutput("Unknown command");
@@ -233,5 +239,22 @@ public class GameplayController
 		}
 		
 		return returnInt;
+	}
+	
+	public String examineRoom(String username) {
+		String returnString = null;
+		
+		int location_id = db.getUserLocation(username);
+		
+		returnString = db.getLocationDescriptionLong(location_id);
+		if(returnString == null) {
+			System.out.println("Error: Failure to get room description in examineRoom");
+			db.addUserOutput("Error: Failure to get room description in examineRoom");
+		} else {
+			System.out.println(returnString);
+			db.addUserOutput(returnString);
+		}
+		
+		return returnString;
 	}
 }
