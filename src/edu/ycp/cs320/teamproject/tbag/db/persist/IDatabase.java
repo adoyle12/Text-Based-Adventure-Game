@@ -17,6 +17,7 @@ public interface IDatabase{
 	public Integer pickupItem(String itemName, String username);
 	public Integer dropItem(String itemName, String username);
 	public Boolean addUserOutput(String output);
+
 	
 	public String getLocationDescriptionLong(int location_id);
 	public String getLocationDescriptionShort(int location_id);
@@ -32,5 +33,6 @@ public interface IDatabase{
 	public Integer setPlayerHasBeen(int location, String username, int flag);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
+
 }
 

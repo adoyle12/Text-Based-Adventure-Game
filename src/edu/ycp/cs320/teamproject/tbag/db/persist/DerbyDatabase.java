@@ -227,8 +227,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 		
 	}
-	
-	
+		
 	@Override
 	public Integer deleteUserFromUsersTable(final int user_id) 
 	{
@@ -258,6 +257,8 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+
+
 
 	
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
@@ -989,6 +990,7 @@ public class DerbyDatabase implements IDatabase{
 			});
 		}
 
+
 		@Override
 		public Integer getJointLocationNorth(int currentLocation) {
 			return executeTransaction(new Transaction<Integer>() {
@@ -1247,4 +1249,5 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+
 }
