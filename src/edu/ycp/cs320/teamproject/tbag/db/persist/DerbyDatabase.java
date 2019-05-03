@@ -21,6 +21,8 @@ import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class DerbyDatabase implements IDatabase{
 	
+	User user = new User(); 
+	
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -97,7 +99,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement locationID = null;
 				ResultSet resultSet = null;
 			try {
-				locationID = connect().prepareStatement(
+				locationID = conn.prepareStatement(
 						" select item_location_id " +
 						"  from inventory " +
 						"  where inventory.item_name = ? "
@@ -136,6 +138,7 @@ public class DerbyDatabase implements IDatabase{
 			@Override
 			public Integer execute(Connection conn) throws SQLException 
 			{
+				user.setUsername("users"); 			//AD + DS: This is to set the connection path to the users db
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null; 
 				PreparedStatement stmt3 = null; 	
@@ -173,6 +176,8 @@ public class DerbyDatabase implements IDatabase{
 						// insert new user
 						if (user_id <= 0) 
 						{
+							
+							
 							// prepare SQL insert statement to add user to users table
 							stmt2 = conn.prepareStatement(
 									"insert into users (username, password, user_location_id) " +
@@ -197,7 +202,15 @@ public class DerbyDatabase implements IDatabase{
 							//should only be one value 
 							resultSet3.next(); 
 							user_id = resultSet3.getInt(1); 
-							System.out.println("New user added");						
+							System.out.println("New user added");	
+							
+							System.out.println("Creating new user's db"); 
+							
+							//Create the new users db
+							DerbyDatabase db = new DerbyDatabase();
+							db.createGameTables(username);
+							db.loadInitialData();
+						
 						}
 					}
 										
@@ -214,6 +227,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 		
 	}
+	
 	
 	@Override
 	public Integer deleteUserFromUsersTable(final int user_id) 
@@ -296,15 +310,15 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 	
 		private Connection connect() throws SQLException {
-
+			String username = user.getUsername(); 	//AD + DS: Used for setting a different file path for each user
 
 			String resourcePath = null; 
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
-				resourcePath = "jdbc:derby:C:/TBAG.db;create=true";
+				resourcePath = "jdbc:derby:C:/" + username + "TBAG.db;create=true";
 			} else if(operatingSystem.equals("Mac OS X")) {
-				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true";
+				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + username + "TBAG.db;create=true";
 			} else {
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}
@@ -336,8 +350,44 @@ public class DerbyDatabase implements IDatabase{
 //			gameplay.setInput(resultSet.getString(index++));
 //		}
 		
+		
+		public void createUsersTable()
+		{
+			executeTransaction(new Transaction<Boolean>() 
+			{
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement createUsersStmt = null;
+					
+					user.setUsername("users");
+				
+					try {
+						
+						
+						createUsersStmt = conn.prepareStatement(
+							"create table users (" +
+									"	user_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), "	+
+									"	username varchar(20), " +
+									"	password varchar(20)" +
+								//	"	user_location_id integer constraint user_location_id references locations " +
+									//"	location_id integer constraint location_id references locations "	+
+									")"
+						);
+						createUsersStmt.executeUpdate();
+						
+						System.out.println("User table created");				
+											
+						return true;
+					} finally {
+						DBUtil.closeQuietly(createUsersStmt);
+					}
+				}
+			});
+		}
+		
 		//  creates the tables
-		public void createTables() 
+		public void createGameTables(String username) 
 		{
 			executeTransaction(new Transaction<Boolean>() 
 			{
@@ -345,9 +395,10 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement createLocationsStmt = null;
 					PreparedStatement createInventoryStmt = null;	
-					PreparedStatement createUsersStmt = null;
 					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
+					
+					user.setUsername(username);
 				
 					try {
 						
@@ -374,17 +425,6 @@ public class DerbyDatabase implements IDatabase{
 						);	
 						createInventoryStmt.executeUpdate();
 						
-						createUsersStmt = conn.prepareStatement(
-							"create table users (" +
-									"	user_id integer primary key " +
-									"		generated always as identity (start with 1, increment by 1), "	+
-									"	username varchar(20), " +
-									"	password varchar(20), " +
-									"	user_location_id integer constraint user_location_id references locations " +
-									//"	location_id integer constraint location_id references locations "	+
-									")"
-						);
-						createUsersStmt.executeUpdate();
 						
 						createJointLocationsStmt = conn.prepareStatement(
 								"create table jointLocations (" +
@@ -407,13 +447,12 @@ public class DerbyDatabase implements IDatabase{
 						);
 						createInputsStmt.executeUpdate();
 						
-						System.out.println("tables created");				
+						System.out.println("Game tables created");				
 											
 						return true;
 					} finally {
 						DBUtil.closeQuietly(createLocationsStmt);
 						DBUtil.closeQuietly(createInventoryStmt);
-						DBUtil.closeQuietly(createUsersStmt);
 						DBUtil.closeQuietly(createJointLocationsStmt);
 						DBUtil.closeQuietly(createInputsStmt);
 					}
@@ -428,14 +467,14 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
 					List<Location> locationList;
-					List<User> userList;
+//					List<User> userList;	Won't need it 
 					List<JointLocations> jointLocationsList;
 					//List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
-						userList = InitialData.getUsers();
+//						userList = InitialData.getUsers();
 						jointLocationsList = InitialData.getJointLocations();
 						//descriptionList = //InitialData.getDescriptions();
 						
@@ -445,7 +484,7 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertItem = null;
 					PreparedStatement insertLocation = null; 
-					PreparedStatement insertUser = null;
+//					PreparedStatement insertUser = null;
 					PreparedStatement insertJointLocations = null;
 
 					try {
@@ -482,21 +521,23 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertItem.executeBatch();
 						
-						insertUser = conn.prepareStatement("insert into users (username, password, user_location_id) values (?, ?, ?)");
-						for(User user: userList) {
-							insertUser.setString(1, user.getUsername());
-							insertUser.setString(2, user.getDBPassword());
-							insertUser.setInt(3, user.getLocationID());
-							insertUser.addBatch();
-						}
-						insertUser.executeBatch();
+						
+						//This won't be necessary since user's will start empty
+//						insertUser = conn.prepareStatement("insert into users (username, password, user_location_id) values (?, ?, ?)");
+//						for(User user: userList) {
+//							insertUser.setString(1, user.getUsername());
+//							insertUser.setString(2, user.getDBPassword());
+//							insertUser.setInt(3, user.getLocationID());
+//							insertUser.addBatch();
+//						}
+//						insertUser.executeBatch();
 						
 						System.out.println("Tables populated");
 						
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
-						DBUtil.closeQuietly(insertUser);
+//						DBUtil.closeQuietly(insertUser);
 					}
 					return true;
 				}
@@ -505,14 +546,14 @@ public class DerbyDatabase implements IDatabase{
 		
 		// The main method creates the database tables and loads the initial data.
 		public static void main(String[] args) throws IOException {
-			System.out.println("Creating tables...");
+			System.out.println("Creating Users table...");
 			DerbyDatabase db = new DerbyDatabase();
-			db.createTables();
+			db.createUsersTable();
 			
-			System.out.println("Loading initial data...");
-			db.loadInitialData();
+//			System.out.println("Loading initial data...");
+//			db.loadInitialData();
 			
-			System.out.println("Library DB successfully initialized!");
+			System.out.println("DB successfully initialized!");
 		}
 		
 		@Override
@@ -520,6 +561,7 @@ public class DerbyDatabase implements IDatabase{
 			return executeTransaction(new Transaction<String>() {
 				@Override
 				public String execute(Connection conn) throws SQLException {
+					user.setUsername(username); 	//AD + DS: This is used to set the connection path for each individual user 
 					PreparedStatement getPassword = null;
 					ResultSet resultSet = null;
 					
