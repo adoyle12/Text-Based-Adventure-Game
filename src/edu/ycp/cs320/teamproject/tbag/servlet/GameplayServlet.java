@@ -14,13 +14,45 @@ public class GameplayServlet extends HttpServlet
 	private static final long serialVersionUID = 1L;
 
 	private GameplayController controller = null;
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		System.out.println("Gameplay Servlet: doGet");	
 		
-		// call JSP to generate empty form
+String errorMessage = null;
+		
+		// Get the current user from the session
+		String username = req.getSession().getAttribute("username").toString();
+		
+		/*
+		 * Initiate the controller and model
+		 * Set the model
+		 * Must do this each time since they don't persist between POSTs
+		 */
+		controller = new GameplayController(username);
+		Gameplay model = new Gameplay(); 
+		controller.setModel(model);
+		
+
+		// decode POSTed form parameters and dispatch to controller
+		String input = getStringFromParameter(req.getParameter("input"));
+
+		
+		
+		// Do all the game logic
+		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
+		controller.gameLogic(input, username);
+		
+		req.setAttribute("gameplay", model);
+		
+		// Add parameters as request attributes
+		req.setAttribute("input", model.getInput());
+		//req.setAttribute("output", model.getOutput());
+		
+		// this adds the errorMessage text and the result to the response
+		req.setAttribute("errorMessage", errorMessage);
 		req.getRequestDispatcher("/_view/gameplay.jsp").forward(req, resp);
 	}
 	
@@ -32,12 +64,15 @@ public class GameplayServlet extends HttpServlet
 		
 		String errorMessage = null;
 		
+		// Get the current user from the session
+		String username = req.getSession().getAttribute("username").toString();
+		
 		/*
 		 * Initiate the controller and model
-		 * Set the mode
+		 * Set the model
 		 * Must do this each time since they don't persist between POSTs
 		 */
-		controller = new GameplayController();
+		controller = new GameplayController(username);
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
@@ -45,8 +80,7 @@ public class GameplayServlet extends HttpServlet
 		// decode POSTed form parameters and dispatch to controller
 		String input = getStringFromParameter(req.getParameter("input"));
 
-		// Get the current user from the session
-		String username = req.getSession().getAttribute("username").toString();
+		
 		
 		// Do all the game logic
 		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
@@ -56,8 +90,7 @@ public class GameplayServlet extends HttpServlet
 		
 		// Add parameters as request attributes
 		req.setAttribute("input", model.getInput());
-		req.setAttribute("output", model.getOutput());
-		req.setAttribute("size", model.getOutput().size());
+		//req.setAttribute("output", model.getOutput());
 		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);

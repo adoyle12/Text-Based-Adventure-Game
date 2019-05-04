@@ -2,9 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<%@page import ="java.util.ArrayList" %>
 
-<% ArrayList<String> inputs = (ArrayList<String>)request.getAttribute("output"); %>
 
 <html>
 	<head>
@@ -113,7 +111,7 @@
 				</div>
 					<table>
 						<tr>
-							<td><span class='text'>Input:<input type="text" name="input" size="12" value="${gameplay.input}" /></span></td>
+							<td><span class='text'>Input:<input type="text" name="input" size="12"  /></span></td>
 						</tr>
 					</table>
 				</form>

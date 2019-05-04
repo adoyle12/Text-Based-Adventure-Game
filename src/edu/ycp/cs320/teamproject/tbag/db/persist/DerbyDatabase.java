@@ -21,7 +21,15 @@ import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class DerbyDatabase implements IDatabase{
 	
-	User user = new User(); 
+	String userFilePath = null; 
+	
+	Boolean loggedIn = false; 
+	
+	public void setUserFilePath(String userFilePath)
+	{
+		this.userFilePath = userFilePath; 
+	}
+	
 	
 	static {
 		try {
@@ -133,12 +141,13 @@ public class DerbyDatabase implements IDatabase{
 	@Override
 	public Integer insertUserIntoUsersTable(final String username, final String password) 
 	{
+		setUserFilePath("users"); 
 		return executeTransaction(new Transaction<Integer>() 
 		{
 			@Override
 			public Integer execute(Connection conn) throws SQLException 
 			{
-				user.setUsername("users"); 			//AD + DS: This is to set the connection path to the users db
+				
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null; 
 				PreparedStatement stmt3 = null; 	
@@ -180,8 +189,8 @@ public class DerbyDatabase implements IDatabase{
 							
 							// prepare SQL insert statement to add user to users table
 							stmt2 = conn.prepareStatement(
-									"insert into users (username, password, user_location_id) " +
-									"  values(?, ?, 1) "
+									"insert into users (username, password) " +	//, user_location_id
+									"  values(?, ?) "					//, 1
 							);
 							stmt2.setString(1, username);
 							stmt2.setString(2, password);
@@ -208,8 +217,10 @@ public class DerbyDatabase implements IDatabase{
 							
 							//Create the new users db
 							DerbyDatabase db = new DerbyDatabase();
+							db.setUserFilePath(username);
 							db.createGameTables(username);
 							db.loadInitialData();
+							
 						
 						}
 					}
@@ -310,19 +321,32 @@ public class DerbyDatabase implements IDatabase{
 		// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
 		// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 	
-		private Connection connect() throws SQLException {
-			String username = user.getUsername(); 	//AD + DS: Used for setting a different file path for each user
-
+		private Connection connect() throws SQLException 
+		{
+//			String username = null; 
+//			System.out.println(loggedInUsername); 
+//			if (loggedInUsername != null && loggedIn == true)
+//			{
+//				username = loggedInUsername; 
+//			}
+//			else 
+//			{
+//				
+//			}
+			//String username = user.getUsername(); 	//AD + DS: Used for setting a different file path for each user
+			
+			System.out.println(userFilePath);
 			String resourcePath = null; 
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
-				resourcePath = "jdbc:derby:C:/" + username + "TBAG.db;create=true";
+				resourcePath = "jdbc:derby:C:/" + userFilePath + "TBAG.db;create=true";
 			} else if(operatingSystem.equals("Mac OS X")) {
-				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + username + "TBAG.db;create=true";
+				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + userFilePath + "TBAG.db;create=true";
 			} else {
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}
+			System.out.println(resourcePath); 
 			 Connection conn = DriverManager.getConnection(resourcePath);
 
 			
@@ -354,13 +378,14 @@ public class DerbyDatabase implements IDatabase{
 		
 		public void createUsersTable()
 		{
+			setUserFilePath("users"); 
 			executeTransaction(new Transaction<Boolean>() 
 			{
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement createUsersStmt = null;
 					
-					user.setUsername("users");
+					
 				
 					try {
 						
@@ -390,6 +415,7 @@ public class DerbyDatabase implements IDatabase{
 		//  creates the tables
 		public void createGameTables(String username) 
 		{
+			
 			executeTransaction(new Transaction<Boolean>() 
 			{
 				@Override
@@ -399,7 +425,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
 					
-					user.setUsername(username);
+					
 				
 					try {
 						
@@ -558,11 +584,13 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		@Override
-		public String findPasswordFromUsername(String username) {
-			return executeTransaction(new Transaction<String>() {
+		public String findPasswordFromUsername(String username) 
+		{
+				setUserFilePath("users"); 
+				return executeTransaction(new Transaction<String>() {
 				@Override
 				public String execute(Connection conn) throws SQLException {
-					user.setUsername(username); 	//AD + DS: This is used to set the connection path for each individual user 
+					
 					PreparedStatement getPassword = null;
 					ResultSet resultSet = null;
 					
@@ -579,6 +607,7 @@ public class DerbyDatabase implements IDatabase{
 						
 						if(resultSet.next()) {
 							password = resultSet.getString(1);
+							
 						}
 						
 						return password;
@@ -600,7 +629,9 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Boolean addUserInput(String input) {
+		public Boolean addUserInput(String input) 
+		{
+			
 			return executeTransaction(new Transaction<Boolean>() {
 				@Override
 				public Boolean execute(Connection conn) throws SQLException {

@@ -33,6 +33,7 @@ public interface IDatabase{
 	public Integer setPlayerHasBeen(int location, String username, int flag);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
+	public void setUserFilePath(String userFilePath);
 
 }
 
