@@ -175,26 +175,35 @@ public class GameplayController
 			System.out.println("Can't move that way");
 			
 			ArrayList<String> output = new ArrayList<String>();
-			output.add("Can't move that way");
+			System.out.println("Can't move that way");
 			db.addUserOutput("Can't move that way");
 			model.addOutput(output);
 		} else {
-			db.setUserLocation(nextLocation, username);
-			String roomDescription = null;
-			if(db.getPlayerHasBeen(nextLocation, username) == 0) {
-				roomDescription = db.getLocationDescriptionLong(nextLocation);
-				db.setPlayerHasBeen(nextLocation, username, 1);
-			} else if(db.getPlayerHasBeen(nextLocation, username) == 1) {
-				roomDescription = db.getLocationDescriptionShort(nextLocation);
-			}
-			db.addUserOutput(roomDescription);
-			
-			// This adds the output into the model
-			// Do we need the output in the model though?
 			ArrayList<String> output = new ArrayList<String>();
-			output.add(roomDescription);
-			model.addOutput(output);
+			ArrayList<String> itemList = new ArrayList<String>();
 			
+			db.setUserLocation(nextLocation, username);
+			itemList = db.getItemNamesInLocation(username);
+			
+			if(db.getPlayerHasBeen(nextLocation, username) == 0) {
+				output.add(db.getLocationDescriptionLong(nextLocation));
+				db.setPlayerHasBeen(nextLocation, username, 1);
+				
+				output.add("Item(s)");
+				for(String itemName : itemList) {
+					output.add(itemName);
+				}
+				output.add(" are in this room");
+			} else if(db.getPlayerHasBeen(nextLocation, username) == 1) {
+				output.add(db.getLocationDescriptionShort(nextLocation));
+			}
+			// The toString() method adds brackets [] to the output, this removes them
+			String outputString = output.toString();
+			outputString = outputString.substring(1, outputString.length() - 1);
+			
+			db.addUserOutput(outputString);
+			System.out.println(outputString);
+				
 		}
 		if(nextLocation == -1) {
 			System.out.println("Movement failed");
@@ -243,16 +252,31 @@ public class GameplayController
 	
 	public String examineRoom(String username) {
 		String returnString = null;
+		ArrayList<String> itemList = new ArrayList<String>();
 		
 		int location_id = db.getUserLocation(username);
+		itemList = db.getItemNamesInLocation(username);
 		
 		returnString = db.getLocationDescriptionLong(location_id);
 		if(returnString == null) {
 			System.out.println("Error: Failure to get room description in examineRoom");
 			db.addUserOutput("Error: Failure to get room description in examineRoom");
 		} else {
-			System.out.println(returnString);
-			db.addUserOutput(returnString);
+			ArrayList<String> outputStringList = new ArrayList<String>();
+			
+			//TODO: This prints an extra comma right before Item(s), how do remove?
+			outputStringList.add(returnString);
+			outputStringList.add("Item(s)");
+			for(String itemName : itemList) {
+				outputStringList.add(itemName);
+			}
+			outputStringList.add(" are in this room");
+			// The toString() method adds brackets [] to the output, this removes them
+			String outputString = outputStringList.toString();
+			outputString = outputString.substring(1, outputString.length() - 1);
+			
+			System.out.println(outputString);
+			db.addUserOutput(outputString);
 		}
 		
 		return returnString;

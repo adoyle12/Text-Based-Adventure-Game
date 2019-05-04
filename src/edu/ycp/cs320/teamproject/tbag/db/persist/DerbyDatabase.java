@@ -512,7 +512,7 @@ public class DerbyDatabase implements IDatabase{
 			System.out.println("Loading initial data...");
 			db.loadInitialData();
 			
-			System.out.println("Library DB successfully initialized!");
+			System.out.println("TBAG DB successfully initialized!");
 		}
 		
 		@Override
@@ -1202,6 +1202,56 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(resultSet);
 						DBUtil.closeQuietly(setPlayerHasBeen);
 					}	
+				}
+			});
+		}
+		
+		//TODO: When should we add the item name to the description of the room
+		// Should we add them to the actual description of the room OR add a string to the end of the room description each time we need to
+		@Override
+		public ArrayList<String> getItemNamesInLocation(String username) {
+			return executeTransaction(new Transaction<ArrayList<String>>() {
+				@Override
+				public ArrayList<String> execute(Connection conn) throws SQLException{
+					PreparedStatement getItemNames = null;
+					ResultSet resultSet = null;
+					
+					// Get all the item names in the room that the user is in
+					int userLocationID = getUserLocation(username);
+					ArrayList<String> returnList = new ArrayList<String>();
+					try {
+						getItemNames = conn.prepareStatement( 
+								" select inventory.item_name " +
+								" 	from inventory " +
+								"	where inventory.item_location_id = ? "
+							
+						);
+						
+						getItemNames.setInt(1, userLocationID);
+						
+						resultSet = getItemNames.executeQuery();
+						
+						Boolean found = false;
+						String itemName = new String();
+						
+						while(resultSet.next()) {
+							found = true;
+							
+							itemName = resultSet.getString("item_name");
+							
+							returnList.add(itemName);
+						}
+						
+						if(!found) {
+							System.out.println("No items found!");
+						}
+						
+						return returnList;
+						
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getItemNames);
+					}
 				}
 			});
 		}
