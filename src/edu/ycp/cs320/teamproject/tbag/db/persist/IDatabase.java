@@ -31,6 +31,7 @@ public interface IDatabase{
 	public Integer getPlayerHasBeen(int location, String username);
 	public Integer setPlayerHasBeen(int location, String username, int flag);
 	public ArrayList<String> getItemNamesInLocation(String username);
+	public String getPuzzleItemName(int location_id);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 }

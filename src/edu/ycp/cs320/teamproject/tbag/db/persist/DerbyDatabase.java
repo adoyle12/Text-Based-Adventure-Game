@@ -17,6 +17,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.Puzzle;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class DerbyDatabase implements IDatabase{
@@ -348,6 +349,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement createUsersStmt = null;
 					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
+					PreparedStatement createPuzzleStmt = null;
 				
 					try {
 						
@@ -407,6 +409,14 @@ public class DerbyDatabase implements IDatabase{
 						);
 						createInputsStmt.executeUpdate();
 						
+						createPuzzleStmt = conn.prepareStatement(
+								"   create table puzzle (" +
+								"	puzzle_location_id integer, " +
+								" 	item_name varChar(100)  " +
+								")"
+						);
+						createPuzzleStmt.executeUpdate();
+						
 						System.out.println("tables created");				
 											
 						return true;
@@ -416,6 +426,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(createUsersStmt);
 						DBUtil.closeQuietly(createJointLocationsStmt);
 						DBUtil.closeQuietly(createInputsStmt);
+						DBUtil.closeQuietly(createPuzzleStmt);
 					}
 				}
 			});
@@ -430,6 +441,7 @@ public class DerbyDatabase implements IDatabase{
 					List<Location> locationList;
 					List<User> userList;
 					List<JointLocations> jointLocationsList;
+					List<Puzzle> puzzleList;
 					//List<Description> descriptionList; 
 					
 					try {
@@ -437,6 +449,7 @@ public class DerbyDatabase implements IDatabase{
 						locationList = InitialData.getLocations(); 
 						userList = InitialData.getUsers();
 						jointLocationsList = InitialData.getJointLocations();
+						puzzleList = InitialData.getPuzzle();
 						//descriptionList = //InitialData.getDescriptions();
 						
 					} catch (IOException e) {
@@ -447,6 +460,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertLocation = null; 
 					PreparedStatement insertUser = null;
 					PreparedStatement insertJointLocations = null;
+					PreparedStatement insertPuzzle = null;
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -491,12 +505,23 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertUser.executeBatch();
 						
+						insertPuzzle = conn.prepareStatement("insert into puzzle (puzzle_location_id, item_name) values (?, ?)");
+						for (Puzzle puzzle : puzzleList) 
+						{
+							insertPuzzle.setInt(1, puzzle.getLocationID());
+							insertPuzzle.setString(2, puzzle.getName());
+							insertPuzzle.addBatch();
+						}
+						insertPuzzle.executeBatch();
+						
 						System.out.println("Tables populated");
 						
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
 						DBUtil.closeQuietly(insertUser);
+						DBUtil.closeQuietly(insertJointLocations);
+						DBUtil.closeQuietly(insertPuzzle);
 					}
 					return true;
 				}
@@ -1254,5 +1279,11 @@ public class DerbyDatabase implements IDatabase{
 					}
 				}
 			});
+		}
+
+		@Override
+		public String getPuzzleItemName(int location_id) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 }
