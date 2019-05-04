@@ -21,10 +21,12 @@ public class GameplayController
 	private Gameplay model; 
 	private ArrayList<String> output;
 	
-	public GameplayController() {
+	public GameplayController(String username) {
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
+		db.setUserFilePath(username); 
 	}
+
 	
 	public String gameLogic(String input, String username) {
 		String errorMessage = null;
