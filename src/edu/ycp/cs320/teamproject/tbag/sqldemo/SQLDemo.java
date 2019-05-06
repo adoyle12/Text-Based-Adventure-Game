@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,6 +46,16 @@ public class SQLDemo {
 	//TODO: YOU MUST UNCOMMENT YOUR CONNECTION PATH
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Connection conn = null;
+		Scanner keyboard = new Scanner(System.in); 
+		String userFilePath; 
+		
+		
+		System.out.println("Please enter the file path name you're trying to reach"); 
+		System.out.println("(for right now you can enter 'users' or type in the username of a specific user"); 
+		userFilePath = keyboard.nextLine(); 
+		
+	
+		
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
@@ -52,9 +63,9 @@ public class SQLDemo {
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
-				resourcePath = "jdbc:derby:C:/TBAG.db;create=true";
+				resourcePath = "jdbc:derby:C:/" + userFilePath + "TBAG.db;create=true";
 			} else if(operatingSystem.equals("Mac OS X")) {
-				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/TBAG.db;create=true";
+				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + userFilePath + "TBAG.db;create=true";
 			} else {
 				System.out.println("ACCESS DENIED: " + operatingSystem + " IS NOT A VALID OS SYSTEM");
 			}

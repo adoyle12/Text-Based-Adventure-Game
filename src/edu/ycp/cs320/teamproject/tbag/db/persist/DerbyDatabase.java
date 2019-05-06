@@ -424,6 +424,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement createInventoryStmt = null;	
 					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
+					PreparedStatement createGameStateStmt = null; 
 					
 					
 				
@@ -474,6 +475,18 @@ public class DerbyDatabase implements IDatabase{
 						);
 						createInputsStmt.executeUpdate();
 						
+						//AD: should items be in game state or do we have a way to know what items the user has already?
+						createGameStateStmt = conn.prepareStatement(
+								"	create table gameState (" +
+								"	game_id integer primary key " +
+								"	generated always as identity (start with 1, increment by 1), " +
+								"	location_id integer, " +
+								"	health integer, " +
+								" 	score integer " +
+								")"	
+								);
+						createGameStateStmt.executeUpdate(); 
+						
 						System.out.println("Game tables created");				
 											
 						return true;
@@ -482,6 +495,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(createInventoryStmt);
 						DBUtil.closeQuietly(createJointLocationsStmt);
 						DBUtil.closeQuietly(createInputsStmt);
+						DBUtil.closeQuietly(createGameStateStmt);
 					}
 				}
 			});
