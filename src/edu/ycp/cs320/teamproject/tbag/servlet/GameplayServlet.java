@@ -34,22 +34,11 @@ public class GameplayServlet extends HttpServlet
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
-
-		// decode POSTed form parameters and dispatch to controller
-		String input = getStringFromParameter(req.getParameter("input"));
-
+		controller.output();
 		
-		
-		// Do all the game logic
-		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
-		controller.gameLogic(input, username);
 		
 		req.setAttribute("gameplay", model);
 		
-		// Add parameters as request attributes
-		req.setAttribute("input", model.getInput());
-		req.setAttribute("output", model.getOutput());
-		req.setAttribute("size", model.getOutput().size());
 		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
