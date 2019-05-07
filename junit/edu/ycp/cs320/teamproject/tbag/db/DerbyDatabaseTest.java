@@ -96,10 +96,10 @@ public class DerbyDatabaseTest
 		Integer locationID = -1;
 		Integer afterLocationID = -2;
 		
-		locationID = db.setUserLocation(7, username);
+		locationID = db.setUserLocation(7);
 		//System.out.println(locationID);
 		
-		afterLocationID = db.getUserLocation(username);
+		afterLocationID = db.getUserLocation();
 		
 		assertEquals(locationID, afterLocationID);
 	}

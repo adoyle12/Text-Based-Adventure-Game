@@ -256,4 +256,12 @@ public class GameplayController
 		
 		return returnString;
 	}
+	
+	public void agentEncounter(int agent_location, int user_location) {
+		for(int i = 1; i < 5; i++) {
+			if(agent_location == user_location) {
+				db.addUserOutput(db.getAgentDescription(i));
+			}
+		}
+	}
 }

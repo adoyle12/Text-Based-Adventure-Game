@@ -12,12 +12,16 @@ public class GameplayControllerTest
 {
 	private Gameplay model;
 	private GameplayController controller; 
+	private User user;
 	
 	@Before
 	public void setUp() 
 	{
 		model = new Gameplay();
-		controller = new GameplayController();
+		user = new User();
+		user.setUsername("john");
+		
+		controller = new GameplayController("john");
 		
 		controller.setModel(model);
 	}

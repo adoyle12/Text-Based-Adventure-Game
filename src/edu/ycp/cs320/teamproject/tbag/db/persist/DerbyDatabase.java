@@ -471,7 +471,7 @@ public class DerbyDatabase implements IDatabase{
 								"	create table agents (" +
 								"   agent_id integer primary key " +
 								"		generated always as identity (start with 1, increment by 1), " +
-								"	agent_location integer, " +
+								"	agent_location_id integer, " +
 								"	agent_description varchar(8000) " +
 								")"
 						);
@@ -576,10 +576,11 @@ public class DerbyDatabase implements IDatabase{
 						insertItem.executeBatch();
 						
 						//inserts agents
-						insertAgents = conn.prepareStatement("insert into agents (agent_location, agent_description) values (?, ?)");
+						insertAgents = conn.prepareStatement("insert into agents (agent_location_id, agent_description) values (?, ?)");
 						for(Agent agent: agentList) {
 							insertAgents.setInt(1, agent.getLocationID());
 							insertAgents.setString(2, agent.getAgentDescription());
+							insertAgents.addBatch();
 						}
 						insertAgents.executeBatch();
 						
@@ -848,7 +849,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					try {
 						getLocationID = conn.prepareStatement( 
-								" select agents.agent_location " +
+								" select agents.agent_location_id " +
 								" 	from agents " +
 								"	where agent_id = ? "
 							
@@ -860,7 +861,7 @@ public class DerbyDatabase implements IDatabase{
 						Integer agentLocation = null;
 						
 						if(resultSet.next()) {
-							agentLocation = resultSet.getInt(2);
+							agentLocation = resultSet.getInt("agent_location_id");
 						}
 						
 						return agentLocation;
@@ -875,18 +876,18 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		@Override
-		public String getAgentDescription(final int agent_id) {
+		public String getAgentDescription(final int agent_location_id) {
 			return executeTransaction(new Transaction<String>(){
 				public String execute(Connection conn) throws SQLException {
 					PreparedStatement agentDescription = null;
 					ResultSet resultSet = null;
 					try {
 						agentDescription = conn.prepareStatement(
-								"select agent_description " +
+								"select agents.agent_description " +
 								" from agents " +
-								" where agent_id = ? "
+								" where agent_location_id = ? "
 						);
-						agentDescription.setInt(1, agent_id);
+						agentDescription.setInt(1, agent_location_id);
 					
 						resultSet = agentDescription.executeQuery();
 					
