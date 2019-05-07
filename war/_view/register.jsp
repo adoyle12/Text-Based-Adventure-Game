@@ -97,11 +97,11 @@
 				<table>
 					<tr>
 						<td class="label">User Name:</td>
-						<td><input type="text" name="username" size="12" value="${username}" /></td>
+						<td><input type="text" name="username" size="12"/></td>
 					</tr>
 					<tr>
 						<td class="label">Password:</td>
-						<td><input type="password" name="password" size="12" value="${password}" /></td>
+						<td><input type="password" name="password" size="12" /></td>
 					</tr>
 				</table>
 				<br>

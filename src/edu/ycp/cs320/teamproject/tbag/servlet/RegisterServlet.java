@@ -62,8 +62,8 @@ public class RegisterServlet extends HttpServlet{
 		
 		
 		// Add parameters as request attributes
-		req.setAttribute("username", username);
-		req.setAttribute("password", password);
+//		req.setAttribute("username", username);
+//		req.setAttribute("password", password);
 		
 		// Add result objects as request attributes
 		req.setAttribute("errorMessage", errorMessage);

@@ -34,6 +34,8 @@ public class GameplayServlet extends HttpServlet
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
+		
+		//Just need the output list to go to the model on doGet 
 		controller.output();
 		
 		
