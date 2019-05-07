@@ -13,6 +13,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.InitialData;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DBUtil;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
+import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
@@ -425,6 +426,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
 					PreparedStatement createGameStateStmt = null; 
+					PreparedStatement createAgentsStmt = null;
 					
 				
 					try {
@@ -465,6 +467,17 @@ public class DerbyDatabase implements IDatabase{
 							);
 						createJointLocationsStmt.executeUpdate();
 						
+						createAgentsStmt = conn.prepareStatement(
+								"	create table agents (" +
+								"   agent_id integer primary key " +
+								"		generated always as identity (start with 1, increment by 1), " +
+								"	agent_location integer, " +
+								"	agent_description varchar(8000) " +
+								")"
+						);
+						
+						createAgentsStmt.executeUpdate();
+						
 						createInputsStmt = conn.prepareStatement(
 								"   create table commands (" +
 								"	command_id integer primary key " +
@@ -495,6 +508,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(createJointLocationsStmt);
 						DBUtil.closeQuietly(createInputsStmt);
 						DBUtil.closeQuietly(createGameStateStmt);
+						DBUtil.closeQuietly(createAgentsStmt);
 					}
 				}
 			});
@@ -508,11 +522,13 @@ public class DerbyDatabase implements IDatabase{
 					List<Item> inventory;
 					List<Location> locationList;
 					List<JointLocations> jointLocationsList;
+					List<Agent> agentList;
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						jointLocationsList = InitialData.getJointLocations();
+						agentList = InitialData.getAgents();
 						
 						
 					} catch (IOException e) {
@@ -523,6 +539,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertLocation = null; 
 					PreparedStatement insertJointLocations = null;
 					PreparedStatement insertGameState = null; //This is the hardcoded initial game state - don't need to read from CSV
+					PreparedStatement insertAgents = null;
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -558,6 +575,14 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertItem.executeBatch();
 						
+						//inserts agents
+						insertAgents = conn.prepareStatement("insert into agents (agent_location, agent_description) values (?, ?)");
+						for(Agent agent: agentList) {
+							insertAgents.setInt(1, agent.getLocationID());
+							insertAgents.setString(2, agent.getAgentDescription());
+						}
+						insertAgents.executeBatch();
+						
 						insertGameState = conn.prepareStatement("insert into gameState (location_id, health, score) values (1, 100, 0)"); 
 						insertGameState.executeUpdate(); 
 						
@@ -566,6 +591,7 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
+						DBUtil.closeQuietly(insertAgents);
 					}
 					return true;
 				}
@@ -808,6 +834,73 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(returnCurrentLocation);
 					}
 					
+				}
+			});
+		}
+		
+		@Override
+		public Integer getAgentLocation(int agent_id) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getLocationID = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getLocationID = conn.prepareStatement( 
+								" select agents.agent_location " +
+								" 	from agents " +
+								"	where agent_id = ? "
+							
+						);
+						getLocationID.setInt(1, agent_id);
+						
+						resultSet = getLocationID.executeQuery();
+						
+						Integer agentLocation = null;
+						
+						if(resultSet.next()) {
+							agentLocation = resultSet.getInt(2);
+						}
+						
+						return agentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getLocationID);
+					}
+					
+				}
+			});
+		}
+		
+		@Override
+		public String getAgentDescription(final int agent_id) {
+			return executeTransaction(new Transaction<String>(){
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement agentDescription = null;
+					ResultSet resultSet = null;
+					try {
+						agentDescription = conn.prepareStatement(
+								"select agent_description " +
+								" from agents " +
+								" where agent_id = ? "
+						);
+						agentDescription.setInt(1, agent_id);
+					
+						resultSet = agentDescription.executeQuery();
+					
+						String result = new String();
+						
+						if(resultSet.next()) {
+							result = resultSet.getString("agent_description");
+						}
+					
+						return result;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(agentDescription);
+					}
 				}
 			});
 		}

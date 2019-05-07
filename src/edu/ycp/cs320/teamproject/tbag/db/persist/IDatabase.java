@@ -30,6 +30,8 @@ public interface IDatabase{
 	public Integer getJointLocationWest(int currentLocation);
 	public Integer getPlayerHasBeen(int location);
 	public Integer setPlayerHasBeen(int location, int flag);
+	public Integer getAgentLocation(int agent_id);
+	public String getAgentDescription(int agent_id);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);

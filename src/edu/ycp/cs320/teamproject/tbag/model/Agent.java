@@ -7,6 +7,7 @@ public class Agent
 	private int agentID; 
 	private int locationID; 
 	private ArrayList<Item> inventory; 
+	private String agentDescription;
 	
 	public void setAgentID(int agentID)
 	{
@@ -36,6 +37,14 @@ public class Agent
 	public ArrayList<Item> getInventory()
 	{
 		return inventory; 
+	}
+
+	public void setAgentDescription(String agentDescription) {
+		this.agentDescription = agentDescription;
+	}
+	
+	public String getAgentDescription() {
+		return agentDescription;
 	}
 	
 }

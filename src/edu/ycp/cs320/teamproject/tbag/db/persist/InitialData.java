@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
@@ -153,6 +154,39 @@ public class InitialData
 	public static List<Description> getDescriptions() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public static List<Agent> getAgents() throws IOException {
+		List<Agent>  agentList = new ArrayList<Agent>();
+		ReadCSV readAgents = new ReadCSV("agents.csv");
+		try 
+		{
+			//auto-generated primary key for agent table
+			//Integer agentID = 1;
+			Integer agentLocation = 2;
+			
+			while (true) 
+			{
+				List<String> tuple = readAgents.next();
+				if (tuple == null) 
+				{
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Agent agent = new Agent();
+				agent.setLocationID(agentLocation+=2);
+				agent.setAgentDescription(i.next());
+				agentList.add(agent);
+				
+				
+			}
+			System.out.println("Agents loaded from CSV file");
+			return agentList;
+		} 
+		finally 
+		{
+			readAgents.close();
+		}
 	}
 
 	
