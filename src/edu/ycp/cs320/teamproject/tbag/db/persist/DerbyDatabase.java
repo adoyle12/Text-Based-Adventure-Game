@@ -507,16 +507,13 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
 					List<Location> locationList;
-//					List<User> userList;	Won't need it 
 					List<JointLocations> jointLocationsList;
-					//List<Description> descriptionList; 
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
-//						userList = InitialData.getUsers();
 						jointLocationsList = InitialData.getJointLocations();
-						//descriptionList = //InitialData.getDescriptions();
+						
 						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
@@ -524,8 +521,8 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertItem = null;
 					PreparedStatement insertLocation = null; 
-//					PreparedStatement insertUser = null;
 					PreparedStatement insertJointLocations = null;
+					PreparedStatement insertGameState = null; //This is the hardcoded initial game state - don't need to read from CSV
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -561,23 +558,14 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertItem.executeBatch();
 						
-						
-						//This won't be necessary since user's will start empty
-//						insertUser = conn.prepareStatement("insert into users (username, password, user_location_id) values (?, ?, ?)");
-//						for(User user: userList) {
-//							insertUser.setString(1, user.getUsername());
-//							insertUser.setString(2, user.getDBPassword());
-//							insertUser.setInt(3, user.getLocationID());
-//							insertUser.addBatch();
-//						}
-//						insertUser.executeBatch();
+						insertGameState = conn.prepareStatement("insert into gameState (location_id, health, score) values (1, 100, 0)"); 
+						insertGameState.executeUpdate(); 
 						
 						System.out.println("Tables populated");
 						
 					} finally {
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
-//						DBUtil.closeQuietly(insertUser);
 					}
 					return true;
 				}
@@ -741,7 +729,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Integer getUserLocation(String username) {
+		public Integer getUserLocation() {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
@@ -750,19 +738,17 @@ public class DerbyDatabase implements IDatabase{
 					
 					try {
 						getLocationID = conn.prepareStatement( 
-								" select users.user_location_id " +
-								" 	from users " +
-								"	where users.username = ? "
+								" select location_id " +
+								" 	from gameState "
 							
 						);
-						getLocationID.setString(1, username);
 						
 						resultSet = getLocationID.executeQuery();
 						
 						Integer currentLocation = null;
 						
 						if(resultSet.next()) {
-							currentLocation = resultSet.getInt("user_location_id");
+							currentLocation = resultSet.getInt("location_id");
 							//System.out.println(currentLocation);
 						}
 						
@@ -782,7 +768,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Integer setUserLocation(int location, String username) {
+		public Integer setUserLocation(int location) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
@@ -792,30 +778,25 @@ public class DerbyDatabase implements IDatabase{
 					
 					try {
 						setUserLocation = conn.prepareStatement( 
-								" update users " +
-								" 	set user_location_id = ? " +
-								"	where users.username = ? "
+								" update gameState " +
+								" 	set location_id = ? " 
 							
 						);
 						setUserLocation.setInt(1, location);
-						setUserLocation.setString(2, username);
 						
 						setUserLocation.execute();
 						
 						returnCurrentLocation = conn.prepareStatement( 
-								" select users.user_location_id " +
-								" 	from users " +
-								"	where users.username = ? "
-							
+								" select location_id " +
+								" 	from gameState "
 						);
-						returnCurrentLocation.setString(1, username);
 						
 						resultSet = returnCurrentLocation.executeQuery();
 						
 						Integer currentLocation = null;
 						
 						if(resultSet.next()) {
-							currentLocation = resultSet.getInt("user_location_id");
+							currentLocation = resultSet.getInt("location_id");
 						} if(currentLocation == null) {
 							System.out.println("No Location Found? Where are you?");
 						}
@@ -842,7 +823,7 @@ public class DerbyDatabase implements IDatabase{
 					
 					try {
 						// Get user's location
-						int userLocationID = getUserLocation(username);
+						int userLocationID = getUserLocation();
 						
 						itemLocation = conn.prepareStatement( 
 								" select inventory.item_location_id " +
@@ -900,7 +881,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement dropItem = null;
 					
 					try {
-						int userLocationID = getUserLocation(username);
+						int userLocationID = getUserLocation();
 						int itemLocationID = getItemLocationID(itemName);
 						
 						int didDrop = 0;
@@ -1200,7 +1181,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Integer getPlayerHasBeen(int location, String username) {
+		public Integer getPlayerHasBeen(int location) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
@@ -1210,14 +1191,14 @@ public class DerbyDatabase implements IDatabase{
 					try {
 						getPlayerHasBeen = conn.prepareStatement( 
 								" select player_has_been " +
-								" 	from locations, users " +
-								"	where locations.location_id = ? and users.username = ? "
+								" 	from locations " +
+								"	where locations.location_id = ? "
 							
 						);
 						
 						
 						getPlayerHasBeen.setInt(1, location);
-						getPlayerHasBeen.setString(2, username);
+						
 						
 						resultSet = getPlayerHasBeen.executeQuery();
 						
@@ -1242,7 +1223,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Integer setPlayerHasBeen(int location, String username, int flag) {
+		public Integer setPlayerHasBeen(int location, int flag) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
@@ -1264,14 +1245,14 @@ public class DerbyDatabase implements IDatabase{
 						
 						checkPlayerHasBeen = conn.prepareStatement( 
 								" select player_has_been " +
-								" 	from locations, users " +
-								"	where locations.location_id = ? and users.username = ? "
+								" 	from locations " +
+								"	where locations.location_id = ? "
 							
 						);
 						
 						
 						checkPlayerHasBeen.setInt(1, location);
-						checkPlayerHasBeen.setString(2, username);
+						
 						
 						resultSet = checkPlayerHasBeen.executeQuery();
 						

@@ -10,11 +10,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 
-/**
- * Controller for Gameplay
- * @author adoyle 
- *
- */
+
 public class GameplayController 
 {
 	private IDatabase db;
@@ -48,16 +44,16 @@ public class GameplayController
 			// ___________________Movement_______________________
 			if(input.contains("move")) {
 				if(input.contains("north")) {
-					moveTo(username, 0);
+					moveTo(0);
 				}
 				else if(input.contains("south")) {
-					moveTo(username, 1);
+					moveTo(1);
 				}
 				else if(input.contains("east")) {
-					moveTo(username, 2);
+					moveTo(2);
 				} 
 				else if(input.contains("west")){
-					moveTo(username, 3);
+					moveTo(3);
 				} else {
 					System.out.println("Unknown direction");
 					db.addUserOutput("Unknown direction");
@@ -126,9 +122,10 @@ public class GameplayController
 					System.out.println("Unknown item name");
 					db.addUserOutput("Unknown item name");
 				} 
-			} else if(input.contains("examine")) {
+			} 
+			else if(input.contains("examine")) {
 				if (input.contains("room") || input.contains("location")) {
-					examineRoom(username);
+					examineRoom();
 				} else {
 					System.out.println("Specify what to examine");
 				}
@@ -161,8 +158,8 @@ public class GameplayController
 		model.displayMap();
 	}
 	
-	public int moveTo(String username, int direction) {
-		int currentLocation = db.getUserLocation(username);
+	public int moveTo(int direction) {
+		int currentLocation = db.getUserLocation();
 		int nextLocation = -1;
 		if(direction == 0) {
 			nextLocation = db.getJointLocationNorth(currentLocation);
@@ -181,12 +178,12 @@ public class GameplayController
 			db.addUserOutput("Can't move that way");
 			model.addOutput(output);
 		} else {
-			db.setUserLocation(nextLocation, username);
+			db.setUserLocation(nextLocation);
 			String roomDescription = null;
-			if(db.getPlayerHasBeen(nextLocation, username) == 0) {
+			if(db.getPlayerHasBeen(nextLocation) == 0) {
 				roomDescription = db.getLocationDescriptionLong(nextLocation);
-				db.setPlayerHasBeen(nextLocation, username, 1);
-			} else if(db.getPlayerHasBeen(nextLocation, username) == 1) {
+				db.setPlayerHasBeen(nextLocation, 1);
+			} else if(db.getPlayerHasBeen(nextLocation) == 1) {
 				roomDescription = db.getLocationDescriptionShort(nextLocation);
 			}
 			db.addUserOutput(roomDescription);
@@ -243,10 +240,10 @@ public class GameplayController
 		return returnInt;
 	}
 	
-	public String examineRoom(String username) {
+	public String examineRoom() {
 		String returnString = null;
 		
-		int location_id = db.getUserLocation(username);
+		int location_id = db.getUserLocation();
 		
 		returnString = db.getLocationDescriptionLong(location_id);
 		if(returnString == null) {

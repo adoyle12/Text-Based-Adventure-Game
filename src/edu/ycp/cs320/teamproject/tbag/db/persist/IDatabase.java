@@ -22,14 +22,14 @@ public interface IDatabase{
 	public String getLocationDescriptionShort(int location_id);
 	public Integer setItemLocation(String itemName, int location);
 	public Integer getItemLocationID(String itemName);
-	public Integer getUserLocation(String username);
-	public Integer setUserLocation(int location, String username);
+	public Integer getUserLocation();
+	public Integer setUserLocation(int location);
 	public Integer getJointLocationNorth(int currentLocation);
 	public Integer getJointLocationSouth(int currentLocation);
 	public Integer getJointLocationEast(int currentLocation);
 	public Integer getJointLocationWest(int currentLocation);
-	public Integer getPlayerHasBeen(int location, String username);
-	public Integer setPlayerHasBeen(int location, String username, int flag);
+	public Integer getPlayerHasBeen(int location);
+	public Integer setPlayerHasBeen(int location, int flag);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
