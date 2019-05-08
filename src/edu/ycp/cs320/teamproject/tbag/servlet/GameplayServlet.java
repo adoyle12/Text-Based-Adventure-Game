@@ -20,6 +20,40 @@ public class GameplayServlet extends HttpServlet
 
 		System.out.println("Gameplay Servlet: doGet");	
 		
+		String errorMessage = null;
+		
+		// Get the current user from the session
+		String username = req.getSession().getAttribute("username").toString();
+		
+		/*
+		 * Initiate the controller and model
+		 * Set the mode
+		 * Must do this each time since they don't persist between POSTs
+		 */
+		controller = new GameplayController(username);
+		Gameplay model = new Gameplay(); 
+		controller.setModel(model);
+		
+
+		// decode POSTed form parameters and dispatch to controller
+		String input = getStringFromParameter(req.getParameter("input"));
+
+		
+		
+		// Do all the game logic
+		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
+		controller.gameLogic(input, username);
+		
+		req.setAttribute("gameplay", model);
+		
+		// Add parameters as request attributes
+		req.setAttribute("input", model.getInput());
+		req.setAttribute("output", model.getOutput());
+		req.setAttribute("size", model.getOutput().size());
+		
+		// this adds the errorMessage text and the result to the response
+		req.setAttribute("errorMessage", errorMessage);
+		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/gameplay.jsp").forward(req, resp);
 	}
@@ -32,12 +66,15 @@ public class GameplayServlet extends HttpServlet
 		
 		String errorMessage = null;
 		
+		// Get the current user from the session
+		String username = req.getSession().getAttribute("username").toString();
+		
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
 		 * Must do this each time since they don't persist between POSTs
 		 */
-		controller = new GameplayController();
+		controller = new GameplayController(username);
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
@@ -45,8 +82,7 @@ public class GameplayServlet extends HttpServlet
 		// decode POSTed form parameters and dispatch to controller
 		String input = getStringFromParameter(req.getParameter("input"));
 
-		// Get the current user from the session
-		String username = req.getSession().getAttribute("username").toString();
+		
 		
 		// Do all the game logic
 		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());

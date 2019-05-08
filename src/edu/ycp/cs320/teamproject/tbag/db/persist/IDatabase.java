@@ -34,5 +34,6 @@ public interface IDatabase{
 	public String getPuzzleItemName(int location_id);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
+	public void setUserFilePath(String username);
 }
 
