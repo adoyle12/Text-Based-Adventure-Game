@@ -27,6 +27,11 @@ public class GameplayController
 	public String gameLogic(String input, String username) {
 		String errorMessage = null;
 		
+		// ____________________Agent Encounter ___________________
+		for(int i = 1; i < 5; i++) {
+			agentEncounter(db.getAgentLocation(i), db.getUserLocation());
+		}
+		
 		//check for errors in the form data before using is in a calculation
 		if (input == null) 
 		{
@@ -258,10 +263,8 @@ public class GameplayController
 	}
 	
 	public void agentEncounter(int agent_location, int user_location) {
-		for(int i = 1; i < 5; i++) {
-			if(agent_location == user_location) {
-				db.addUserOutput(db.getAgentDescription(i));
-			}
+		if(agent_location == user_location) {
+			db.addUserOutput(db.getAgentDescription(agent_location));
 		}
 	}
 }
