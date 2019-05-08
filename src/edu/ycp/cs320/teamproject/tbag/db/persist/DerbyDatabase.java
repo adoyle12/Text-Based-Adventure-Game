@@ -449,7 +449,9 @@ public class DerbyDatabase implements IDatabase{
 							"	item_id integer primary key " +
 							"		generated always as identity (start with 1, increment by 1), " +
 							"	item_location_id integer, " +
-							"   item_name varchar(40) " +
+							"   item_name varchar(40), " +
+							"	item_description varchar(8000), " +
+							"	on_user_flag integer " +
 							")"
 						);	
 						createInventoryStmt.executeUpdate();
@@ -565,12 +567,14 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertJointLocations.executeBatch();
 						
-						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name) values (?, ?)");
+						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name, item_description, on_user_flag) values (?, ?, ?, ?)");
 						for (Item item : inventory) 
 						{
 //							// Auto generate itemID
 							insertItem.setInt(1, item.getLocationID());
 							insertItem.setString(2, item.getName());
+							insertItem.setString(3, item.getItemDescription());
+							insertItem.setInt(4, item.getOnUserFlag());
 							insertItem.addBatch();
 						}
 						insertItem.executeBatch();
@@ -647,13 +651,6 @@ public class DerbyDatabase implements IDatabase{
 					
 				}
 			});
-		}
-
-
-		@Override
-		public Integer insertItem(String name, int locationID, int descriptionID) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		@Override
@@ -907,6 +904,82 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		@Override
+		public String getItemDescription(final int item_location, final int onUserFlag) {
+			return executeTransaction(new Transaction<String>(){
+				public String execute(Connection conn) throws SQLException {
+					PreparedStatement itemDescription = null;
+					ResultSet resultSet = null;
+					try {
+						itemDescription = conn.prepareStatement(
+								"select inventory.item_description " +
+								" from inventory " +
+								" where inventory.item_location_id = ? " +
+								" and inventory.on_user_flag = ?"
+						);
+						itemDescription.setInt(1, item_location);
+						itemDescription.setInt(2, onUserFlag);
+					
+						resultSet = itemDescription.executeQuery();
+					
+						String result = new String();
+						
+						if(resultSet.next()) {
+							result = resultSet.getString("item_description");
+						}
+					
+						return result;
+					} finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(itemDescription);
+					}
+				}
+			});
+		}
+		
+		@Override
+		public Integer setItemLocation(String itemName, int location, int onUserFlag) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement setItemLocation = null;
+					ResultSet resultSet = null;
+					
+					try {
+						setItemLocation = conn.prepareStatement( 
+								" update inventory " +
+								" 	set item_location_id = ? " +
+								" 	where inventory.item_name = ? " +
+								"	and inventory.onUserFlag = ?"
+							
+						);
+						setItemLocation.setInt(1, location);
+						setItemLocation.setString(2, itemName);
+						setItemLocation.setInt(3, onUserFlag);
+						
+						resultSet = setItemLocation.executeQuery();
+						
+						Integer currentLocation = null;
+						
+						if(resultSet.next()) {
+							currentLocation = resultSet.getInt("user_location_id");
+						}
+						
+						if(currentLocation == null) {
+							System.out.println("No Location Found? Where are you?");
+						}
+						
+						return currentLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(setItemLocation);
+					}
+					
+				}
+			});
+		}
+		
+		@Override
 		public Integer pickupItem(String itemName, String username) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
@@ -1065,50 +1138,6 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
-
-		// TODO: This method doesn't look right
-		@Override
-		public Integer setItemLocation(String itemName, int location) {
-			return executeTransaction(new Transaction<Integer>() {
-				@Override
-				public Integer execute(Connection conn) throws SQLException {
-					PreparedStatement setItemLocation = null;
-					ResultSet resultSet = null;
-					
-					try {
-						setItemLocation = conn.prepareStatement( 
-								" update inventory " +
-								" 	set item_location_id = ? " +
-								" 	where inventory.item_name = ? "
-							
-						);
-						setItemLocation.setInt(1, location);
-						setItemLocation.setString(2, itemName);
-						
-						resultSet = setItemLocation.executeQuery();
-						
-						Integer currentLocation = null;
-						
-						if(resultSet.next()) {
-							currentLocation = resultSet.getInt("user_location_id");
-							//System.out.println(currentLocation);
-						}
-						
-						if(currentLocation == null) {
-							System.out.println("No Location Found? Where are you?");
-						}
-						
-						return currentLocation;
-					}
-					finally {
-						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(setItemLocation);
-					}
-					
-				}
-			});
-		}
-
 
 		@Override
 		public Integer getJointLocationNorth(int currentLocation) {
@@ -1367,6 +1396,12 @@ public class DerbyDatabase implements IDatabase{
 					}	
 				}
 			});
+		}
+
+		@Override
+		public Integer insertItem(String name, int locationID, int descriptionID) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 }

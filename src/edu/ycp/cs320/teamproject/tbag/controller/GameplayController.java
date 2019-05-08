@@ -32,6 +32,9 @@ public class GameplayController
 			agentEncounter(db.getAgentLocation(i), db.getUserLocation());
 		}
 		
+		// ____________________Items in Rooms______________________
+		itemDescription(db.getUserLocation(), 0);
+		
 		//check for errors in the form data before using is in a calculation
 		if (input == null) 
 		{
@@ -218,6 +221,7 @@ public class GameplayController
 		} else if(returnInt == 1) {
 			System.out.println("Picked up " + itemName);
 			db.addUserOutput("Picked up " + itemName);
+			db.setItemLocation(itemName, db.getUserLocation(), 1);
 		} else if(returnInt == null) {
 			System.out.println("Error: Failure occured in itemPickup method");
 			db.addUserOutput("Error: Failure occured in itemPickup method");
@@ -237,6 +241,7 @@ public class GameplayController
 		} else if(returnInt == 1) {
 			System.out.println("Dropped " + itemName + " on the floor");
 			db.addUserOutput("Dropped " + itemName + " on the floor");
+			db.setItemLocation(itemName, db.getUserLocation(), 0);
 		} else if(returnInt == null) {
 			System.out.println("Error: Failure occured in dropItem");
 			db.addUserOutput("Error: Failure occured in dropItem");
@@ -265,6 +270,12 @@ public class GameplayController
 	public void agentEncounter(int agent_location, int user_location) {
 		if(agent_location == user_location) {
 			db.addUserOutput(db.getAgentDescription(agent_location));
+		}
+	}
+	
+	public void itemDescription(int itemLocation, int onUserFlag) {
+		if(db.getUserLocation() == itemLocation && onUserFlag == 0) {
+			db.addUserOutput(db.getItemDescription(itemLocation, onUserFlag));
 		}
 	}
 }

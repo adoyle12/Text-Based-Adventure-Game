@@ -35,6 +35,8 @@ public class InitialData
 				item.setItemID(itemID++);
 				item.setLocationID(Integer.parseInt(i.next()));
 				item.setName(i.next());
+				item.setItemDescription(i.next());
+				item.setOnUserFlag(Integer.parseInt(i.next()));
 				inventory.add(item);
 			}
 			System.out.println("Inventory loaded from CSV file");
