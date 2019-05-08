@@ -151,7 +151,7 @@ public class InitialData
 		
 	}
 
-	public static List<Description> getDescriptions() {
+	public static List<Description> getDescriptions() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -162,9 +162,6 @@ public class InitialData
 		try 
 		{
 			//auto-generated primary key for agent table
-			//Integer agentID = 1;
-			Integer agentLocation = 2;
-			
 			while (true) 
 			{
 				List<String> tuple = readAgents.next();
@@ -174,7 +171,7 @@ public class InitialData
 				}
 				Iterator<String> i = tuple.iterator();
 				Agent agent = new Agent();
-				agent.setLocationID(agentLocation+=2);
+				agent.setLocationID(Integer.parseInt(i.next()));
 				agent.setAgentDescription(i.next());
 				agentList.add(agent);
 				
