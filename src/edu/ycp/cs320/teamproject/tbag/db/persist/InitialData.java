@@ -7,7 +7,6 @@ import java.util.List;
 
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
-import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
@@ -65,6 +64,12 @@ public class InitialData
 				location.setShortDescription(i.next());
 				location.setLongDescription(i.next());
 				location.setPlayerHasBeen(Integer.parseInt(i.next()));
+				location.setLocationNorth(Integer.parseInt(i.next()));
+				location.setLocationSouth(Integer.parseInt(i.next()));
+				location.setLocationEast(Integer.parseInt(i.next()));
+				location.setLocationWest(Integer.parseInt(i.next()));
+				location.setLocationUp(Integer.parseInt(i.next()));
+				location.setLocationDown(Integer.parseInt(i.next()));
 				locationList.add(location); 
 				
 				
@@ -80,38 +85,6 @@ public class InitialData
 		
 	}
 	
-	public static List<JointLocations> getJointLocations() throws IOException{
-		List<JointLocations> jointLocationsList = new ArrayList<JointLocations>();
-		ReadCSV readLocations = new ReadCSV("jointLocations.csv");
-		try 
-		{ 
-			while (true)
-			{
-				List<String> tuple = readLocations.next();
-				if (tuple == null)
-				{
-					break;
-				}
-				Iterator<String> i = tuple.iterator();
-				JointLocations jointLocations = new JointLocations();
-				jointLocations.setLocationID(Integer.parseInt(i.next()));
-				jointLocations.setLocationNorth(Integer.parseInt(i.next()));
-				jointLocations.setLocationSouth(Integer.parseInt(i.next()));
-				jointLocations.setLocationEast(Integer.parseInt(i.next()));
-				jointLocations.setLocationWest(Integer.parseInt(i.next()));
-				
-				jointLocationsList.add(jointLocations);
-				
-			}
-			System.out.println("JointLocations loaded from CSV file");
-			return jointLocationsList;
-		} 
-		finally 
-		{
-			readLocations.close();
-		}
-		
-	}
 	
 	public static List<User> getUsers() throws IOException{
 		List<User>  userList = new ArrayList<User>();

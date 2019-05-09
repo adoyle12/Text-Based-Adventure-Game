@@ -24,10 +24,12 @@ public interface IDatabase{
 	public Integer getItemLocationID(String itemName);
 	public Integer getUserLocation();
 	public Integer setUserLocation(int location);
-	public Integer getJointLocationNorth(int currentLocation);
-	public Integer getJointLocationSouth(int currentLocation);
-	public Integer getJointLocationEast(int currentLocation);
-	public Integer getJointLocationWest(int currentLocation);
+	public Integer getLocationNorth(int currentLocation);
+	public Integer getLocationSouth(int currentLocation);
+	public Integer getLocationEast(int currentLocation);
+	public Integer getLocationWest(int currentLocation);
+	public Integer getLocationUp(int currentLocation);
+	public Integer getLocationDown(int currentLocation);
 	public Integer getPlayerHasBeen(int location);
 	public Integer setPlayerHasBeen(int location, int flag);
 	

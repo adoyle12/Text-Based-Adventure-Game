@@ -7,6 +7,12 @@ public class Location
 	private String shortDescription; 
 	private String longDescription; 
 	private int playerHasBeen;
+	private int locationNorth;
+	private int locationSouth;
+	private int locationEast;
+	private int locationWest;
+	private int locationUp;
+	private int locationDown;
 	
 	public void setLocationID (int locationID)
 	{
@@ -49,5 +55,60 @@ public class Location
 		return playerHasBeen; 
 	}
 	
+	public void setLocationNorth(int locationNorth)
+	{
+		this.locationNorth = locationNorth; 
+	}
+	
+	public int getLocationNorth()
+	{
+		return locationNorth; 
+	}
+	
+	public void setLocationSouth(int locationSouth)
+	{
+		this.locationSouth = locationSouth; 
+	}
+	
+	public int getLocationSouth()
+	{
+		return locationSouth; 
+	}
+	
+	public void setLocationEast(int locationEast)
+	{
+		this.locationEast = locationEast; 
+	}
+	
+	public int getLocationEast()
+	{
+		return locationEast; 
+	}
+	
+	public void setLocationWest(int locationWest)
+	{
+		this.locationWest = locationWest; 
+	}
+	
+	public int getLocationWest()
+	{
+		return locationWest; 
+	}
+	
+	public int getLocationUp() {
+		return locationUp;
+	}
+
+	public void setLocationUp(int locationUp) {
+		this.locationUp = locationUp;
+	}
+
+	public int getLocationDown() {
+		return locationDown;
+	}
+
+	public void setLocationDown(int locationDown) {
+		this.locationDown = locationDown;
+	}
 }
 

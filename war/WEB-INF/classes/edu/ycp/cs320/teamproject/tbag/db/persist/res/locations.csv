@@ -1,9 +1,11 @@
-Its just room 1.|Its the center of the dungeon and its dark and dank.|0
-Hey I'm just room 2.|I'm pretty similar to room one just less dark and dank.|0
-I'm the first hallway 3.|I'm like a room just with more room.|0
-This is room 4| Description for room 4|0
-This is room 5| Description for room 5|0
-This is room 6| Description for room 6|0
-This is room 7| Description for room 7|0
-This is room 8| Description for room 8|0
-This is room 9| Description for room 9|0
+This is room 1|Description for room 1|0|1|1|1|1|6|1
+This is room 2|Description for room 2|0|2|5|3|2|2|2
+This is room 3|Description for room 3|0|3|6|4|2|3|3
+This is room 4|Description for room 4|0|4|7|4|3|4|4
+This is room 5|Description for room 5|0|2|8|6|5|5|5
+This is room 6|Description for room 6|0|3|9|7|5|11|1
+This is room 7|Description for room 7|0|4|10|7|6|7|7
+This is room 8|Description for room 8|0|5|8|9|8|8|8
+This is room 9|Description for room 9|0|6|9|10|8|9|9
+This is room 10|Description for room 10|0|7|10|10|9|10|10
+This is room 11|Description for room 11|0|11|11|11|11|11|6
