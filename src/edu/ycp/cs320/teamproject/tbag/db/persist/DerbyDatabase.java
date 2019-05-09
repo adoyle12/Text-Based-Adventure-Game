@@ -16,7 +16,6 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
 import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
-import edu.ycp.cs320.teamproject.tbag.model.JointLocations;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
@@ -341,7 +340,7 @@ public class DerbyDatabase implements IDatabase{
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
-				resourcePath = "jdbc:derby:C:/" + userFilePath + "TBAG.db;create=true";
+				resourcePath = "jdbc:derby:C:/TBAG_DBs/" + userFilePath + "TBAG.db;create=true";
 			} else if(operatingSystem.equals("Mac OS X")) {
 				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + userFilePath + "TBAG.db;create=true";
 			} else {
@@ -423,7 +422,6 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					PreparedStatement createLocationsStmt = null;
 					PreparedStatement createInventoryStmt = null;	
-					PreparedStatement createJointLocationsStmt = null;
 					PreparedStatement createInputsStmt = null;
 					PreparedStatement createGameStateStmt = null; 
 					PreparedStatement createAgentsStmt = null;
@@ -437,7 +435,13 @@ public class DerbyDatabase implements IDatabase{
 								"		generated always as identity (start with 1, increment by 1), "	+
 								"	description_short varchar(4000), " +
 								"	description_long varchar(8000), " +
-								"	player_has_been integer" +
+								"	player_has_been integer," +
+								" 	location_north integer, " +
+								" 	location_south integer, " +
+								" 	location_east integer, " +
+								" 	location_west integer, " +
+								" 	location_up integer, " +
+								" 	location_down integer " +
 								")"
 		
 								);
@@ -456,6 +460,7 @@ public class DerbyDatabase implements IDatabase{
 						);	
 						createInventoryStmt.executeUpdate();
 						
+<<<<<<< Upstream, based on origin/master
 						
 						createJointLocationsStmt = conn.prepareStatement(
 								"create table jointLocations (" +
@@ -480,6 +485,8 @@ public class DerbyDatabase implements IDatabase{
 						
 						createAgentsStmt.executeUpdate();
 						
+=======
+>>>>>>> f1f635b 3D movement
 						createInputsStmt = conn.prepareStatement(
 								"   create table commands (" +
 								"	command_id integer primary key " +
@@ -507,7 +514,6 @@ public class DerbyDatabase implements IDatabase{
 					} finally {
 						DBUtil.closeQuietly(createLocationsStmt);
 						DBUtil.closeQuietly(createInventoryStmt);
-						DBUtil.closeQuietly(createJointLocationsStmt);
 						DBUtil.closeQuietly(createInputsStmt);
 						DBUtil.closeQuietly(createGameStateStmt);
 						DBUtil.closeQuietly(createAgentsStmt);
@@ -523,14 +529,20 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
 					List<Location> locationList;
+<<<<<<< Upstream, based on origin/master
 					List<JointLocations> jointLocationsList;
 					List<Agent> agentList;
+=======
+>>>>>>> f1f635b 3D movement
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
+<<<<<<< Upstream, based on origin/master
 						jointLocationsList = InitialData.getJointLocations();
 						agentList = InitialData.getAgents();
+=======
+>>>>>>> f1f635b 3D movement
 						
 						
 					} catch (IOException e) {
@@ -545,27 +557,23 @@ public class DerbyDatabase implements IDatabase{
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
-						insertLocation = conn.prepareStatement("insert into locations (description_short, description_long, player_has_been) values (?, ?, ?)" );
+						insertLocation = conn.prepareStatement("insert into locations (description_short, description_long, player_has_been, location_north, location_south, location_east, location_west, location_up, location_down) values (?, ?, ?, ?, ?, ?, ?, ?, ?)" );
 						for (Location location : locationList)
 						{
 							insertLocation.setString(1, location.getShortDescription());
 							insertLocation.setString(2, location.getLongDescription());
 							insertLocation.setInt(3, location.getPlayerHasBeen());
+							insertLocation.setInt(4, location.getLocationNorth());
+							insertLocation.setInt(5, location.getLocationSouth());
+							insertLocation.setInt(6, location.getLocationEast());
+							insertLocation.setInt(7, location.getLocationWest());
+							insertLocation.setInt(8, location.getLocationUp());
+							insertLocation.setInt(9, location.getLocationDown());
+							
 							insertLocation.addBatch();
 						}
 						insertLocation.executeBatch(); 
 						
-						insertJointLocations = conn.prepareStatement("insert into jointLocations (fk_location_id, location_north, location_south, location_east, location_west) values (?, ?, ?, ?, ?)" );
-						for (JointLocations jointLocations: jointLocationsList)
-						{
-							insertJointLocations.setInt(1, jointLocations.getLocationID());
-							insertJointLocations.setInt(2, jointLocations.getLocationNorth());
-							insertJointLocations.setInt(3, jointLocations.getLocationSouth());
-							insertJointLocations.setInt(4, jointLocations.getLocationEast());
-							insertJointLocations.setInt(5, jointLocations.getLocationWest());
-							insertJointLocations.addBatch();
-						}
-						insertJointLocations.executeBatch();
 						
 						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name, item_description, on_user_flag) values (?, ?, ?, ?)");
 						for (Item item : inventory) 
@@ -1140,25 +1148,25 @@ public class DerbyDatabase implements IDatabase{
 		}
 
 		@Override
-		public Integer getJointLocationNorth(int currentLocation) {
+		public Integer getLocationNorth(int currentLocation) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
-					PreparedStatement getJointLocationNorth = null;
+					PreparedStatement getLocationNorth = null;
 					ResultSet resultSet = null;
 					
 					try {
-						getJointLocationNorth = conn.prepareStatement( 
+						getLocationNorth = conn.prepareStatement( 
 								" select location_north " +
-								" 	from jointLocations " +
-								"	where jointLocations.fk_location_id = ? "
+								" 	from locations " +
+								"	where location_id = ? "
 							
 						);
 						
 						
-						getJointLocationNorth.setInt(1, currentLocation);
+						getLocationNorth.setInt(1, currentLocation);
 						
-						resultSet = getJointLocationNorth.executeQuery();
+						resultSet = getLocationNorth.executeQuery();
 						
 						Integer nextLocation = null;
 						
@@ -1174,32 +1182,32 @@ public class DerbyDatabase implements IDatabase{
 					}
 					finally {
 						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(getJointLocationNorth);
+						DBUtil.closeQuietly(getLocationNorth);
 					}	
 				}
 			});
 		}
 
 		@Override
-		public Integer getJointLocationSouth(int currentLocation) {
+		public Integer getLocationSouth(int currentLocation) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
-					PreparedStatement getJointLocationSouth = null;
+					PreparedStatement getLocationSouth = null;
 					ResultSet resultSet = null;
 					
 					try {
-						getJointLocationSouth = conn.prepareStatement( 
+						getLocationSouth = conn.prepareStatement( 
 								" select location_south " +
-								" 	from jointLocations " +
-								"	where jointLocations.fk_location_id = ? "
+								" 	from locations " +
+								"	where location_id = ? "
 							
 						);
 						
 						
-						getJointLocationSouth.setInt(1, currentLocation);
+						getLocationSouth.setInt(1, currentLocation);
 						
-						resultSet = getJointLocationSouth.executeQuery();
+						resultSet = getLocationSouth.executeQuery();
 						
 						Integer nextLocation = null;
 						
@@ -1215,32 +1223,32 @@ public class DerbyDatabase implements IDatabase{
 					}
 					finally {
 						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(getJointLocationSouth);
+						DBUtil.closeQuietly(getLocationSouth);
 					}	
 				}
 			});
 		}
 
 		@Override
-		public Integer getJointLocationEast(int currentLocation) {
+		public Integer getLocationEast(int currentLocation) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
-					PreparedStatement getJointLocationEast = null;
+					PreparedStatement getLocationEast = null;
 					ResultSet resultSet = null;
 					
 					try {
-						getJointLocationEast = conn.prepareStatement( 
+						getLocationEast = conn.prepareStatement( 
 								" select location_east " +
-								" 	from jointLocations " +
-								"	where jointLocations.fk_location_id = ? "
+								" 	from locations " +
+								"	where location_id = ? "
 							
 						);
 						
 						
-						getJointLocationEast.setInt(1, currentLocation);
+						getLocationEast.setInt(1, currentLocation);
 						
-						resultSet = getJointLocationEast.executeQuery();
+						resultSet = getLocationEast.executeQuery();
 						
 						Integer nextLocation = null;
 						
@@ -1256,32 +1264,32 @@ public class DerbyDatabase implements IDatabase{
 					}
 					finally {
 						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(getJointLocationEast);
+						DBUtil.closeQuietly(getLocationEast);
 					}	
 				}
 			});
 		}
 
 		@Override
-		public Integer getJointLocationWest(int currentLocation) {
+		public Integer getLocationWest(int currentLocation) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
-					PreparedStatement getJointLocationWest = null;
+					PreparedStatement getLocationWest = null;
 					ResultSet resultSet = null;
 					
 					try {
-						getJointLocationWest = conn.prepareStatement( 
+						getLocationWest = conn.prepareStatement( 
 								" select location_west " +
-								" 	from jointLocations " +
-								"	where jointLocations.fk_location_id = ? "
+								" 	from locations " +
+								"	where location_id = ? "
 							
 						);
 						
 						
-						getJointLocationWest.setInt(1, currentLocation);
+						getLocationWest.setInt(1, currentLocation);
 						
-						resultSet = getJointLocationWest.executeQuery();
+						resultSet = getLocationWest.executeQuery();
 						
 						Integer nextLocation = null;
 						
@@ -1297,7 +1305,89 @@ public class DerbyDatabase implements IDatabase{
 					}
 					finally {
 						DBUtil.closeQuietly(resultSet);
-						DBUtil.closeQuietly(getJointLocationWest);
+						DBUtil.closeQuietly(getLocationWest);
+					}	
+				}
+			});
+		}
+		
+		@Override
+		public Integer getLocationUp(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getLocationUp = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getLocationUp = conn.prepareStatement( 
+								" select location_up " +
+								" 	from locations " +
+								"	where location_id = ? "
+							
+						);
+						
+						
+						getLocationUp.setInt(1, currentLocation);
+						
+						resultSet = getLocationUp.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_up");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getLocationUp);
+					}	
+				}
+			});
+		}
+		
+		@Override
+		public Integer getLocationDown(int currentLocation) {
+			return executeTransaction(new Transaction<Integer>() {
+				@Override
+				public Integer execute(Connection conn) throws SQLException {
+					PreparedStatement getLocationDown = null;
+					ResultSet resultSet = null;
+					
+					try {
+						getLocationDown = conn.prepareStatement( 
+								" select location_down " +
+								" 	from locations " +
+								"	where location_id = ? "
+							
+						);
+						
+						
+						getLocationDown.setInt(1, currentLocation);
+						
+						resultSet = getLocationDown.executeQuery();
+						
+						Integer nextLocation = null;
+						
+						if(resultSet.next()) {
+							nextLocation = resultSet.getInt("location_down");
+						}
+						
+						if(nextLocation == null) {
+							System.out.println("Next room not found");
+						}
+						
+						return nextLocation;
+					}
+					finally {
+						DBUtil.closeQuietly(resultSet);
+						DBUtil.closeQuietly(getLocationDown);
 					}	
 				}
 			});

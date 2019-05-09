@@ -54,6 +54,10 @@ public class GameplayController
 				} 
 				else if(input.contains("west")){
 					moveTo(3);
+				}else if(input.contains("up")){
+					moveTo(4);
+				}else if(input.contains("down")){
+					moveTo(5);
 				} else {
 					System.out.println("Unknown direction");
 					db.addUserOutput("Unknown direction");
@@ -171,13 +175,17 @@ public class GameplayController
 		int currentLocation = db.getUserLocation();
 		int nextLocation = -1;
 		if(direction == 0) {
-			nextLocation = db.getJointLocationNorth(currentLocation);
+			nextLocation = db.getLocationNorth(currentLocation);
 		} else if(direction == 1) {
-			nextLocation = db.getJointLocationSouth(currentLocation);
+			nextLocation = db.getLocationSouth(currentLocation);
 		} else if(direction == 2) {
-			nextLocation = db.getJointLocationEast(currentLocation);
+			nextLocation = db.getLocationEast(currentLocation);
+		} else if(direction == 3){
+			nextLocation = db.getLocationWest(currentLocation);
+		} else if(direction == 4){
+			nextLocation = db.getLocationUp(currentLocation);
 		} else {
-			nextLocation = db.getJointLocationWest(currentLocation);
+			nextLocation = db.getLocationDown(currentLocation);
 		}
 		if(currentLocation == nextLocation) {
 			System.out.println("Can't move that way");
