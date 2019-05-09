@@ -461,6 +461,17 @@ public class DerbyDatabase implements IDatabase{
 						createInventoryStmt.executeUpdate();
 						
 
+						createAgentsStmt = conn.prepareStatement(
+								"create table agents (" +
+								" agent_id integer primary key " +
+								" generated always as identity (start with 1, increment by 1), " +
+								" agent_location_id integer, " +
+								" agent_description varchar(8000) " +
+								")"
+								);
+						
+						createAgentsStmt.executeUpdate();
+						
 						createInputsStmt = conn.prepareStatement(
 								"   create table commands (" +
 								"	command_id integer primary key " +
@@ -515,7 +526,6 @@ public class DerbyDatabase implements IDatabase{
 
 					PreparedStatement insertItem = null;
 					PreparedStatement insertLocation = null; 
-					PreparedStatement insertJointLocations = null;
 					PreparedStatement insertGameState = null; //This is the hardcoded initial game state - don't need to read from CSV
 					PreparedStatement insertAgents = null;
 
