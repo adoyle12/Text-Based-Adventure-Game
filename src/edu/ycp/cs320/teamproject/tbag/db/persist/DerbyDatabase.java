@@ -456,8 +456,7 @@ public class DerbyDatabase implements IDatabase{
 							"		generated always as identity (start with 1, increment by 1), " +
 							"	item_location_id integer, " +
 							"   item_name varchar(40), " +
-							"	item_description varchar(8000), " +
-							"	on_user_flag integer " +
+							"	item_description varchar(8000) " +
 							")"
 						);	
 						createInventoryStmt.executeUpdate();
@@ -563,14 +562,13 @@ public class DerbyDatabase implements IDatabase{
 						insertLocation.executeBatch(); 
 						
 						
-						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name, item_description, on_user_flag) values (?, ?, ?, ?)");
+						insertItem = conn.prepareStatement("insert into inventory (item_location_id, item_name, item_description) values (?, ?, ?)");
 						for (Item item : inventory) 
 						{
 //							// Auto generate itemID
 							insertItem.setInt(1, item.getLocationID());
 							insertItem.setString(2, item.getName());
 							insertItem.setString(3, item.getItemDescription());
-							insertItem.setInt(4, item.getOnUserFlag());
 							insertItem.addBatch();
 						}
 						insertItem.executeBatch();
@@ -614,9 +612,6 @@ public class DerbyDatabase implements IDatabase{
 			System.out.println("Creating Users table...");
 			DerbyDatabase db = new DerbyDatabase();
 			db.createUsersTable();
-			
-//			System.out.println("Loading initial data...");
-//			db.loadInitialData();
 			
 			System.out.println("DB successfully initialized!");
 		}
@@ -779,7 +774,6 @@ public class DerbyDatabase implements IDatabase{
 						
 						if(resultSet.next()) {
 							currentLocation = resultSet.getInt("location_id");
-							//System.out.println(currentLocation);
 						}
 						
 						if(currentLocation == null) {
@@ -910,7 +904,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		@Override
-		public String getItemDescription(final int item_location, final int onUserFlag) {
+		public String getItemDescription(final int item_location) {
 			return executeTransaction(new Transaction<String>(){
 				public String execute(Connection conn) throws SQLException {
 					PreparedStatement itemDescription = null;
@@ -919,11 +913,9 @@ public class DerbyDatabase implements IDatabase{
 						itemDescription = conn.prepareStatement(
 								"select inventory.item_description " +
 								" from inventory " +
-								" where inventory.item_location_id = ? " +
-								" and inventory.on_user_flag = ?"
+								" where inventory.item_location_id = ? "
 						);
 						itemDescription.setInt(1, item_location);
-						itemDescription.setInt(2, onUserFlag);
 					
 						resultSet = itemDescription.executeQuery();
 					
@@ -943,7 +935,7 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		@Override
-		public Integer setItemLocation(String itemName, int location, int onUserFlag) {
+		public Integer setItemLocation(String itemName, int location) {
 			return executeTransaction(new Transaction<Integer>() {
 				@Override
 				public Integer execute(Connection conn) throws SQLException {
@@ -954,13 +946,11 @@ public class DerbyDatabase implements IDatabase{
 						setItemLocation = conn.prepareStatement( 
 								" update inventory " +
 								" 	set item_location_id = ? " +
-								" 	where inventory.item_name = ? " +
-								"	and inventory.onUserFlag = ?"
+								" 	where inventory.item_name = ? "
 							
 						);
 						setItemLocation.setInt(1, location);
 						setItemLocation.setString(2, itemName);
-						setItemLocation.setInt(3, onUserFlag);
 						
 						resultSet = setItemLocation.executeQuery();
 						

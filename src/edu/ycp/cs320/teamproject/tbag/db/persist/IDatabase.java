@@ -20,9 +20,9 @@ public interface IDatabase{
 	
 	public String getLocationDescriptionLong(int location_id);
 	public String getLocationDescriptionShort(int location_id);
-	public Integer setItemLocation(String itemName, int location, int onUserFlag);
+	public Integer setItemLocation(String itemName, int location);
 	public Integer getItemLocationID(String itemName);
-	public String getItemDescription(int item_location, int onUserFlag);
+	public String getItemDescription(int item_location);
 	public Integer getUserLocation();
 	public Integer setUserLocation(int location);
 	public Integer getLocationNorth(int currentLocation);
