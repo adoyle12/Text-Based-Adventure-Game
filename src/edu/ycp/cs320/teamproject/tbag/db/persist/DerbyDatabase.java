@@ -460,33 +460,7 @@ public class DerbyDatabase implements IDatabase{
 						);	
 						createInventoryStmt.executeUpdate();
 						
-<<<<<<< Upstream, based on origin/master
-						
-						createJointLocationsStmt = conn.prepareStatement(
-								"create table jointLocations (" +
-								" 	fk_location_id integer constraint fk_location_id references locations(location_id),  " +
-								" 	location_north integer, " +
-								" 	location_south integer, " +
-								" 	location_east integer, " +
-								" 	location_west integer " +
-								")"
-									
-							);
-						createJointLocationsStmt.executeUpdate();
-						
-						createAgentsStmt = conn.prepareStatement(
-								"	create table agents (" +
-								"   agent_id integer primary key " +
-								"		generated always as identity (start with 1, increment by 1), " +
-								"	agent_location_id integer, " +
-								"	agent_description varchar(8000) " +
-								")"
-						);
-						
-						createAgentsStmt.executeUpdate();
-						
-=======
->>>>>>> f1f635b 3D movement
+
 						createInputsStmt = conn.prepareStatement(
 								"   create table commands (" +
 								"	command_id integer primary key " +
@@ -529,22 +503,12 @@ public class DerbyDatabase implements IDatabase{
 				public Boolean execute(Connection conn) throws SQLException {
 					List<Item> inventory;
 					List<Location> locationList;
-<<<<<<< Upstream, based on origin/master
-					List<JointLocations> jointLocationsList;
 					List<Agent> agentList;
-=======
->>>>>>> f1f635b 3D movement
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
-<<<<<<< Upstream, based on origin/master
-						jointLocationsList = InitialData.getJointLocations();
 						agentList = InitialData.getAgents();
-=======
->>>>>>> f1f635b 3D movement
-						
-						
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
@@ -1156,6 +1120,7 @@ public class DerbyDatabase implements IDatabase{
 					ResultSet resultSet = null;
 					
 					try {
+
 						getLocationNorth = conn.prepareStatement( 
 								" select location_north " +
 								" 	from locations " +
