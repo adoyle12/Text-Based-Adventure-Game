@@ -2,13 +2,10 @@ package edu.ycp.cs320.teamproject.tbag.controller;
 
 
 import java.util.ArrayList;
-import java.util.List;
-
 import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
-import edu.ycp.cs320.teamproject.tbag.model.Location;
 
 
 public class GameplayController 
@@ -21,6 +18,7 @@ public class GameplayController
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
 		db.setUserFilePath(username);
+		db.addUserOutput(db.getLocationDescriptionLong(1));
 	}
 
 	
