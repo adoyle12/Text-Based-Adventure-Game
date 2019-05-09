@@ -27,14 +27,6 @@ public class GameplayController
 	public String gameLogic(String input, String username) {
 		String errorMessage = null;
 		
-		// ____________________Agent Encounter ___________________
-		for(int i = 1; i < 5; i++) {
-			agentEncounter(db.getAgentLocation(i), db.getUserLocation());
-		}
-		
-		// ____________________Items in Rooms______________________
-		itemDescription(db.getUserLocation(), 0);
-		
 		//check for errors in the form data before using is in a calculation
 		if (input == null) 
 		{
@@ -142,6 +134,15 @@ public class GameplayController
 				db.addUserOutput("Unknown command");
 			}
 		}		
+		
+		// ____________________Items in Rooms______________________
+		itemDescription(db.getUserLocation(), 0);
+		
+		// ____________________Agent Encounter ___________________
+		for(int i = 1; i < 5; i++) {
+			agentEncounter(db.getAgentLocation(i), db.getUserLocation());
+		}
+		
 		output();
 		return errorMessage;
 	}
