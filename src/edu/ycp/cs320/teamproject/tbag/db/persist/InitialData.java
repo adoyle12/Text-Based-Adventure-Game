@@ -9,6 +9,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Description;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.Puzzle;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class InitialData 
@@ -161,5 +162,31 @@ public class InitialData
 		}
 	}
 
-	
+	public static List<Puzzle> getPuzzle() throws IOException{
+		List<Puzzle> puzzleList = new ArrayList<Puzzle>();
+		ReadCSV readPuzzle = new ReadCSV("puzzle.csv");
+		try 
+		{
+			while (true) 
+			{
+				List<String> tuple = readPuzzle.next();
+				if (tuple == null) 
+				{
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Puzzle puzzle = new Puzzle();
+				
+				puzzle.setLocationID(Integer.parseInt(i.next()));
+				puzzle.setName(i.next());
+				puzzleList.add(puzzle);
+			}
+			System.out.println("Puzzle loaded from CSV file");
+			return puzzleList;
+		} 
+		finally 
+		{
+			readPuzzle.close();
+		}
+	}	
 }

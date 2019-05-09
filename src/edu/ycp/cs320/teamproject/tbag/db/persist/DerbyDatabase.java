@@ -17,6 +17,7 @@ import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.Puzzle;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class DerbyDatabase implements IDatabase{
@@ -425,6 +426,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement createInputsStmt = null;
 					PreparedStatement createGameStateStmt = null; 
 					PreparedStatement createAgentsStmt = null;
+					PreparedStatement createPuzzleStmt = null;
 					
 				
 					try {
@@ -481,6 +483,14 @@ public class DerbyDatabase implements IDatabase{
 						);
 						createInputsStmt.executeUpdate();
 						
+						createPuzzleStmt = conn.prepareStatement(
+								"   create table puzzle (" +
+								"	puzzle_location_id integer, " +
+								" 	item_name varChar(100)  " +
+								")"
+						);
+						createPuzzleStmt.executeUpdate();
+						
 						//AD: should items be in game state or do we have a way to know what items the user has already?
 						createGameStateStmt = conn.prepareStatement(
 								"	create table gameState (" +
@@ -502,6 +512,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(createInputsStmt);
 						DBUtil.closeQuietly(createGameStateStmt);
 						DBUtil.closeQuietly(createAgentsStmt);
+						DBUtil.closeQuietly(createPuzzleStmt);
 					}
 				}
 			});
@@ -515,11 +526,13 @@ public class DerbyDatabase implements IDatabase{
 					List<Item> inventory;
 					List<Location> locationList;
 					List<Agent> agentList;
+					List<Puzzle> puzzleList;
 					
 					try {
 						inventory = InitialData.getInventory();
 						locationList = InitialData.getLocations(); 
 						agentList = InitialData.getAgents();
+						puzzleList = InitialData.getPuzzle();
 					} catch (IOException e) {
 						throw new SQLException("Couldn't read initial data", e);
 					}
@@ -528,6 +541,7 @@ public class DerbyDatabase implements IDatabase{
 					PreparedStatement insertLocation = null; 
 					PreparedStatement insertGameState = null; //This is the hardcoded initial game state - don't need to read from CSV
 					PreparedStatement insertAgents = null;
+					PreparedStatement insertPuzzle = null;
 
 					try {
 						// AD: populate locations first since location_id is foreign key in inventory table
@@ -570,6 +584,15 @@ public class DerbyDatabase implements IDatabase{
 						}
 						insertAgents.executeBatch();
 						
+						insertPuzzle = conn.prepareStatement("insert into puzzle (puzzle_location_id, item_name) values (?, ?)");
+						for (Puzzle puzzle : puzzleList) 
+						{
+							insertPuzzle.setInt(1, puzzle.getLocationID());
+							insertPuzzle.setString(2, puzzle.getName());
+							insertPuzzle.addBatch();
+						}
+						insertPuzzle.executeBatch();
+						
 						insertGameState = conn.prepareStatement("insert into gameState (location_id, health, score) values (1, 100, 0)"); 
 						insertGameState.executeUpdate(); 
 						
@@ -579,6 +602,7 @@ public class DerbyDatabase implements IDatabase{
 						DBUtil.closeQuietly(insertLocation);	
 						DBUtil.closeQuietly(insertItem);
 						DBUtil.closeQuietly(insertAgents);
+						DBUtil.closeQuietly(insertPuzzle);
 					}
 					return true;
 				}
@@ -1465,6 +1489,12 @@ public class DerbyDatabase implements IDatabase{
 
 		@Override
 		public Integer insertItem(String name, int locationID, int descriptionID) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		public String getPuzzleItemName(int location_id) {
 			// TODO Auto-generated method stub
 			return null;
 		}

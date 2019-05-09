@@ -20,7 +20,7 @@ public class GameplayController
 	public GameplayController(String username) {
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
-		db.setUserFilePath(username); 
+		db.setUserFilePath(username);
 	}
 
 	

@@ -35,6 +35,7 @@ public interface IDatabase{
 	public Integer setPlayerHasBeen(int location, int flag);
 	public Integer getAgentLocation(int agent_id);
 	public String getAgentDescription(int agent_id);
+	public String getPuzzleItemName(int location_id);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
