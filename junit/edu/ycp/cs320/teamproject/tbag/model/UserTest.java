@@ -75,14 +75,8 @@ public class UserTest
 		//tests that user's location is set to room 1
 		assertEquals(1, model.getLocationID());
 		
-		//tests that user's location doesn't register as any other room
-		for(int i = 2; i < 9; i++) {
-			assertTrue(model.getLocationID() != i);
-		}
-		
 		model.setLocationID(2);
 		//tests that user's location is changed to room 2
 		assertEquals(2, model.getLocationID());
-		assertTrue(model.getLocationID() != 1);
 	}
 }
