@@ -31,8 +31,10 @@ public class GameplayController
 
 	
 	public void gameLogic(String input) {
+		db.addToCommands(input); 
+		model.setInput(input);
 		input = input.toLowerCase();
-		input(input);
+		
 		
 		// ___________________Movement_______________________
 		if(input.contains("move") || input.contains("go")) {
@@ -59,12 +61,9 @@ public class GameplayController
 				db.addToCommands("Unknown direction");
 			}
 		}
-		else if (input.contains("map")) {
-			// This prints out the locationID's and the jointLocations
-			displayMap();
-			
+		
 		//__________________Picking up items___________________
-		} 
+		
 		else if (input.contains("pick up") || input.contains("grab") || input.contains("take")) 
 		{
 			 
@@ -127,6 +126,15 @@ public class GameplayController
 				}
 			}
 		} 
+		else if (input.contains("inventory"))
+		{
+			List<String> itemNames = new ArrayList<String>(); 
+			for (Item item : usersInventory)
+			{
+				itemNames.add(item.getName()); 
+			}
+			model.addInventory(itemNames);
+		}
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");
@@ -146,20 +154,13 @@ public class GameplayController
 		this.model = model; 
 	}
 
-	public void input(String input)
-	{
-		db.addToCommands(input);
-		model.setInput(input);
-	}
+	
 	
 	public void output(){
 		output = db.getCommands();
 		model.setOutput(output);
 	}
 	
-	public void displayMap() {
-		model.displayMap();
-	}
 	
 	public void moveTo(int direction) {
 	
