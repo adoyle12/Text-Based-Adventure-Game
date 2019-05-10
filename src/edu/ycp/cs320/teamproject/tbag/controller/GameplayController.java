@@ -20,14 +20,23 @@ public class GameplayController
 	private List<Item> itemsInRoom;
 	private List<Item> usersInventory; 
 	
-	public GameplayController(String username) {
+	public GameplayController(String username, Boolean newGame) {
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
 		db.setUserFilePath(username);
-		userLocation = db.getUserLocation();
-		itemsInRoom = db.getItemsInLocation(userLocation);
-		usersInventory = db.getItemsInLocation(0); 
+		if (!newGame)
+		{
+			userLocation = db.getUserLocation();
+			itemsInRoom = db.getItemsInLocation(userLocation);
+			usersInventory = db.getItemsInLocation(0); 
+		}
+		else
+		{
+			db.resetGame();	//OH FUCK	
+		}
+		
 	}
+	
 
 	
 	public void gameLogic(String input) {

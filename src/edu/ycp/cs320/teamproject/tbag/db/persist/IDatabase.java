@@ -30,8 +30,8 @@ public interface IDatabase{
 	public void setPlayerHasBeen(int location);
 	public Integer getAgentLocation(int agent_id);
 	public String getAgentDescription(int agent_id);
-	public String getPuzzleItemName(int location_id);
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
+	public void resetGame(); 
 }
