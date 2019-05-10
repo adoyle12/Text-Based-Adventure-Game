@@ -1,6 +1,7 @@
 package edu.ycp.cs320.teamproject.tbag.db;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -90,18 +91,10 @@ public class DerbyDatabaseTest
 	}
 	@Test
 	public void testUserLocation() {
-		System.out.println("Testing Setting and Getting User Location");
+		//test getting and setting user location
+		db.setUserLocation(7);
 		
-		String username = "vince";
-		Integer locationID = -1;
-		Integer afterLocationID = -2;
-		
-		locationID = db.setUserLocation(7);
-		//System.out.println(locationID);
-		
-		afterLocationID = db.getUserLocation();
-		
-		assertEquals(locationID, afterLocationID);
+		assertTrue(7 == db.getUserLocation());
 	}
 
 }
