@@ -28,7 +28,7 @@ public class DerbyDatabase implements IDatabase{
 	{
 		this.userFilePath = userFilePath; 
 	}
-	
+
 	
 	static {
 		try {
@@ -1296,9 +1296,8 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	@Override
-	public String getPuzzleItemName(final int location_id) {
+	public String getPuzzleItemName(final int location_id) { 
 			// TODO Auto-generated method stub
 			return null;
 		}
-
 }

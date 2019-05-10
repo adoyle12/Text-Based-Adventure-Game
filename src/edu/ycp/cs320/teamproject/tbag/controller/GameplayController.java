@@ -183,13 +183,16 @@ public class GameplayController
 			nextLocation = db.getLocationDown(userLocation);
 		}
 		
-		
 		if(userLocation == nextLocation) 
 		{
 			System.out.println("Can't move that way");
 			db.addToCommands("Can't move that way");
 		}
-		else {
+		//__________________Puzzle_______________________
+		else if(puzzle(nextLocation) == false) {
+			System.out.println("Room locked, need an item");
+			db.addToCommands("Room locked, need an item");
+		} else {
 			
 			db.setUserLocation(nextLocation);
 			String roomDescription = null;
@@ -212,6 +215,24 @@ public class GameplayController
 		if(agent_location == user_location) {
 			db.addToCommands(db.getAgentDescription(agent_location));
 		}
+	}
+	
+	public boolean puzzle(int nextLocation) {
+		// Go through player inventory
+		for(Item item : usersInventory) {
+			// if playerHas item and NextLocation == puzzleRoom
+			String itemName = item.getName();
+			if(nextLocation == 11 && itemName.equals("sword")){
+				return true;
+			}
+		}
+		
+		// IF USER INVENTORY EMPTY
+		// Do not let the player enter these rooms
+		if(nextLocation == 11) {
+			return false;
+		}
+		return true;
 	}
 	
 }
