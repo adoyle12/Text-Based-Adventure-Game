@@ -1,7 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.sqldemo;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -61,7 +60,7 @@ public class SQLDemo {
 			String operatingSystem = System.getProperty("os.name");
 			
 			if(operatingSystem.equals("Windows 10")) {
-				resourcePath = "jdbc:derby:C:/" + userFilePath + "TBAG.db;create=true";
+				resourcePath = "jdbc:derby:C:/TBAG_DBs/" + userFilePath + "TBAG.db;create=true";
 			} else if(operatingSystem.equals("Mac OS X")) {
 				resourcePath = "jdbc:derby:/Users/adoyle/Desktop/" + userFilePath + "TBAG.db;create=true";
 			} else {
@@ -76,6 +75,7 @@ public class SQLDemo {
 			System.out.println("Error: " + e.getMessage());
 		} finally {
 			DBUtil.closeQuietly(conn);
+			keyboard.close();
 		}
 }
 

@@ -6,7 +6,6 @@ public class Item
 	private String name; 
 	private int locationID;
 	private String item_description;
-	private int onUser;
 	
 	public void setItemID(int itemID)
 	{
@@ -46,12 +45,4 @@ public class Item
 		return item_description;
 	}
 
-	public int setOnUserFlag(int userFlag) {
-		this.onUser = userFlag;
-		return onUser;
-	}
-	
-	public int getOnUserFlag() {
-		return onUser;
-	}
 }

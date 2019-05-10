@@ -1,24 +1,24 @@
 ----------------------------------------------------------------
-Wed May 08 22:26:27 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-9a69-d0d5-00000decc060 
-on database directory C:\TBAG_DBs\usersTBAG.db with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
-Loaded from file:/C:/CS320/CS320_Derby/lib/derby.jar
+Thu May 09 20:43:50 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-9f32-3ab2-00000393d5f0 
+on database directory C:\TBAG_DBs\usersTBAG.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
+Loaded from file:/C:/Users/Duncan/Desktop/Spring2019/CS320/CS320_Derby/CS320_Derby/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_201-b09
-user.dir=C:\Users\jlrhi\git\TBAG
+java.runtime.version=1.8.0_151-b12
+user.dir=C:\Users\Duncan\Desktop\Spring2019\CS320\TBAG
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Wed May 08 22:26:29 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance 08264012-016a-9a69-d0d5-00000decc060 
-on database directory C:\TBAG_DBs\johnTBAG.db with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
-Loaded from file:/C:/CS320/CS320_Derby/lib/derby.jar
+Thu May 09 20:43:51 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance 6839c016-016a-9f32-3ab2-00000393d5f0 
+on database directory C:\TBAG_DBs\billyTBAG.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
+Loaded from file:/C:/Users/Duncan/Desktop/Spring2019/CS320/CS320_Derby/CS320_Derby/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_201-b09
-user.dir=C:\Users\jlrhi\git\TBAG
+java.runtime.version=1.8.0_151-b12
+user.dir=C:\Users\Duncan\Desktop\Spring2019\CS320\TBAG
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

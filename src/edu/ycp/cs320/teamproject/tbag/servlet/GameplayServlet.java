@@ -21,10 +21,20 @@ public class GameplayServlet extends HttpServlet
 		System.out.println("Gameplay Servlet: doGet");	
 		
 		String errorMessage = null;
+		String username = null;
 		
+		try {
 		// Get the current user from the session
-		String username = req.getSession().getAttribute("username").toString();
+		username = req.getSession().getAttribute("username").toString();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
 		
+		if(username == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
@@ -64,46 +74,27 @@ public class GameplayServlet extends HttpServlet
 		 * Initiate the controller and model
 		 * Set the mode
 		 * Must do this each time since they don't persist between POSTs
-		 */
+		 */		
 		controller = new GameplayController(username);
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
-		
 
 		// decode POSTed form parameters and dispatch to controller
-		String input = getStringFromParameter(req.getParameter("input"));
+		String input = req.getParameter("input");
 
-		
-		
-		// Do all the game logic
-		//System.out.println("username from session: " + req.getSession().getAttribute("username").toString());
-		controller.gameLogic(input, username);
+		if(input == null || input.equals("")) {
+			errorMessage = "Command Line Blank";
+		}
+		else {
+			controller.gameLogic(input);
+		}
 		
 		req.setAttribute("gameplay", model);
-		
-		// Add parameters as request attributes
-		req.setAttribute("input", model.getInput());
-		req.setAttribute("output", model.getOutput());
-		req.setAttribute("size", model.getOutput().size());
-		
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
 
 		
 		// Forward to view to render the result HTML document
 		req.getRequestDispatcher("/_view/gameplay.jsp").forward(req, resp);
-	}
-
-	// gets double from the request with attribute named s
-	private String getStringFromParameter(String s) 
-	{
-		if (s == null || s.equals("")) 
-		{
-			return null;
-		} 
-		else 
-		{
-			return s; 
-		}
 	}
 }

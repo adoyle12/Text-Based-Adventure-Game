@@ -1,30 +1,25 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
 import java.util.ArrayList;
-//import java.util.ArrayList;
 import java.util.List;
-
-import edu.ycp.cs320.teamproject.tbag.model.Location;
+import edu.ycp.cs320.teamproject.tbag.model.Item;
 
 public interface IDatabase{
 	
-	public Integer findUserIDFromUsername(String username); 
-	public Integer insertItem(String name, int locationID, int descriptionID);
+	public Integer findUserIDFromUsername(String username);
 	public Integer insertUserIntoUsersTable(String username, String password);
 	public String findPasswordFromUsername(String username);
-	public Boolean addUserInput(String input);
-	public ArrayList<String> getInputs();
-	public Integer pickupItem(String itemName, String username);
-	public Integer dropItem(String itemName, String username);
-	public Boolean addUserOutput(String output);
+	public Boolean addToCommands(String input);
+	public ArrayList<String> getCommands();
 	
 	public String getLocationDescriptionLong(int location_id);
 	public String getLocationDescriptionShort(int location_id);
-	public Integer setItemLocation(String itemName, int location);
+	public void setItemLocation(String itemName, int location);
 	public Integer getItemLocationID(String itemName);
-	public String getItemDescription(int item_location);
+	public List<Item> getItemsInLocation(final int locationID);
+	public ArrayList<String> getItemDescription(int item_location);
 	public Integer getUserLocation();
-	public Integer setUserLocation(int location);
+	public void setUserLocation(int location);
 	public Integer getLocationNorth(int currentLocation);
 	public Integer getLocationSouth(int currentLocation);
 	public Integer getLocationEast(int currentLocation);
@@ -32,7 +27,7 @@ public interface IDatabase{
 	public Integer getLocationUp(int currentLocation);
 	public Integer getLocationDown(int currentLocation);
 	public Integer getPlayerHasBeen(int location);
-	public Integer setPlayerHasBeen(int location, int flag);
+	public void setPlayerHasBeen(int location);
 	public Integer getAgentLocation(int agent_id);
 	public String getAgentDescription(int agent_id);
 	public String getPuzzleItemName(int location_id);
@@ -40,4 +35,3 @@ public interface IDatabase{
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
 }
-
