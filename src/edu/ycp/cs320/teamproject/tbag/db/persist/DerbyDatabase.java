@@ -16,7 +16,7 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.PersistenceException;
 import edu.ycp.cs320.teamproject.tbag.model.Agent;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
-import edu.ycp.cs320.teamproject.tbag.model.Puzzle;
+
 
 public class DerbyDatabase implements IDatabase{
 	
@@ -373,7 +373,6 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement createInputsStmt = null;
 				PreparedStatement createGameStateStmt = null; 
 				PreparedStatement createAgentsStmt = null;
-				PreparedStatement createPuzzleStmt = null;
 				
 			
 				try {
@@ -439,15 +438,8 @@ public class DerbyDatabase implements IDatabase{
 					
 					createAgentsStmt.executeUpdate();
 					
-					createPuzzleStmt = conn.prepareStatement(
-							"   create table puzzle (" +
-							"	puzzle_location_id integer, " +
-							" 	item_name varChar(100)  " +
-							")"
-					);
-					createPuzzleStmt.executeUpdate(); 
 					
-					System.out.println("Game tables: locations, inventory, commands, gamestate, agents, and puzzle created");				
+					System.out.println("Game tables: locations, inventory, commands, gamestate, and agents created");				
 										
 					return true;
 				} finally {
@@ -456,7 +448,6 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(createInputsStmt);
 					DBUtil.closeQuietly(createGameStateStmt);
 					DBUtil.closeQuietly(createAgentsStmt);
-					DBUtil.closeQuietly(createPuzzleStmt);
 				}
 			}
 		});
@@ -470,13 +461,11 @@ public class DerbyDatabase implements IDatabase{
 				List<Item> inventory;
 				List<Location> locationList;
 				List<Agent> agentList;
-				List<Puzzle> puzzleList;
 				
 				try {
 					inventory = InitialData.getInventory();
 					locationList = InitialData.getLocations(); 
 					agentList = InitialData.getAgents();
-					puzzleList = InitialData.getPuzzle();
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
 				}
@@ -484,7 +473,6 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement insertItem = null;
 				PreparedStatement insertLocation = null; 
 				PreparedStatement insertAgents = null;
-				PreparedStatement insertPuzzle = null;
 				PreparedStatement insertGameState = null; //This is the hard coded initial game state - don't need to read from CSV
 				PreparedStatement insertOpeningMessage = null; // This is the hard coded opening message.
 
@@ -528,14 +516,6 @@ public class DerbyDatabase implements IDatabase{
 					}
 					insertAgents.executeBatch();
 					
-					insertPuzzle = conn.prepareStatement("insert into puzzle (puzzle_location_id, item_name) values (?, ?)");
-					for (Puzzle puzzle : puzzleList) 
-					{
-						insertPuzzle.setInt(1, puzzle.getLocationID());
-						insertPuzzle.setString(2, puzzle.getName());
-						insertPuzzle.addBatch();
-					}
-					insertPuzzle.executeBatch();
 					
 					insertGameState = conn.prepareStatement("insert into gameState (location_id, health, score) values (1, 100, 0)"); 
 					insertGameState.executeUpdate(); 
@@ -552,13 +532,77 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(insertLocation);	
 					DBUtil.closeQuietly(insertItem);
 					DBUtil.closeQuietly(insertAgents);
-					DBUtil.closeQuietly(insertPuzzle);
+					DBUtil.closeQuietly(insertGameState);
+					DBUtil.closeQuietly(insertOpeningMessage);
 				}
 				return true;
 			}
 		});
 	}
 	
+	public void resetGame()
+	{
+		executeTransaction(new Transaction<Boolean>() 
+		{
+			@Override
+			public Boolean execute(Connection conn) throws SQLException 
+			{
+				List<Item> inventory;
+				
+				try 
+				{
+					inventory = InitialData.getInventory();
+				} 
+				catch (IOException e) 
+				{
+					throw new SQLException("Couldn't read initial data", e);
+				}
+				PreparedStatement resetCommands = null; 		//Gotta delete them	
+				PreparedStatement resetOpeningMessage = null; 
+				PreparedStatement resetItemLocations = null;	//Set back to original location
+				PreparedStatement resetGameState = null; 		//Update to original
+				PreparedStatement resetPlayerHasBeen = null; 	//Set back to 0
+				
+				try
+				{
+					resetCommands = conn.prepareStatement("delete from commands");
+					resetCommands.executeUpdate(); 
+					
+					resetOpeningMessage = conn.prepareStatement("insert into commands (command) values (?)"); 
+					resetOpeningMessage.setString(1, "This a new game");
+					resetOpeningMessage.executeUpdate();
+					
+					resetItemLocations = conn.prepareStatement("update inventory set item_location_id = ? where item_id = ?");
+					for (Item item : inventory)
+					{
+						System.out.println(item.getLocationID()); 
+						resetItemLocations.setInt(1, item.getLocationID());
+						resetItemLocations.setInt(2, item.getItemID());
+						resetItemLocations.addBatch();
+						
+					}
+					resetItemLocations.executeBatch(); 
+							
+					resetGameState = conn.prepareStatement("update gameState set location_id = 1, health = 100, score = 0");
+					resetGameState.executeUpdate(); 
+					
+					resetPlayerHasBeen = conn.prepareStatement("update locations set player_has_been = 0 where player_has_been = 1"); 
+					resetPlayerHasBeen.executeUpdate(); 
+					
+				}
+				finally
+				{
+					DBUtil.closeQuietly(resetCommands); 
+					DBUtil.closeQuietly(resetOpeningMessage);
+					DBUtil.closeQuietly(resetItemLocations); 
+					DBUtil.closeQuietly(resetGameState); 
+					DBUtil.closeQuietly(resetPlayerHasBeen); 
+				}
+				return true; 
+			}
+			
+		}); 
+	}
 	// The main method creates the users table
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating Users table...");
@@ -1295,9 +1339,4 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
-	@Override
-	public String getPuzzleItemName(final int location_id) { 
-			// TODO Auto-generated method stub
-			return null;
-		}
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.teamproject.tbag.controller.GameplayController;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 
-public class GameplayServlet extends HttpServlet 
+public class ChooseServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
 
@@ -18,9 +18,8 @@ public class GameplayServlet extends HttpServlet
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("Gameplay Servlet: doGet");	
+		System.out.println("Choose Servlet: doGet");	
 		
-		String errorMessage = null;
 		String username = null;
 		
 		try {
@@ -38,35 +37,27 @@ public class GameplayServlet extends HttpServlet
 		/*
 		 * Initiate the controller and model
 		 * Set the mode
-		 * Must do this each time since they don't persist between POSTs
+		 * Must do this each time since they don't persist 
 		 */
 		controller = new GameplayController(username, false);
 		Gameplay model = new Gameplay(); 
 		controller.setModel(model);
 		
 		
-		//Just need the output list to go to the model on doGet 
-		controller.output();
+	//	req.setAttribute("gameplay", model);
 		
-		
-		req.setAttribute("gameplay", model);
-		
-		
-		// this adds the errorMessage text and the result to the response
-		req.setAttribute("errorMessage", errorMessage);
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/gameplay.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/choose.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Gameplay Servlet: doPost");
+		System.out.println("Choose Servlet: doPost");
 		
-		String errorMessage = null;
-		
+		System.out.println("Button Click");
 		// Get the current user from the session
 		String username = req.getSession().getAttribute("username").toString();
 		
@@ -75,27 +66,20 @@ public class GameplayServlet extends HttpServlet
 		 * Set the mode
 		 * Must do this each time since they don't persist between POSTs
 		 */		
-		controller = new GameplayController(username, false);
-		Gameplay model = new Gameplay(); 
-		controller.setModel(model);
-
-		// decode POSTed form parameters and dispatch to controller
-		String input = req.getParameter("input");
-
-		if(input == null || input.equals("")) {
-			controller.output();
-			errorMessage = "Command Line Blank";
-		}
-		else {
-			controller.gameLogic(input);
-		}
+		controller = new GameplayController(username, true);
+		resp.sendRedirect(req.getContextPath() + "/gameplay");
+		return; 
 		
-		req.setAttribute("gameplay", model);
-		// this adds the errorMessage text and the result to the response
-		req.setAttribute("errorMessage", errorMessage);
-
-		
-		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/gameplay.jsp").forward(req, resp);
+//		//Come back - country roads
+//		Gameplay model = new Gameplay(); 
+//		controller.setModel(model);
+//
+//		
+//		req.setAttribute("gameplay", model);
+//		
+//
+//		
+//		// Forward to view to render the result HTML document
+//		req.getRequestDispatcher("/_view/choose.jsp").forward(req, resp);
 	}
 }

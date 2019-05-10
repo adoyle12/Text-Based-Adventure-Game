@@ -6,7 +6,7 @@
 	
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Login</title>
+		<title>Choose Game</title>
 		<style type="text/css">
 			.error {
 				color: red;
@@ -87,46 +87,36 @@
 	</head>
 	
 	<body>
+		<%
+			if(session.getAttribute("username") == null){
+				response.sendRedirect("login.jsp");
+			}
+		%>
 		<div id="bg">
 			<img src="labyrinth.jpg" alt="">
 		</div>
 		<div class="container">
 			<div class="title">
-				<p class="gamename">The Escape of the Minotaur</p>
-				<p style="font-size: 30px;">A Text-Based Adventure Game</p>
+				<p class="gamename">Choose Your Game</p>
 			</div>
-			<p class="intro">You are the minotaur at the center of the labyrinth.<br>
-				Having been trapped here for ages, forced to accept the challenge of any hero who dares to find you,<br>
-				a whimsical goddess takes pity on you and offers you a chance at freedom.<br>
-				Now you must find your way out of the labyrinth whilst searching for stolen treasures<br>
-				or remain a prisoner to this maze forever.<br>
-				Are you up to the challenge?</p>
+			<p class="intro">This is where you would pick load/new game</p>
 			<div class="content">
-			<c:if test="${! empty errorMessage}">
-				<div class="error">${errorMessage}</div>
-			</c:if>
-			<form action="${pageContext.servletContext.contextPath}/login" method="post">
-				<table>
-					<tr>
-						<td class="label">User Name:</td>
-						<td><input type="text" name="username" size="12" /></td>
-					</tr>
-					<tr>
-						<td class="label">Password:</td>
-						<td><input type="password" name="password" size="12" /></td>
-					</tr>
-				</table>
-				<br>
-				<input type="Submit" name="submit" value="Login">
+			<form action="${pageContext.servletContext.contextPath}/choose" method="post">
+				
 			</form>
-			<br>
-			<form action="${pageContext.servletContext.contextPath}/register" method="get">
-				<input type="Button" name="register" value="Register"
-				onclick="window.location = 'http://localhost:8081/tbag/register';">
-			</form>
-			<c:if test="${login.credentials}">
-				<c:redirect url= "http://localhost:8081/tbag/choose"></c:redirect>
-			</c:if>
+			<div style="position: absolute; left: 35%; font-size: 24px; top: 60%; ">	
+				<form action="${pageContext.servletContext.contextPath}/gameplay" method="get">
+					<input type="Button" name="gameplay" value="Continue"
+					onclick="window.location = 'http://localhost:8081/tbag/gameplay';">
+				</form>
+			</div>
+			
+			<div style="position: absolute; right: 35%;  font-size: 24px; top: 60%; ">
+				<form action="${pageContext.servletContext.contextPath}/choose" method="post">
+					<input type="Submit" name="new" value="New Game">
+				</form>
+			</div>
+			
 			</div>
 		</div>
 	</body>
