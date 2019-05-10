@@ -107,6 +107,17 @@
 						</c:forEach>
 					</table>
 				</div>
+				<c:if test="${gameplay.input == 'inventory'}">
+					<div style="float: right; width: 200px;">
+						<table>
+						<c:forEach items="${gameplay.inventory}" var="item">
+							<tr>
+								<td>${item}</td>
+							</tr>
+						</c:forEach>
+					</table>
+					</div>
+				</c:if>
 				<div style="width: 500px; margin: auto;">
 					<table>
 						<tr>

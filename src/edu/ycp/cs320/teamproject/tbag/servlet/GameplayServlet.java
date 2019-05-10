@@ -83,6 +83,7 @@ public class GameplayServlet extends HttpServlet
 		String input = req.getParameter("input");
 
 		if(input == null || input.equals("")) {
+			controller.output();
 			errorMessage = "Command Line Blank";
 		}
 		else {
