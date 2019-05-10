@@ -98,7 +98,7 @@
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
-				<div id="output" style="overflow-y:scroll; height: 400px;">
+				<div id="output" style="overflow-y:scroll; height: 400px; width: 500px; margin: auto;">
 					<table>
 						<c:forEach items="${gameplay.output}" var="string">
 							<tr>
@@ -107,11 +107,24 @@
 						</c:forEach>
 					</table>
 				</div>
+				<c:if test="${gameplay.input == 'inventory'}">
+					<div style="float: right; width: 200px;">
+						<table>
+						<c:forEach items="${gameplay.inventory}" var="item">
+							<tr>
+								<td>${item}</td>
+							</tr>
+						</c:forEach>
+					</table>
+					</div>
+				</c:if>
+				<div style="width: 500px; margin: auto;">
 					<table>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" /></span></td>
 						</tr>
 					</table>
+				</div>
 				</form>
 			</div>
 		</div>

@@ -541,7 +541,7 @@ public class DerbyDatabase implements IDatabase{
 					insertGameState.executeUpdate(); 
 					
 					insertOpeningMessage = conn.prepareStatement("insert into commands (command) values (?)");
-					insertOpeningMessage.setString(1, "Opening Message Here!!");
+					insertOpeningMessage.setString(1, "You are the minotaur isolated at the end of the labyrinth. A goddess has taken pity on you and granted you the opportunity to escape. As you traverse the labyrinth, trying to find your way out, you will encounter heroes that you must defeat and puzzles that you must solve in order to gain your freedom.");
 					insertOpeningMessage.executeUpdate();
 					
 					System.out.println("Tables populated");
