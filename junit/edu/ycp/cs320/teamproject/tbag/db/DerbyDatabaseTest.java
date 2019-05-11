@@ -16,15 +16,26 @@ import edu.ycp.cs320.teamproject.tbag.model.User;
 public class DerbyDatabaseTest 
 {
 	private IDatabase db = null; 
-	private ArrayList<User> users = null; 
+	private ArrayList<User> users = null;
+	private User user = null;
+	private String username;
+	private String password;
 	
 	
 	@Before
 	public void setUp() throws Exception {
 		// creating DB instance here
 		DatabaseProvider.setInstance(new DerbyDatabase());
-		db = DatabaseProvider.getInstance();		
+		db = DatabaseProvider.getInstance();
 		
+		username = "foxy";
+		password = "lady";
+		user = new User();
+		user.setUsername(username);
+		user.setJSPPassword(password);
+		user.setDBPassword(password);
+		
+		db.insertUserIntoUsersTable(username, password);
 		
 	}
 	
@@ -58,28 +69,26 @@ public class DerbyDatabaseTest
 		System.out.println("Testing New User Registration");
 		
 		//First try user that already exists
-		String username = "alex"; 
-		String password = "doyle"; 
+		username = "alex"; 
+		password = "doyle";
 		
 		//Attempt to insert the new user, should come back as -1
-		
+		db.setUserFilePath(username);
 		Integer user_id = db.insertUserIntoUsersTable(username, password); 
-		
 		assertEquals(-1, user_id, 0.0001); 
 		
 		
-		
 		//Okay now insert a new user 
-		
 		username = "tester"; 
 		password = "password"; 
 		
 		//Register new user
-		
+		db.setUserFilePath(username);
 		user_id = db.insertUserIntoUsersTable(username, password); 
 		
 		if (user_id > 0)
 		{
+			db.setUserFilePath(username);
 			Integer matchingID = db.findUserIDFromUsername(username); 
 			
 			//ID's should match
@@ -89,12 +98,16 @@ public class DerbyDatabaseTest
 			db.deleteUserFromUsersTable(user_id);
 		}
 	}
+	
 	@Test
 	public void testUserLocation() {
 		//test getting and setting user location
+		db.setUserFilePath(username);
 		db.setUserLocation(7);
 		
-		assertTrue(7 == db.getUserLocation());
+		int location = db.getUserLocation();
+		
+		assertEquals(7, location);
 	}
 
 }
