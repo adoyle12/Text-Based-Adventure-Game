@@ -108,6 +108,7 @@ public class GameplayController
 				if (input.contains(itemName))
 				{
 					db.setItemLocation(itemName, userLocation);
+					usersInventory.remove(item);
 					db.addToCommands("You dropped " + itemName + " in " + "room " + userLocation);
 					itemsDropped++; 
 				}
