@@ -1,5 +1,6 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -14,7 +15,7 @@ public class RegisterControllerTest {
 	
 	private RegisterController controller;
 	private IDatabase db;
-	private String username = "John";
+	private String username = "Jane";
 	private String password = "Doe";
 	private User model = new User();
 	
@@ -35,5 +36,6 @@ public class RegisterControllerTest {
 	public void insertUserTest() {
 		//test that inserting a new user succeeded
 		assertTrue(controller.insertUser(username, password));
+		assertEquals(password, db.findPasswordFromUsername(username));
 	}
 }
