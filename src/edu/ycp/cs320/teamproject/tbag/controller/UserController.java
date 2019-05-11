@@ -15,9 +15,10 @@ public class UserController {
 	}
 		
 	public void credentials(String username, String password) {
-		String dbPassword = db.findPasswordFromUsername(username);
 		String jspPassword = password;
+		model.setUsername(username);
 		model.setJSPPassword(jspPassword);
+		String dbPassword = db.findPasswordFromUsername(username);
 		model.setDBPassword(dbPassword);
 		model.setCredentials();
 	}

@@ -1,6 +1,8 @@
 package edu.ycp.cs320.teamproject.tbag.db;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +15,7 @@ import edu.ycp.cs320.teamproject.tbag.model.User;
 public class DerbyDatabaseTest 
 {
 	private static IDatabase db = null;
-	private User user = null;
+	private User user;
 	private String username;
 	private String password;
 	
@@ -46,9 +48,11 @@ public class DerbyDatabaseTest
 		//user_id should equal -1
 		assertEquals(-1, user_id, 0.00001); 
 		
-		//try to find user that does exist
+		//user_id should equal a number greater than -1
+		//if running all jUnit tests at once, the actual user_id varies
+		//that is why we do not test for the user_id to match a specific number
 		user_id = db.findUserIDFromUsername(username);
-		assertEquals(1, user_id, 0.0001);
+		assertTrue(user_id != -1);
 		
 	}
 	
@@ -71,20 +75,15 @@ public class DerbyDatabaseTest
 		tester.setDBPassword("test");
 		
 		//Register new user
-		db.setUserFilePath(username);
 		user_id = db.insertUserIntoUsersTable(tester.getUsername(), tester.getJSPPassword()); 
 		
-		if (user_id > 0)
-		{
-			db.setUserFilePath(tester.getUsername());
-			Integer matchingID = db.findUserIDFromUsername(tester.getUsername()); 
+		//now find the userID of the user just entered from their username
+		db.setUserFilePath(tester.getUsername());
+		Integer matchingID = db.findUserIDFromUsername(tester.getUsername()); 
 			
-			//ID's should match
-			assertEquals(user_id, matchingID, 0.0001); 
+		//ID's should match
+		assertEquals(user_id, matchingID, 0.0001); 
 			
-			//delete the user so you don't impact database
-			db.deleteUserFromUsersTable(user_id);
-		}
 	}
 	
 	@Test
@@ -105,8 +104,11 @@ public class DerbyDatabaseTest
 	public static void cleanUp() {
 		
 		//remove test user from database
-		int user_id = db.findUserIDFromUsername("foxy");
-		db.deleteUserFromUsersTable(user_id);
+		int user1 = db.findUserIDFromUsername("foxy");
+		db.deleteUserFromUsersTable(user1);
+		
+		int user2 = db.findUserIDFromUsername("tester");
+		db.deleteUserFromUsersTable(user2);
 		
 	}
 
