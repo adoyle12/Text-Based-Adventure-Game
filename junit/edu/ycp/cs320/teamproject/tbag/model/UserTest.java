@@ -21,11 +21,11 @@ public class UserTest
 		db = DatabaseProvider.getInstance();
 		
 		model = new User();//create user
-		model.setUsername("John");//set username
+		model.setUsername("Jackie");//set username
 		
 		//set user password
-		model.setDBPassword("Doe");
-		model.setJSPPassword("Doe");
+		model.setDBPassword("Chan");
+		model.setJSPPassword("Chan");
 		
 		model.setCredentials();//set credentials
 		model.setLocationID(1);//set user's initial location
@@ -35,7 +35,7 @@ public class UserTest
 	public void testGetSetUsername() 
 	{
 		//test that user name was successfully saved
-		assertEquals("John", model.getUsername()); 
+		assertEquals("Jackie", model.getUsername()); 
 		
 		model.setUsername("Bob");
 		assertEquals("Bob", model.getUsername());
@@ -49,8 +49,8 @@ public class UserTest
 		db.insertUserIntoUsersTable(model.getUsername(), model.getJSPPassword());
 		
 		//test that DBPassword and JSPPassword were set correctly
-		assertEquals("Doe", model.getDBPassword());
-		assertEquals("Doe", model.getJSPPassword());
+		assertEquals("Chan", model.getDBPassword());
+		assertEquals("Chan", model.getJSPPassword());
 		//test that DBPassword and JSPPassword match
 		assertEquals(model.getDBPassword(), model.getJSPPassword());
 	}
@@ -62,7 +62,7 @@ public class UserTest
 		 assertTrue(model.getCredentials());
 		 
 		 //tests that credentials are incorrect if something is wrong
-		 model.setUsername("John");
+		 model.setUsername("Joyce");
 		 model.setDBPassword("Watson");
 		 model.setJSPPassword("Wrong");
 		 
