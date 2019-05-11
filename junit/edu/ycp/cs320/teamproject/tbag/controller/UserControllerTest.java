@@ -25,12 +25,10 @@ public class UserControllerTest
 		db = DatabaseProvider.getInstance();
 		
 		model = new User();
-		model.setUsername(username);
-		model.setJSPPassword(password);
-		model.setDBPassword(password);
 		
 		controller = new UserController();
 		controller.setModel(model);
+		
 	}
 	
 	@Test

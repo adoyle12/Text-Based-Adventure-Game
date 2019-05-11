@@ -164,7 +164,7 @@ public class DerbyDatabase implements IDatabase{
 					user_id = findUserIDFromUsername(username);
 					
 					// if user was found then inform the user 					
-					if (user_id > 0)
+					if (user_id > -1)
 					{
 						System.out.println("Username already taken");	
 						user_id = -1;
@@ -173,50 +173,42 @@ public class DerbyDatabase implements IDatabase{
 					{
 						System.out.println("Creating new user");
 				
-						// insert new user
-						if (user_id <= 0) 
-						{
+						// prepare SQL insert statement to add user to users table
+						stmt1 = conn.prepareStatement(
+								"insert into users (username, password) " +
+								"  values(?, ?) "
+						);
+						stmt1.setString(1, username);
+						stmt1.setString(2, password);
 							
+						// execute the update
+						stmt1.executeUpdate();
 							
-							// prepare SQL insert statement to add user to users table
-							stmt1 = conn.prepareStatement(
-									"insert into users (username, password) " +	//, user_location_id
-									"  values(?, ?) "					//, 1
-							);
-							stmt1.setString(1, username);
-							stmt1.setString(2, password);
-							
-							// execute the update
-							stmt1.executeUpdate();
-							
-							//Get the new user's id
-							stmt2 = conn.prepareStatement(
-									"select user_id from users " +
-											"  where username = ? "
-							);
-							stmt2.setString(1, username);
-							
-							//execute query and get result
-							resultSet2 = stmt2.executeQuery(); 
-							
-							//should only be one value 
-							resultSet2.next(); 
-							user_id = resultSet2.getInt(1); 
-							System.out.println("New user added");	
-							
-							System.out.println("Creating new user's db"); 
-							
-							//Create the new users db
-							DerbyDatabase db = new DerbyDatabase();
-							db.setUserFilePath(username);
-							db.createGameTables(username);
-							db.loadInitialData();
-							
+						//Get the new user's id
+						stmt2 = conn.prepareStatement(
+								"select user_id from users " +
+										"  where username = ? "
+						);
+						stmt2.setString(1, username);
 						
-						}
-					}
+						//execute query and get result
+						resultSet2 = stmt2.executeQuery(); 
+							
+						//should only be one value 
+						resultSet2.next(); 
+						user_id = resultSet2.getInt(1); 
+						System.out.println("New user added");	
+							
+						System.out.println("Creating new user's db"); 
+							
+						//Create the new users db
+						DerbyDatabase db = new DerbyDatabase();
+						db.setUserFilePath(username);
+						db.createGameTables(username);
+						db.loadInitialData();
 										
-					
+					}
+												
 					return user_id;
 				} 
 				finally 
