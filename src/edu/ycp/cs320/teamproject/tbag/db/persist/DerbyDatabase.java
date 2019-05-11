@@ -167,7 +167,7 @@ public class DerbyDatabase implements IDatabase{
 					if (user_id > 0)
 					{
 						System.out.println("Username already taken");	
-						
+						user_id = -1;
 					}
 					else
 					{
