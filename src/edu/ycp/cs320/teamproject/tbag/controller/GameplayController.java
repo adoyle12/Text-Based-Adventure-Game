@@ -231,14 +231,18 @@ public class GameplayController
 		for(Item item : usersInventory) {
 			// if playerHas item and NextLocation == puzzleRoom
 			String itemName = item.getName();
-			if(nextLocation == 11 && itemName.equals("sword")){
+			if(nextLocation == 8 && itemName.equals("sword")){
+				return true;
+			} else if(nextLocation == 13 && itemName.equals("shield")){
+				return true;
+			} else if(nextLocation == 24 && itemName.equals("bigger stick")){
 				return true;
 			}
 		}
 		
 		// IF USER INVENTORY EMPTY
 		// Do not let the player enter these rooms
-		if(nextLocation == 11) {
+		if(nextLocation == 8 || nextLocation == 13 || nextLocation == 24) {
 			return false;
 		}
 		return true;
