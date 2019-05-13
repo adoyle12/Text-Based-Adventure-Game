@@ -3,6 +3,7 @@ package edu.ycp.cs320.teamproject.tbag.controller;
 import static org.junit.Assert.assertEquals;
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class GameplayControllerTest
 	private String username;
 	private String password;
 	private Item item;
-	private IDatabase db;
+	private static IDatabase db;
 	
 	@Before
 	public void setUp() {
@@ -412,4 +413,14 @@ public class GameplayControllerTest
 		db.setItemLocation("goddess note", 0);//place note back in user's inventory for testing purposes
 		
 	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		
+		//remove test user from database
+		int user_id = db.findUserIDFromUsername("john");
+		db.deleteUserFromUsersTable(user_id);
+		
+	}
+	
 }

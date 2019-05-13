@@ -50,19 +50,19 @@ public class GameplayController
 			if(input.contains("north")) {
 				moveTo(0);
 			}
-			if(input.contains("south")) {
+			else if(input.contains("south")) {
 				moveTo(1);
 			}
-			if(input.contains("east")) {
+			else if(input.contains("east")) {
 				moveTo(2);
 			} 
-			if(input.contains("west")){
+			else if(input.contains("west")){
 				moveTo(3);
 			}
-			if(input.contains("up")){
+			else if(input.contains("up")){
 				moveTo(4);
 			}
-			if(input.contains("down")){
+			else if(input.contains("down")){
 				moveTo(5);
 			}
 			else {
@@ -73,7 +73,7 @@ public class GameplayController
 		
 		//__________________Picking up items___________________
 		
-		if (input.contains("pick up") || input.contains("grab") || input.contains("take")) 
+		else if (input.contains("pick up") || input.contains("grab") || input.contains("take")) 
 		{
 			 
 			int itemsPickedUp = 0; 
@@ -97,7 +97,7 @@ public class GameplayController
 			
 		//_________________Drop Item_____________________
 		} 
-		if(input.contains("drop")) 
+		else if(input.contains("drop")) 
 		{
 			int itemsDropped = 0; 
 			for (Item item : db.getItemsInLocation(0))
@@ -118,7 +118,7 @@ public class GameplayController
 			}
 			
 		} 
-		if(input.contains("examine"))
+		else if(input.contains("examine"))
 		{
 			db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
 			
@@ -134,7 +134,7 @@ public class GameplayController
 				}
 			}
 		} 
-		if (input.contains("inventory"))
+		else if (input.contains("inventory"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
 			for (Item item : usersInventory)

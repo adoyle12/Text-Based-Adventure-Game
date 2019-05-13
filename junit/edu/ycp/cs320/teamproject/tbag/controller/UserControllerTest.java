@@ -1,9 +1,7 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +16,7 @@ public class UserControllerTest
 	private UserController controller; 
 	private String password = "world";
 	private String username = "hello";
-	private IDatabase db = null;
+	private static IDatabase db = null;
 	
 	@Before
 	public void setUp() 
@@ -27,12 +25,10 @@ public class UserControllerTest
 		db = DatabaseProvider.getInstance();
 		
 		model = new User();
-		model.setUsername(username);
-		model.setJSPPassword(password);
-		model.setDBPassword(password);
 		
 		controller = new UserController();
 		controller.setModel(model);
+		
 	}
 	
 	@Test
@@ -45,4 +41,14 @@ public class UserControllerTest
 		assertEquals("world", model.getJSPPassword());
 		assertEquals(model.getJSPPassword(), model.getDBPassword());
 	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		
+		//remove test user from database
+		int user_id = db.findUserIDFromUsername("hello");
+		db.deleteUserFromUsersTable(user_id);
+		
+	}
+	
 }

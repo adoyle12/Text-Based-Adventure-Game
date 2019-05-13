@@ -20,9 +20,9 @@ public class RegisterController
 	public boolean insertUser(String username, String password)
 	{
 		Integer user_id = db.insertUserIntoUsersTable(username, password); 
-		
+		System.out.print(user_id);
 		//check if the insertion succeeded
-		if (user_id > 0)
+		if (user_id > -1)
 		{
 			System.out.println("New user: (ID: " + user_id + ") Successfully Added to Users Table");
 			return true; 

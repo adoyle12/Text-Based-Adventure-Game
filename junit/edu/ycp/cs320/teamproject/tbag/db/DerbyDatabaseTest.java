@@ -3,8 +3,7 @@ package edu.ycp.cs320.teamproject.tbag.db;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,9 +14,8 @@ import edu.ycp.cs320.teamproject.tbag.model.User;
 
 public class DerbyDatabaseTest 
 {
-	private IDatabase db = null; 
-	private ArrayList<User> users = null;
-	private User user = null;
+	private static IDatabase db = null;
+	private User user;
 	private String username;
 	private String password;
 	
@@ -45,20 +43,16 @@ public class DerbyDatabaseTest
 		System.out.println("Testing Finding UserID from Username");
 		
 		//try to find user that doesn't exist
-		String username = "DOESNOTEXIST"; 
+		Integer user_id = db.findUserIDFromUsername("DOESNOTEXIST"); 
 		
-		Integer user_id = db.findUserIDFromUsername(username); 
+		//user_id should equal -1
+		assertEquals(-1, user_id, 0.00001); 
 		
-		//user_id should equal 0
-		assertEquals(0, user_id, 0.00001); 
-		
-		//try to find user that does exist
-		username = "alex"; 
-		
+		//user_id should equal a number greater than -1
+		//if running all jUnit tests at once, the actual user_id varies
+		//that is why we do not test for the user_id to match a specific number
 		user_id = db.findUserIDFromUsername(username);
-		
-		//AD's user_id should = 3
-		assertEquals(3, user_id, 0.0001);
+		assertTrue(user_id != -1);
 		
 	}
 	
@@ -69,45 +63,53 @@ public class DerbyDatabaseTest
 		System.out.println("Testing New User Registration");
 		
 		//First try user that already exists
-		username = "alex"; 
-		password = "doyle";
-		
 		//Attempt to insert the new user, should come back as -1
 		db.setUserFilePath(username);
 		Integer user_id = db.insertUserIntoUsersTable(username, password); 
 		assertEquals(-1, user_id, 0.0001); 
 		
-		
-		//Okay now insert a new user 
-		username = "tester"; 
-		password = "password"; 
+		//Okay now insert a new user
+		User tester = new User();
+		tester.setUsername("tester");
+		tester.setJSPPassword("test");
+		tester.setDBPassword("test");
 		
 		//Register new user
-		db.setUserFilePath(username);
-		user_id = db.insertUserIntoUsersTable(username, password); 
+		user_id = db.insertUserIntoUsersTable(tester.getUsername(), tester.getJSPPassword()); 
 		
-		if (user_id > 0)
-		{
-			db.setUserFilePath(username);
-			Integer matchingID = db.findUserIDFromUsername(username); 
+		//now find the userID of the user just entered from their username
+		db.setUserFilePath(tester.getUsername());
+		Integer matchingID = db.findUserIDFromUsername(tester.getUsername()); 
 			
-			//ID's should match
-			assertEquals(user_id, matchingID, 0.0001); 
+		//ID's should match
+		assertEquals(user_id, matchingID, 0.0001); 
 			
-			//delete the user so you don't impact database
-			db.deleteUserFromUsersTable(user_id);
-		}
 	}
 	
 	@Test
-	public void testUserLocation() {
+	public void testGetSetUserLocation() {
 		//test getting and setting user location
 		db.setUserFilePath(username);
-		db.setUserLocation(7);
+		db.setUserLocation(7);//set's user's location to room 7
 		
 		int location = db.getUserLocation();
+		assertEquals(7, location);//test that user's location is now room 7
 		
-		assertEquals(7, location);
+		db.setUserLocation(10);
+		location = db.getUserLocation();
+		assertEquals(10, location);//test that user's location was changed to room 10
+	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		
+		//remove test user from database
+		int user1 = db.findUserIDFromUsername("foxy");
+		db.deleteUserFromUsersTable(user1);
+		
+		int user2 = db.findUserIDFromUsername("tester");
+		db.deleteUserFromUsersTable(user2);
+		
 	}
 
 }
