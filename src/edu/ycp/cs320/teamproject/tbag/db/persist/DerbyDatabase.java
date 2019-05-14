@@ -24,12 +24,12 @@ public class DerbyDatabase implements IDatabase{
 	
 	Boolean loggedIn = false; 
 	
+	//sets the file path to switch to correct data base when registering, logging in, and clearing game.
 	public void setUserFilePath(String userFilePath)
 	{
 		this.userFilePath = userFilePath; 
 	}
 
-	
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -44,6 +44,7 @@ public class DerbyDatabase implements IDatabase{
 
 	private static final int MAX_ATTEMPTS = 10;
 	
+	//returns user ID from user name
 	@Override
 	public Integer findUserIDFromUsername(final String username) 
 	{
@@ -100,6 +101,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//finds users password in the users table based on the user name entered by the user
 	@Override
 	public String findPasswordFromUsername(String username) 
 	{
@@ -230,6 +232,7 @@ public class DerbyDatabase implements IDatabase{
 		
 	}
 		
+	//Deletes user from users database but doesn't delete the actual databaase
 	@Override
 	public Integer deleteUserFromUsersTable(final int user_id) 
 	{
@@ -307,7 +310,6 @@ public class DerbyDatabase implements IDatabase{
 	}
 	
 	// DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
-
 	private Connection connect() throws SQLException 
 	{
 		String resourcePath = null; 
@@ -330,6 +332,7 @@ public class DerbyDatabase implements IDatabase{
 		return conn;
 	}
 	
+	// Creates the initial blank users table when Derby is run
 	public void createUsersTable()
 	{
 		setUserFilePath("users"); 
@@ -360,7 +363,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-	//  creates the tables
+	//  creates the tables for each users individual game
 	public void createGameTables(String username) 
 	{
 		
@@ -569,13 +572,12 @@ public class DerbyDatabase implements IDatabase{
 					resetCommands.executeUpdate(); 
 					
 					resetOpeningMessage = conn.prepareStatement("insert into commands (command) values (?)"); 
-					resetOpeningMessage.setString(1, "This a new game");
+					resetOpeningMessage.setString(1, "You are the minotaur isolated at the end of the labyrinth. A goddess has taken pity on you and granted you the opportunity to escape. As you traverse the labyrinth, trying to find your way out, you will encounter heroes that you must defeat and puzzles that you must solve in order to gain your freedom.");
 					resetOpeningMessage.executeUpdate();
 					
 					resetItemLocations = conn.prepareStatement("update inventory set item_location_id = ? where item_id = ?");
 					for (Item item : inventory)
 					{
-						System.out.println(item.getLocationID()); 
 						resetItemLocations.setInt(1, item.getLocationID());
 						resetItemLocations.setInt(2, item.getItemID());
 						resetItemLocations.addBatch();
@@ -612,6 +614,7 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("UsersDB successfully initialized!");
 	}
 
+	//Adds both user input and game responses to the commands table
 	@Override
 	public Boolean addToCommands(final String input) 
 	{
@@ -639,6 +642,7 @@ public class DerbyDatabase implements IDatabase{
 		
 	}
 
+	//Returns an array list with all of the items in the commands table to be displayed
 	@Override
 	public ArrayList<String> getCommands() {
 		return executeTransaction(new Transaction<ArrayList<String>>() {
@@ -684,6 +688,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns the users location from the gamestate table
 	@Override
 	public Integer getUserLocation() {
 		return executeTransaction(new Transaction<Integer>() {
@@ -722,6 +727,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Updates the users location in the gamestate table
 	@Override
 	public void setUserLocation(final int location) {
 		executeTransaction(new Transaction<Boolean>() {
@@ -749,6 +755,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Gets an agents location to compare with the users location during agent encounters
 	@Override
 	public Integer getAgentLocation(final int agent_id) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -785,6 +792,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Returns a string that describes the agent
 	@Override
 	public String getAgentDescription(final int agent_location_id) {
 		return executeTransaction(new Transaction<String>(){
@@ -816,6 +824,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Returns the item description from inventory table
 	@Override
 	public ArrayList<String> getItemDescription(final int item_location) {
 		return executeTransaction(new Transaction<ArrayList<String>>(){
@@ -850,6 +859,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Used to set item location when picking up and dropping items
 	@Override
 	public void setItemLocation(final String itemName, final int location) {
 
@@ -880,6 +890,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Gets item location used when examining a room and solving puzzles
 	@Override
 	public Integer getItemLocationID(final String itemName) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -915,6 +926,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns a list of all items in a given location used in the inventory query
 	public List<Item> getItemsInLocation(final int locationID)
 	{
 		return executeTransaction(new Transaction<List<Item>>() 
@@ -959,6 +971,7 @@ public class DerbyDatabase implements IDatabase{
 		}); 
 	}
 	
+	//Returns long location description from locations table
 	@Override
 	public String getLocationDescriptionLong(final int location_id) {
 		return executeTransaction(new Transaction<String>(){
@@ -990,6 +1003,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Returns short location description from locations table
 	@Override
 	public String getLocationDescriptionShort(final int location_id) {
 		return executeTransaction(new Transaction<String>(){
@@ -1021,6 +1035,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns the room location to the north
 	@Override
 	public Integer getLocationNorth(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1063,6 +1078,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns the room location to the south
 	@Override
 	public Integer getLocationSouth(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1104,6 +1120,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns the room location to the east
 	@Override
 	public Integer getLocationEast(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1145,6 +1162,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Returns the room location to the west
 	@Override
 	public Integer getLocationWest(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1186,6 +1204,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Returns the room location above
 	@Override
 	public Integer getLocationUp(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1227,6 +1246,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Returns the room location below
 	@Override
 	public Integer getLocationDown(final int currentLocation) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1268,6 +1288,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//Checks locations table to see if the user has visited a room before. Used to decide what room description to show
 	@Override
 	public Integer getPlayerHasBeen(final int location) {
 		return executeTransaction(new Transaction<Integer>() {
@@ -1310,6 +1331,7 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
  
+	//Updates a rooms has been location when a use visits the room
 	@Override
 	public void setPlayerHasBeen(final int location) {
 		executeTransaction(new Transaction<Boolean>() {
@@ -1338,5 +1360,4 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
-
 }
