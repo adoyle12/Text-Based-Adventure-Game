@@ -53,13 +53,15 @@
 				text-shadow: 3px 2px green;
 			}
 			.container .content {
-				position: fixed;
+				position: relative;
 				bottom: 0;
 				background: rgb(0, 0, 0);
 				background: rgba(0, 0, 0, 0.5);
 				color: #f1f1f1;
 				width: 100%;
-				padding: 60px;
+				height: 100%;
+
+				text-align: center;
 			}
 			span.text {
 				display: block;
@@ -98,7 +100,7 @@
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
-				<div id="output" style="overflow-y:scroll; height: 400px; width: 500px; margin: auto;">
+				<div id="output" style="overflow-y:scroll; height: 400px; width: 500px; margin-top: 15%; display: inline-block;">
 					<table>
 						<c:forEach items="${gameplay.output}" var="string">
 							<tr>
@@ -108,7 +110,7 @@
 					</table>
 				</div>
 				<c:if test="${gameplay.input == 'inventory'}">
-					<div style="float: right; width: 200px;">
+					<div style="width: 200px; display: inline-block; float: right; margin-top: 30%;">
 						<table>
 						<c:forEach items="${gameplay.inventory}" var="item">
 							<tr>
@@ -118,7 +120,7 @@
 					</table>
 					</div>
 				</c:if>
-				<div style="width: 500px; margin: auto;">
+				<div style="width: 500px; margin: auto; float: center;">
 					<table>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" /></span></td>

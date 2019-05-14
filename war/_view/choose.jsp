@@ -8,6 +8,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title>Choose Game</title>
 		<style type="text/css">
+		
+			input[type=button], input[type=submit] {
+				padding: 60px 40px;
+			}
 			.error {
 				color: red;
 			}
@@ -104,16 +108,16 @@
 			<form action="${pageContext.servletContext.contextPath}/choose" method="post">
 				
 			</form>
-			<div style="position: absolute; left: 35%; font-size: 24px; top: 60%; ">	
+			<div style="width: 40%; margin: auto; float: left; text-align: right; height: 250px;">	
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="get">
-					<input type="Button" name="gameplay" value="Continue"
+					<input type="Button" name="gameplay" value="CONTINUE"  style="border-color: #05a305; border-radius: 25px; font-size: 25px; height: 25px; width: 40%; line-height: 50%; text-align: center;" 
 					onclick="window.location = 'http://localhost:8081/tbag/gameplay';">
 				</form>
 			</div>
 			
-			<div style="position: absolute; right: 35%;  font-size: 24px; top: 60%; ">
+			<div style="width: 40%; margin: auto; float: right; text-align: left; height: 250px;">
 				<form action="${pageContext.servletContext.contextPath}/choose" method="post">
-					<input type="Submit" name="new" value="New Game">
+					<input type="Submit" name="new" value="NEW GAME" style="border-color: #05a305; border-radius: 25px; font-size: 25px; height: 25px; width: 40%; line-height: 50%; text-align: center;">
 				</form>
 			</div>
 			
