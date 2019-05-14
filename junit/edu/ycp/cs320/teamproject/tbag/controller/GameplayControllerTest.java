@@ -381,8 +381,6 @@ public class GameplayControllerTest
 		itemLocation = db.getItemLocationID("dagger");
 		assertEquals(0, itemLocation);//check that dagger's location was updated to the user's inventory
 		
-		db.setItemLocation("dagger", 8);//place dagger back in room 8 for testing purposes
-		
 	}
 	
 	@Test
@@ -394,23 +392,20 @@ public class GameplayControllerTest
 		model = new Gameplay();
 		
 		db.setUserFilePath(username);
-		db.setUserLocation(10);//set user's location to room 10
 		int userLocation = db.getUserLocation();
-		assertEquals(10, userLocation);//check that the user is in room 10 now
+		assertEquals(8, userLocation);//check that the user is still in room 8 from previous test
 		
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 10
-		assertEquals(0, itemsInRoom.size());//check that there are no items in room 10
-		int itemLocation = db.getItemLocationID("goddess note");
-		assertEquals(0, itemLocation);//checks that the goddess note is in the user's inventory
+		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 8
+		assertEquals(0, itemsInRoom.size());//check that there are no items in room 8
+		int itemLocation = db.getItemLocationID("dagger");
+		assertEquals(0, itemLocation);//checks that the dagger is in the user's inventory
 		
-		controller.gameLogic("drop goddess note");
-		itemLocation = db.getItemLocationID("goddess note");
-		assertEquals(10, itemLocation);//check that goddess note is now in room 10
-		
-		db.setItemLocation("goddess note", 0);//place note back in user's inventory for testing purposes
+		controller.gameLogic("drop dagger");
+		itemLocation = db.getItemLocationID("dagger");
+		assertEquals(8, itemLocation);//check that the dagger is back in room 8
 		
 	}
 	
