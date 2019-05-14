@@ -9,19 +9,12 @@
 			.error {
 				color: red;
 			}
-			body {
-				background-color: black;
-			}
-			* {
-				box-sizing: border-box;
-			}
+	
 			.container {
 				position: relative;
 				margin: 0 auto;
 			}
-			td.label {
-				text-align: center;
-			}
+		
 			#bg {
 				position: fixed;
 				top: -50%;
@@ -45,13 +38,10 @@
 				width: 100%;
 				text-align: center;
 				line-height: 0.1;
-				text-shadow: 2px 1px darkgreen;
-			}
-			p.gamename {
-				color: #f1f1f1;
-				font-size: 80px;
 				text-shadow: 3px 2px green;
+				font-size: 80px; 
 			}
+			
 			.container .content {
 				position: relative;
 				bottom: 0;
@@ -60,7 +50,6 @@
 				color: #f1f1f1;
 				width: 100%;
 				height: 100%;
-
 				text-align: center;
 			}
 			span.text {
@@ -74,12 +63,6 @@
 			input[type=text]:focus {
 				background-color: lightgreen;
 			}	
-			input[type=password] {
-				margin: auto;
-			}	
-			input[type=password]:focus {
-				background-color: lightgreen;
-			}
 		</style>
 	</head>
 	<body>
@@ -93,40 +76,43 @@
 		</div>
 		<div class="container">
 			<div class="title">
-				<p class="gamename">The Escape of the Minotaur</p>
+				<p >The Escape of the Minotaur</p>
 			</div>
 			<div class="content">
 				<c:if test="${! empty errorMessage}">
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
-				<div id="output" style="overflow-y:scroll; height: 400px; width: 500px; margin-top: 15%; display: inline-block;">
+				
+				<div id="output" style="overflow-y:scroll; height: 400px; width: 50%;
+				position: fixed; left: 50%;	margin-left: -25%; margin-top: 15%; 
+				display: inline-block; ">
 					<table>
 						<c:forEach items="${gameplay.output}" var="string">
 							<tr>
 								<td>${string}</td>
 							</tr>
 						</c:forEach>
-					</table>
-				</div>
-				<c:if test="${gameplay.input == 'inventory'}">
-					<div style="width: 200px; display: inline-block; float: right; margin-top: 30%;">
-						<table>
-						<c:forEach items="${gameplay.inventory}" var="item">
-							<tr>
-								<td>${item}</td>
-							</tr>
-						</c:forEach>
-					</table>
-					</div>
-				</c:if>
-				<div style="width: 500px; margin: auto; float: center;">
-					<table>
 						<tr>
 							<td><span class='text'>Input:<input type="text" name="input" size="12" /></span></td>
 						</tr>
 					</table>
 				</div>
+			
+				<c:if test="${gameplay.input == 'status' || gameplay.input == 'Status'}">
+					<div style="width: 200px; display: inline-block; float: right; margin-top: 30%;">
+						<h2>Status Inquiry</h2>
+						<span>Inventory</span>
+						<br>
+						<c:forEach items="${gameplay.inventory}" var="item">
+							<span>-${item}</span>
+							<br>
+						</c:forEach>
+						<p>Current location: Room ${gameplay.playerLocation}</p>
+						<p> Health: ${gameplay.health}</p>
+						<p>Score: ${gameplay.score}</p>
+					</div>
+				</c:if>
 				</form>
 			</div>
 		</div>

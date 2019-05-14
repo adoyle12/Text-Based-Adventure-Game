@@ -33,5 +33,7 @@ public interface IDatabase{
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
-	public void resetGame(); 
+	public void resetGame();
+	public Integer getUserScore();
+	public Integer getUserHealth(); 
 }

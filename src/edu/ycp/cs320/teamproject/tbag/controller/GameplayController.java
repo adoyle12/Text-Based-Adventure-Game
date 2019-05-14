@@ -19,6 +19,9 @@ public class GameplayController
 	private int userLocation;
 	private List<Item> itemsInRoom;
 	private List<Item> usersInventory; 
+	private int userScore; 
+	private int userHealth; 
+	
 	
 	public GameplayController(String username, Boolean newGame) {
 		DatabaseProvider.setInstance(new DerbyDatabase());
@@ -29,6 +32,8 @@ public class GameplayController
 			userLocation = db.getUserLocation();
 			itemsInRoom = db.getItemsInLocation(userLocation);
 			usersInventory = db.getItemsInLocation(0); 
+			userScore = db.getUserScore(); 
+			userHealth = db.getUserHealth(); 
 		}
 		else
 		{
@@ -39,10 +44,10 @@ public class GameplayController
 	
 
 	
-	public void gameLogic(String input) {
-		db.addToCommands(input); 
-		model.setInput(input);
-		input = input.toLowerCase();
+	public void gameLogic(String rawInput) {
+		db.addToCommands(rawInput); 
+		model.setInput(rawInput);
+		String input = rawInput.toLowerCase();
 		
 		
 		// ___________________Movement_______________________
@@ -134,14 +139,36 @@ public class GameplayController
 				}
 			}
 		} 
-		else if (input.contains("inventory"))
+		else if (input.contains("status"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
-			for (Item item : usersInventory)
+			List<String> noItems = new ArrayList<String>(); 
+			
+			noItems.add("No items found"); 
+		
+			
+			if (usersInventory.size() == 0)
 			{
-				itemNames.add(item.getName()); 
+				
+				model.addInventory(noItems);
 			}
-			model.addInventory(itemNames);
+			else 
+			{
+				for (Item item : usersInventory)
+				{
+					
+					itemNames.add(item.getName()); 
+				}
+				
+				model.addInventory(itemNames);
+				
+			}
+			
+			model.setHealth(userHealth);
+			model.setScore(userScore);
+			model.setPlayerLocation(userLocation);
+			
+			db.addToCommands("------------------------->"); 
 		}
 		else {
 			System.out.println("Unknown command");

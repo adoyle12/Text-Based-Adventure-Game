@@ -13,6 +13,9 @@ public class Gameplay
 	private String input; 		//input from the user
 	private ArrayList<String> output; //game log
 	private List<String> inventory; 
+	private int score; 
+	private int health; 
+	private int playerLocation; 
 	
 	public Gameplay() 
 	{
@@ -50,6 +53,36 @@ public class Gameplay
 	public void addInventory(List<String> inventory) 
 	{
 		this.inventory = inventory;
+	}
+
+	public int getScore() 
+	{
+		return score;
+	}
+
+	public void setScore(int score) 
+	{
+		this.score = score;
+	}
+
+	public int getHealth() 
+	{
+		return health;
+	}
+
+	public void setHealth(int health) 
+	{
+		this.health = health;
+	}
+
+	public int getPlayerLocation() 
+	{
+		return playerLocation;
+	}
+
+	public void setPlayerLocation(int playerLocation) 
+	{
+		this.playerLocation = playerLocation;
 	}
 
 	

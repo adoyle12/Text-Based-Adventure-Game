@@ -22,9 +22,8 @@ public class DerbyDatabase implements IDatabase{
 	
 	String userFilePath = null; 
 	
-	Boolean loggedIn = false; 
-	
 	//sets the file path to switch to correct data base when registering, logging in, and clearing game.
+
 	public void setUserFilePath(String userFilePath)
 	{
 		this.userFilePath = userFilePath; 
@@ -597,6 +596,7 @@ public class DerbyDatabase implements IDatabase{
 			
 		}); 
 	}
+	
 	// The main method creates the users table
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating Users table...");
@@ -720,6 +720,81 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//Updates the users location in the gamestate table
+	@Override
+	public Integer getUserHealth() {
+		return executeTransaction(new Transaction<Integer>() {
+			@Override
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement getHealth = null;
+				ResultSet resultSet = null;
+				
+				try {
+					getHealth = conn.prepareStatement( 
+							" select health " +
+							" 	from gameState "
+						
+					);
+					
+					resultSet = getHealth.executeQuery();
+					
+					Integer currentHealth = -1;
+					
+					if(resultSet.next()) {
+						currentHealth = resultSet.getInt("health");
+					}
+					else
+					{
+						System.out.println("No row found");
+					}
+					
+					return currentHealth;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(getHealth);
+				}
+				
+			}
+		});
+	}
+	
+	@Override
+	public Integer getUserScore() {
+		return executeTransaction(new Transaction<Integer>() {
+			@Override
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement getScore = null;
+				ResultSet resultSet = null;
+				
+				try {
+					getScore = conn.prepareStatement( 
+							" select score " +
+							" 	from gameState "
+						
+					);
+					
+					resultSet = getScore.executeQuery();
+					
+					Integer currentScore = -1;
+					
+					if(resultSet.next()) {
+						currentScore = resultSet.getInt("score");
+					}
+					else
+					{
+						System.out.println("No row found");
+					}
+					
+					return currentScore;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(getScore);
+				}
+				
+			}
+		});
+	}
 	@Override
 	public void setUserLocation(final int location) {
 		executeTransaction(new Transaction<Boolean>() {
