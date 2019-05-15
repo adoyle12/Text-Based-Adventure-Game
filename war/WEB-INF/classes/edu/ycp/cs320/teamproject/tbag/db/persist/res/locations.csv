@@ -1,29 +1,29 @@
-You have returned to you're chamber at the bottom of the dungeon.|You have returned to you're chamber at the bottom of the dungeon. There is a staircase here.|0|1|1|1|1|10|1
-This is room 2|Description for room 2|0|2|2|3|2|2|2
-This is room 3|Description for room 3|0|3|6|4|2|3|3
-This is room 4|Description for room 4|0|4|4|4|3|4|4
-This is room 5|Description for room 5|0|5|5|6|5|5|5
-This is room 6|Description for room 6|0|3|9|7|5|6|6
-This is room 7|Description for room 7|0|7|10|7|6|7|7
-This is room 8|Description for room 8. There is a staircase here|0|8|8|9|8|17|8
-This is room 9|Description for room 9|0|6|9|9|8|9|9
-This is room 10|Description for room 10|0|7|10|10|10|10|10
-This is room 11|Description for room 11|0|11|14|11|11|11|11
-This is room 12|Description for room 12|0|12|15|13|12|12|12
-This is room 13|Description for room 13. There is a staircase here.|0|13|16|13|12|22|13
-This is room 14|Description for room 14|0|11|17|15|14|14|14
-This is room 15|Description for room 15|0|12|18|16|14|15|15
-This is room 16|Description for room 16|0|13|16|16|15|16|16
-This is room 17|Description for room 17|0|14|17|17|17|17|17
-This is room 18|Description for room 18|0|15|18|19|18|18|18
-This is room 19|Description for room 19|0|19|19|19|18|19|19
-This is room 20|Description for room 20. There is a staircase here|0|20|23|20|20|29|20
-This is room 21|Description for room 21|0|21|24|22|21|21|21
-This is room 22|Description for room 22|0|22|22|22|21|22|22
-This is room 23|Description for room 23|0|20|26|23|23|23|23
-This is room 24|Description for room 24|0|21|24|25|24|24|24
-This is room 25|Description for room 25|0|25|28|25|24|25|25
-This is room 26|Description for room 26|0|23|26|27|26|26|26
-This is room 27|Description for room 27|0|27|27|28|26|27|27
-This is room 28|Description for room 28|0|25|28|28|27|28|28
+A dim light enters from above|The room is cold & dark, the only light comes from the top of the staircase|0|1|1|1|1|10|1
+The Iron Maiden awaits you|There is nothing here except for the Iron Maiden resting against the wall|0|2|2|3|2|2|2
+The Rack is in this room, need a stretch?|You enter the first torture chamber to see The Rack in the middle of the room, two more chambers are to the east & west|0|3|6|4|2|3|3
+Home of the Brazen Bull|There is a Brazen Bull and a burnt stench that haunts this chamber. The light reflecting off the Bull illuminates the room|0|4|4|4|3|4|4
+This cell used to house the imp demon|You crouch down as the cell is too small to stand up in. A small candle on the floor illuminates the dirty stone walls and steel bars|0|5|5|6|5|5|5
+Prison cell, torture chambers, and a large curtain|The walls are lined with chains, some still holding the bones of their captives. There is a small cell illuminated by a dim light to the west and torture chambers to the north. A tall velvet curtain obstructs the south view|0|3|9|7|5|6|6
+Can't breathe in here, better move|This room feels tighter than the last, there is an opening to the west|0|7|10|7|6|7|7
+A large door is at the end of hall|You walk through the hallway which gets increasingly darker except for a small light coming from underneath a giant steel door|0|8|8|9|8|17|8
+There is hallway leading west|You walk through the curtain and feel a coldness coming from the west|0|6|9|9|8|9|9
+This room is mostly empty, there is a doorway to the north|As you ascend the stairs you can feel the moisture on the walls, your strength starts to return as you enter a small room. The room leads to a doorway to the north|0|7|10|10|10|10|10
+It's a lair|You enter golem's lair - he's not here right now but if you try again later... |0|11|14|11|11|11|11
+The room shows signs of battle|The room shows signs of battle, there is an exit to the east|0|12|15|13|12|12|12
+The room of the winding stairs|There's a winding staircase that leads to freedom|0|13|16|13|12|22|13
+The hall extends to the north and opens up to the east|You cross a slain Ammit as you traverse through the hall, it extends to the north and branches off to the east|0|11|17|15|14|14|14
+There are trails of blood leading to the north & east|There are trails of blood leading to the north & east|0|12|18|16|14|15|15
+The room shows signs of battle|The room shows signs of battle, there is an exit to the north|0|13|16|16|15|16|16
+Climbing the stairs closer to freedom, there is a hall to the north|Climbing the stairs, you hear a loud shriek from afar... you're not alone... the hallway leads north|0|14|17|17|17|17|17
+The hall continues to the east|The hall continues to the east|0|15|18|19|18|18|18
+You are in the armory|You enter the armory, it is left desolate from those who came before|0|19|19|19|18|19|19
+A light to freedom is above|A light to freedom is above|0|20|23|20|20|29|20
+The room shows signs of battle, there is corridor to the south|The room shows signs of battle, there is corridor to the south|0|21|24|22|21|21|21
+The only path is west|The only path is west|0|22|22|22|21|22|22
+Ding ding|Ding ding|0|20|26|23|23|23|23
+Don wants to know if you did your course survey?|Don Hake gets out of his Tesla after a trip to down to BD|0|21|24|25|24|24|24
+Medicine room|Medicine room|0|25|28|25|24|25|25
+Tempting...|Tempting...|0|23|26|27|26|26|26
+What's next? 27|That was exhausting|0|27|27|28|26|27|27
+Told you about that guy|Guess who's back|0|25|28|28|27|28|28
 You have already escaped don't tell me you're back for more.|Congratulations you have escaped the depths of your ancient prison.|0|29|29|29|29|29|29
