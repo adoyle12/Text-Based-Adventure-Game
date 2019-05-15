@@ -86,12 +86,20 @@ public class GameplayController
 			{
 				String itemName = item.getName(); 
 				
-				if (input.contains(itemName))
+				// Trap in room 26
+				if (input.contains("brilliant blade") && userLocation == 26 && itemName.equals("brilliant blade")) {
+					db.setUserLocation(17);
+					db.setItemLocation("brilliant blade", -1);
+					db.addToCommands("You grab the weapon and suddenly the floor collapses beneith you. You fall into the room below and you loose grip of the sword and it shatters into pieces on impact");
+					db.setUserHealth(-15);
+				}
+				else if (input.contains(itemName))
 				{
 					db.setItemLocation(itemName, 0);
 					db.addToCommands("You picked up " + itemName);
 					itemsPickedUp++; 
 				}
+				
 								
 			}
 			
