@@ -72,7 +72,7 @@
 			}
 		%>
 		<div id="bg">
-			<img src="labyrinth.jpg" alt="">
+			<img src="dungeon.jpg" alt="">
 		</div>
 		<div class="container">
 			<div class="title">
