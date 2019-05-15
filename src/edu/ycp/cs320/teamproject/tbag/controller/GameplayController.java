@@ -261,7 +261,36 @@ public class GameplayController
 			}
 			
 		}
+		
+		else if(input.contains("run")) {
 			
+			if(db.getUserLocation() == 12) {
+				
+				db.setUserLocation(15);
+				db.addToCommands("Intimidated by Hercules' god-like strength, you desperately flee into another room.");
+				
+			}
+			else if (db.getUserLocation() == 16) {
+				
+				db.setUserLocation(15);
+				db.addToCommands("The sounds of Asterion uttering a spell under his breath frightens you. You escape to another room.");
+				
+			}
+			else if (db.getUserLocation() == 21) {
+				
+				db.setUserLocation(22);
+				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
+				
+			}
+			else if(db.getUserLocation() == 20) {
+				
+				db.setUserLocation(23);
+				db.addToCommands("You don't feel ready to confront your original captor just yet and turn back.");
+				
+			}
+			
+		}
+		
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");
