@@ -98,7 +98,7 @@
 					</div>
 				</div>			
 				<c:if test="${gameplay.input == 'status' || gameplay.input == 'Status'}">
-					<div style="width: 200px; display: inline-block; float: right; margin-top: 30%;">
+					<div style="width: 200px; display: inline-block; float: right; margin-top: 15%;">
 						<h2>Status Inquiry</h2>
 						<span>Inventory</span>
 						<br>
