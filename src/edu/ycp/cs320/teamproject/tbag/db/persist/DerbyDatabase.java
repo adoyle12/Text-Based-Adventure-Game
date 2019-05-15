@@ -881,7 +881,6 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-	
 	//Gets an agents location to compare with the users location during agent encounters
 	@Override
 	public Integer getAgentLocation(final int agent_id) {
@@ -915,6 +914,37 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(getLocationID);
 				}
 				
+			}
+		});
+	}
+	
+	//Used to set agent location after combat
+	@Override
+	public void setAgentLocation(final int agent_id, final int location) {
+
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement setAgentLocation = null;
+					
+				try {
+					setAgentLocation = conn.prepareStatement( 
+								" update agents " +
+								" 	set agent_location_id = ? " +
+								" 	where agent_id = ? "
+							
+						);
+						setAgentLocation.setInt(1, agent_id);
+						setAgentLocation.setInt(2, location);
+						
+						setAgentLocation.executeUpdate();
+						
+						return true;
+					}
+					finally {
+						DBUtil.closeQuietly(setAgentLocation);
+					}
+					
 			}
 		});
 	}
