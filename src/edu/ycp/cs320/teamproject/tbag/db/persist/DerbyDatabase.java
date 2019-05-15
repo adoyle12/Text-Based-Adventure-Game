@@ -542,20 +542,23 @@ public class DerbyDatabase implements IDatabase{
 			public Boolean execute(Connection conn) throws SQLException 
 			{
 				List<Item> inventory;
+				List<Agent> agents;
 				
 				try 
 				{
 					inventory = InitialData.getInventory();
+					agents = InitialData.getAgents();
 				} 
 				catch (IOException e) 
 				{
 					throw new SQLException("Couldn't read initial data", e);
 				}
-				PreparedStatement resetCommands = null; 		//Gotta delete them	
-				PreparedStatement resetOpeningMessage = null; 
+				PreparedStatement resetCommands = null; 		//Delete all stored commands	
+				PreparedStatement resetOpeningMessage = null;   //Resets the opening message
 				PreparedStatement resetItemLocations = null;	//Set back to original location
 				PreparedStatement resetGameState = null; 		//Update to original
 				PreparedStatement resetPlayerHasBeen = null; 	//Set back to 0
+				PreparedStatement resetAgentLocations = null;   //Moves all agents back to original locations
 				
 				try
 				{
@@ -582,6 +585,16 @@ public class DerbyDatabase implements IDatabase{
 					resetPlayerHasBeen = conn.prepareStatement("update locations set player_has_been = 0 where player_has_been = 1"); 
 					resetPlayerHasBeen.executeUpdate(); 
 					
+					resetAgentLocations = conn.prepareStatement("update agents set agent_location_id = ? where agent_id = ?");
+					for (Agent agent : agents)
+					{
+						resetAgentLocations.setInt(1, agent.getAgentID());
+						resetAgentLocations.setInt(2, agent.getLocationID());
+						resetAgentLocations.addBatch();
+						
+					}
+					resetAgentLocations.executeBatch(); 
+					
 				}
 				finally
 				{
@@ -590,6 +603,7 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(resetItemLocations); 
 					DBUtil.closeQuietly(resetGameState); 
 					DBUtil.closeQuietly(resetPlayerHasBeen); 
+					DBUtil.closeQuietly(resetAgentLocations); 
 				}
 				return true; 
 			}
@@ -881,7 +895,6 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
-	
 	//Gets an agents location to compare with the users location during agent encounters
 	@Override
 	public Integer getAgentLocation(final int agent_id) {
@@ -915,6 +928,37 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(getLocationID);
 				}
 				
+			}
+		});
+	}
+	
+	//Used to set agent location after combat
+	@Override
+	public void setAgentLocation(final int agent_id, final int location) {
+
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement setAgentLocation = null;
+					
+				try {
+					setAgentLocation = conn.prepareStatement( 
+								" update agents " +
+								" 	set agent_location_id = ? " +
+								" 	where agent_id = ? "
+							
+						);
+						setAgentLocation.setInt(1, agent_id);
+						setAgentLocation.setInt(2, location);
+						
+						setAgentLocation.executeUpdate();
+						
+						return true;
+					}
+					finally {
+						DBUtil.closeQuietly(setAgentLocation);
+					}
+					
 			}
 		});
 	}

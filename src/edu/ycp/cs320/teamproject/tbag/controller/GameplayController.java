@@ -125,17 +125,36 @@ public class GameplayController
 		} 
 		else if(input.contains("examine"))
 		{
-			db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
-			
-			if (itemsInRoom.size() == 0)
-			{
-				db.addToCommands("There are no items in the room"); 
-			}
-			else
-			{
-				for (Item item : itemsInRoom)
+			if(input.contains("examine ")) {
+				List<Item> examinedItems = new ArrayList<Item>();
+				for (Item item : usersInventory)
 				{
-					db.addToCommands("There is a " + item.getName() + " in the room"); 
+					if(input.contains(item.getName())) {
+						examinedItems.add(item);
+					}
+				}
+				if(!examinedItems.isEmpty()) {
+					for(Item item : examinedItems) {
+						db.addToCommands(item.getItemDescription());
+					}
+				}
+				else {
+					db.addToCommands("You don't have the requested item(s)");
+				}
+			}
+			else {
+				db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
+				
+				if (itemsInRoom.isEmpty())
+				{
+					db.addToCommands("There are no items in the room"); 
+				}
+				else
+				{
+					for (Item item : itemsInRoom)
+					{
+						db.addToCommands("There is a " + item.getName() + " in the room"); 
+					}
 				}
 			}
 		} 
@@ -171,6 +190,113 @@ public class GameplayController
 			
 			db.addToCommands("------------------------->"); 
 		}
+		
+		else if(input.contains("fight")) {
+			
+			//if the user has found and obtained the sword
+			if(db.getItemLocationID("sword") == 0) {
+				
+				if(db.getUserLocation() == 12) {
+					
+					db.setUserHealth(-5);
+					db.setAgentLocation(1, 0);
+					db.addToCommands("You have defeated the mighty Hercules! Your path is now clear!");
+					
+				}
+				else if (db.getUserLocation() == 16) {
+					
+					db.setUserHealth(-10);
+					db.setAgentLocation(4, 0);
+					db.addToCommands("You have slain Asterion! He no longer blocks your way!");
+					
+				}
+				else if (db.getUserLocation() == 21) {
+					
+					db.setUserHealth(-10);
+					db.setAgentLocation(2, 0);
+					db.addToCommands("You have bested Squall and triumphed over his gunblade!");
+					
+				}
+				else if(db.getUserLocation() == 20) {
+					
+					db.setUserHealth(-15);
+					db.setAgentLocation(3, 0);
+					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!");
+					
+				}
+				
+			}
+			//if the user does not possess the sword
+			else {
+				
+				if(db.getUserLocation() == 12) {
+					
+					db.setUserHealth(-5);
+					db.setAgentLocation(1, 0);
+					db.setUserLocation(15);
+					db.addToCommands("Hercules punches you with his god-like strength sending you flying into another room.");
+					
+				}
+				else if (db.getUserLocation() == 16) {
+					
+					db.setUserHealth(-10);
+					db.setAgentLocation(4, 0);
+					db.setUserLocation(15);
+					db.addToCommands("Asterion utters words of a spell, creating a fireball of azure flames and sends them hurtling into you."
+							+ " Somewhat singed, you suddenly find yourself forced into another room.");
+					
+				}
+				else if (db.getUserLocation() == 21) {
+					
+					db.setUserHealth(-10);
+					db.setAgentLocation(2, 0);
+					db.setUserLocation(24);
+					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
+							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
+					
+				}
+				else if(db.getUserLocation() == 20) {
+					
+					db.setUserHealth(-15);
+					db.setAgentLocation(3, 0);
+					db.setUserLocation(23);
+					db.addToCommands("Theseus bests you again, beaten you are forced back into the labyrinth whence you came.");
+					
+				}
+				
+			}
+			
+		}
+		
+		else if(input.contains("run")) {
+			
+			if(db.getUserLocation() == 12) {
+				
+				db.setUserLocation(15);
+				db.addToCommands("Intimidated by Hercules' god-like strength, you desperately flee into another room.");
+				
+			}
+			else if (db.getUserLocation() == 16) {
+				
+				db.setUserLocation(15);
+				db.addToCommands("The sounds of Asterion uttering a spell under his breath frightens you. You escape to another room.");
+				
+			}
+			else if (db.getUserLocation() == 21) {
+				
+				db.setUserLocation(22);
+				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
+				
+			}
+			else if(db.getUserLocation() == 20) {
+				
+				db.setUserLocation(23);
+				db.addToCommands("You don't feel ready to confront your original captor just yet and turn back.");
+				
+			}
+			
+		}
+		
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");
@@ -229,6 +355,7 @@ public class GameplayController
 		else {
 			
 			db.setUserLocation(nextLocation);
+			userLocation = db.getUserLocation();
 			String roomDescription = null;
 			if(db.getPlayerHasBeen(nextLocation) == 0) {
 				roomDescription = db.getLocationDescriptionLong(nextLocation);
@@ -237,7 +364,15 @@ public class GameplayController
 			else if(db.getPlayerHasBeen(nextLocation) == 1) {
 				roomDescription = db.getLocationDescriptionShort(nextLocation);
 			}
-			db.addToCommands(roomDescription);		
+			db.addToCommands(roomDescription);
+			itemsInRoom = db.getItemsInLocation(userLocation);
+			if (!itemsInRoom.isEmpty())
+			{
+				for (Item item : itemsInRoom)
+				{
+					db.addToCommands("There is a " + item.getName() + " in the room"); ///////////////////////////////////////////////////////////
+				} 
+			}
 			
 			// ____________________Agent Encounter ___________________
 			for(int i = 1; i < 5; i++) {
