@@ -184,6 +184,37 @@ public class GameplayController
 			
 			db.addToCommands("------------------------->"); 
 		}
+		
+		//logic for the user to fight the enemies they encounter through the labyrinth
+		else if(input.contains("fight")) {
+			
+			if(db.getItemLocationID("sword") == 0) {
+				if(db.getUserLocation() == 12) {
+					
+					db.setUserHealth(userHealth - 10);
+					db.setAgentLocation(1, 0);
+					db.addToCommands("You have defeated the mighty Hercules! Your path is now clear!");
+					
+				}
+				else if (db.getUserLocation() == 25) {
+					
+					db.setUserHealth(userHealth - 25);
+					db.setAgentLocation(4, 0);
+					db.addToCommands("You have slain Asterion! He no longer blocks your way!");
+				}
+				else if (db.getUserLocation() == 21) {
+					db.setUserHealth(userHealth - 25);
+					db.setAgentLocation(2, 0);
+					db.addToCommands("You have bested Squall and triumphed over his gunblade!");
+				}
+				else if(db.getUserLocation() == 20) {
+					db.setUserHealth(userHealth - 30);
+					db.setAgentLocation(3, 0);
+					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!");
+				}
+			}
+			
+		}
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");

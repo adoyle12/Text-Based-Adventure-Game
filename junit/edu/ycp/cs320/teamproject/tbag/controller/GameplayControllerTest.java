@@ -1,6 +1,8 @@
 package edu.ycp.cs320.teamproject.tbag.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -380,6 +382,36 @@ public class GameplayControllerTest
 		controller.gameLogic("take bag of things");
 		itemLocation = db.getItemLocationID("bag of things");
 		assertEquals(0, itemLocation);//check that the bag of things' location was updated to the user's inventory
+		
+	}
+	
+	@Test
+	public void testCantTakeItem() {
+		
+		DatabaseProvider.setInstance(new DerbyDatabase());
+		db = DatabaseProvider.getInstance(); 
+		
+		model = new Gameplay();
+		
+		db.setUserFilePath(username);
+		db.setUserLocation(4);//place user in a room with no items
+		int userLocation = db.getUserLocation();
+		assertEquals(4, userLocation);//check that the user is in room 4 now
+		
+		List<Item> usersInventory = db.getItemsInLocation(0);
+		
+		controller = new GameplayController(username, false);
+		controller.setModel(model);
+		
+		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 4
+		assertEquals(0, itemsInRoom.size());//check that there are no items in room 4
+		item = itemsInRoom.get(0); //there should only be the bag of things in room 5
+		
+		controller.gameLogic("take bag of things");
+		int itemLocation = db.getItemLocationID("bag of things");//location of bag of things should be room 5 still
+		assertEquals(0, itemLocation);							 //because the user couldn't pick it up
+		
+		assertTrue(usersInventory.isEmpty());//user's inventory should still be empty then
 		
 	}
 	
