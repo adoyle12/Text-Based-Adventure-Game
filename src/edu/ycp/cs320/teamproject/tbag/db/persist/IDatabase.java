@@ -30,6 +30,7 @@ public interface IDatabase{
 	public void setPlayerHasBeen(int location);
 	public Integer getAgentLocation(int agent_id);
 	public String getAgentDescription(int agent_id);
+	public void setAgentLocation(int agent_id, int location); 
 	
 	public Integer deleteUserFromUsersTable(int user_id);
 	public void setUserFilePath(String username);
@@ -37,5 +38,5 @@ public interface IDatabase{
 	public Integer getUserScore();
 	public Integer getUserHealth();
 	public void setUserHealth(int healthPoints);
-	void setUserScore(int scorePoints); 
+	public void setUserScore(int scorePoints);
 }
