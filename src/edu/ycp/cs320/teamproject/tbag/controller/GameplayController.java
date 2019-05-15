@@ -185,36 +185,83 @@ public class GameplayController
 			db.addToCommands("------------------------->"); 
 		}
 		
-		//logic for the user to fight the enemies they encounter through the labyrinth
 		else if(input.contains("fight")) {
 			
+			//if the user has found and obtained the sword
 			if(db.getItemLocationID("sword") == 0) {
+				
 				if(db.getUserLocation() == 12) {
 					
-					db.setUserHealth(userHealth - 10);
+					db.setUserHealth(userHealth - 5);
 					db.setAgentLocation(1, 0);
 					db.addToCommands("You have defeated the mighty Hercules! Your path is now clear!");
 					
 				}
-				else if (db.getUserLocation() == 25) {
+				else if (db.getUserLocation() == 16) {
 					
-					db.setUserHealth(userHealth - 25);
+					db.setUserHealth(userHealth - 10);
 					db.setAgentLocation(4, 0);
 					db.addToCommands("You have slain Asterion! He no longer blocks your way!");
+					
 				}
 				else if (db.getUserLocation() == 21) {
-					db.setUserHealth(userHealth - 25);
+					
+					db.setUserHealth(userHealth - 10);
 					db.setAgentLocation(2, 0);
 					db.addToCommands("You have bested Squall and triumphed over his gunblade!");
+					
 				}
 				else if(db.getUserLocation() == 20) {
-					db.setUserHealth(userHealth - 30);
+					
+					db.setUserHealth(userHealth - 15);
 					db.setAgentLocation(3, 0);
 					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!");
+					
 				}
+				
+			}
+			//if the user does not possess the sword
+			else {
+				
+				if(db.getUserLocation() == 12) {
+					
+					db.setUserHealth(userHealth - 5);
+					db.setAgentLocation(1, 0);
+					db.setUserLocation(15);
+					db.addToCommands("Hercules punches you with his god-like strength sending you flying into another room.");
+					
+				}
+				else if (db.getUserLocation() == 16) {
+					
+					db.setUserHealth(userHealth - 10);
+					db.setAgentLocation(4, 0);
+					db.setUserLocation(15);
+					db.addToCommands("Asterion utters words of a spell, creating a fireball of azure flames and sends them hurtling into you."
+							+ " Somewhat singed, you suddenly find yourself forced into another room.");
+					
+				}
+				else if (db.getUserLocation() == 21) {
+					
+					db.setUserHealth(userHealth - 10);
+					db.setAgentLocation(2, 0);
+					db.setUserLocation(24);
+					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
+							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
+					
+				}
+				else if(db.getUserLocation() == 20) {
+					
+					db.setUserHealth(userHealth - 15);
+					db.setAgentLocation(3, 0);
+					db.setUserLocation(23);
+					db.addToCommands("Theseus bests you again, beaten you are forced back into the labyrinth whence you came.");
+					
+				}
+				
 			}
 			
 		}
+			
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");
