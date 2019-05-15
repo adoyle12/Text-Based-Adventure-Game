@@ -948,8 +948,8 @@ public class DerbyDatabase implements IDatabase{
 								" 	where agent_id = ? "
 							
 						);
-						setAgentLocation.setInt(1, agent_id);
-						setAgentLocation.setInt(2, location);
+						setAgentLocation.setInt(1, location);
+						setAgentLocation.setInt(2, agent_id);
 						
 						setAgentLocation.executeUpdate();
 						
