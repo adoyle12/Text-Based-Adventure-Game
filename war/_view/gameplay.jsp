@@ -97,7 +97,10 @@
 						<span class='text' style="width: 100%; text-align: center;">Input:<input type="text" name="input" size="100%"/></span>
 					</div>
 				</div>			
-				<c:if test="${gameplay.input == 'status' || gameplay.input == 'Status'}">
+				<c:if test="${gameplay.input == 'status' || gameplay.input == 'Status' 
+						|| gameplay.input == 'health' || gameplay.input == 'Health' 
+						|| gameplay.input == 'score' || gameplay.input == 'Score'
+						|| gameplay.input == 'inventory' || gameplay.input == 'Inventory'}">
 					<div style="width: 200px; display: inline-block; float: right; margin-top: 15%;">
 						<h2>Status Inquiry</h2>
 						<span>Inventory</span>

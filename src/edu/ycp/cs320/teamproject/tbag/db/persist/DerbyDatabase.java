@@ -588,8 +588,8 @@ public class DerbyDatabase implements IDatabase{
 					resetAgentLocations = conn.prepareStatement("update agents set agent_location_id = ? where agent_id = ?");
 					for (Agent agent : agents)
 					{
-						resetAgentLocations.setInt(1, agent.getAgentID());
-						resetAgentLocations.setInt(2, agent.getLocationID());
+						resetAgentLocations.setInt(1, agent.getLocationID());
+						resetAgentLocations.setInt(2, agent.getAgentID());
 						resetAgentLocations.addBatch();
 						
 					}

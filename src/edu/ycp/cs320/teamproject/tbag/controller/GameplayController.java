@@ -90,7 +90,7 @@ public class GameplayController
 				if (input.contains("brilliant blade") && userLocation == 26 && itemName.equals("brilliant blade")) {
 					db.setUserLocation(17);
 					db.setItemLocation("brilliant blade", -1);
-					db.addToCommands("You grab the weapon and suddenly the floor collapses beneith you. You fall into the room below and you loose grip of the sword and it shatters into pieces on impact");
+					db.addToCommands("You grab the weapon and suddenly the floor collapses beneath you. You fall into the room below and you loose grip of the sword and it shatters into pieces on impact");
 					db.setUserHealth(-15);
 				}
 				else if (input.contains(itemName))
@@ -166,7 +166,8 @@ public class GameplayController
 				}
 			}
 		} 
-		else if (input.contains("status"))
+		else if (input.contains("status") || input.contains("health") || 
+					input.contains("score") || input.contains("inventory"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
 			List<String> noItems = new ArrayList<String>(); 
@@ -366,8 +367,8 @@ public class GameplayController
 		//__________________Puzzle_______________________
 		else if(puzzle(nextLocation) == false) 
 		{
-			System.out.println("Room locked, need an item");
-			db.addToCommands("Room locked, need an item");
+			System.out.println("Door is locked...");
+			db.addToCommands("Door is locked...");
 		} 
 		else {
 			
