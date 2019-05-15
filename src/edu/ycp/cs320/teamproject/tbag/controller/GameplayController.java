@@ -248,6 +248,7 @@ public class GameplayController
 					
 					db.setUserHealth(-5);
 					db.setUserLocation(15);
+					db.setAgentLocation(1, 12);
 					db.addToCommands("Hercules punches you with his god-like strength sending you flying into another room.");
 					
 				}
@@ -255,6 +256,7 @@ public class GameplayController
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(15);
+					db.setAgentLocation(4, 16);
 					db.addToCommands("Asterion utters words of a spell, creating a fireball of azure flames and sends them hurtling into you."
 							+ " Somewhat singed, you suddenly find yourself forced into another room.");
 					
@@ -263,6 +265,7 @@ public class GameplayController
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(24);
+					db.setAgentLocation(2, 21);
 					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
 							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
 					
@@ -270,6 +273,7 @@ public class GameplayController
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(24);
+					db.setAgentLocation(2, 28);
 					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
 							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
 					
@@ -278,6 +282,7 @@ public class GameplayController
 					
 					db.setUserHealth(-15);
 					db.setUserLocation(23);
+					db.setAgentLocation(3, 20);
 					db.addToCommands("Theseus bests you again, beaten you are forced back into the labyrinth whence you came.");
 					
 				}
@@ -291,24 +296,35 @@ public class GameplayController
 			if(db.getUserLocation() == 12) {
 				
 				db.setUserLocation(15);
+				db.setAgentLocation(1, 12);
 				db.addToCommands("Intimidated by Hercules' god-like strength, you desperately flee into another room.");
 				
 			}
 			else if (db.getUserLocation() == 16) {
 				
 				db.setUserLocation(15);
+				db.setAgentLocation(4, 16);
 				db.addToCommands("The sounds of Asterion uttering a spell under his breath frightens you. You escape to another room.");
 				
 			}
 			else if (db.getUserLocation() == 21) {
 				
 				db.setUserLocation(22);
+				db.setAgentLocation(2, 21);
+				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
+				
+			}
+			else if(db.getUserLocation() == 28) {
+				
+				db.setUserLocation(22);
+				db.setAgentLocation(2, 28);
 				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
 				
 			}
 			else if(db.getUserLocation() == 20) {
 				
 				db.setUserLocation(23);
+				db.setAgentLocation(3, 20);
 				db.addToCommands("You don't feel ready to confront your original captor just yet and turn back.");
 				
 			}
@@ -369,7 +385,11 @@ public class GameplayController
 		{
 			System.out.println("Door is locked...");
 			db.addToCommands("Door is locked...");
-		} 
+		}
+		//_______________Getting Past an Agent___________________
+		else if(passAgent(nextLocation) == false) {
+			db.addToCommands("Nice try! You must defeat or run from the enemy in front of you before you can leave.");
+		}
 		else {
 			
 			db.setUserLocation(nextLocation);
@@ -424,6 +444,37 @@ public class GameplayController
 		if(nextLocation == 17) {
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean passAgent(int nextLocation) {
+		
+		//check to see if user defeated agent
+		
+		if((nextLocation == 15 || nextLocation == 13) && db.getAgentLocation(1) == db.getUserLocation()) {
+			
+			return false;
+			
+		}
+		else if ((nextLocation == 15 || nextLocation == 13) && db.getAgentLocation(4) == db.getUserLocation()) {
+			
+			return false;
+			
+		}
+		else if ((nextLocation == 22 || nextLocation == 24) && db.getAgentLocation(2) == db.getUserLocation()) {
+			
+			return false;
+			
+		} else if ((nextLocation == 27 || nextLocation == 25) && db.getAgentLocation(2) == db.getUserLocation()) {
+			
+			return false;
+			
+		} else if (nextLocation == 29 && db.getAgentLocation(3) == db.getUserLocation()) {
+			
+			return false;
+			
+		}
+		
 		return true;
 	}
 	
