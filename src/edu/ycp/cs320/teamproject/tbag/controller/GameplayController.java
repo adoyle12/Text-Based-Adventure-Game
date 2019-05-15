@@ -229,6 +229,7 @@ public class GameplayController
 		else {
 			
 			db.setUserLocation(nextLocation);
+			userLocation = db.getUserLocation();
 			String roomDescription = null;
 			if(db.getPlayerHasBeen(nextLocation) == 0) {
 				roomDescription = db.getLocationDescriptionLong(nextLocation);
@@ -237,7 +238,15 @@ public class GameplayController
 			else if(db.getPlayerHasBeen(nextLocation) == 1) {
 				roomDescription = db.getLocationDescriptionShort(nextLocation);
 			}
-			db.addToCommands(roomDescription);		
+			db.addToCommands(roomDescription);
+			itemsInRoom = db.getItemsInLocation(userLocation);
+			if (!itemsInRoom.isEmpty())
+			{
+				for (Item item : itemsInRoom)
+				{
+					db.addToCommands("There is a " + item.getName() + " in the room"); ///////////////////////////////////////////////////////////
+				} 
+			}
 			
 			// ____________________Agent Encounter ___________________
 			for(int i = 1; i < 5; i++) {

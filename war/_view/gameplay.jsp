@@ -83,22 +83,20 @@
 					<div class="error">${errorMessage}</div>
 				</c:if>
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="post">
-				
-				<div id="output" style="overflow-y:scroll; height: 400px; width: 50%;
-				position: fixed; left: 50%;	margin-left: -25%; margin-top: 15%; 
-				display: inline-block; ">
-					<table>
-						<c:forEach items="${gameplay.output}" var="string">
-							<tr>
-								<td>${string}</td>
-							</tr>
-						</c:forEach>
-						<tr>
-							<td><span class='text'>Input:<input type="text" name="input" size="12" /></span></td>
-						</tr>
-					</table>
-				</div>
-			
+				<div style="height: 100%; width: 50%; position: fixed; left: 50%; margin-left: -25%;">
+					<div id="output" style="overflow-y:scroll; height: 60%; width: 50%; position: fixed; left: 50%;	margin-left: -25%; margin-top: 10%; display: inline-block; ">
+						<table>
+							<c:forEach items="${gameplay.output}" var="string">
+								<tr>
+									<td>${string}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</div>
+					<div style="position: fixed; top: 85%;">
+						<span class='text' style="width: 100%; text-align: center;">Input:<input type="text" name="input" size="100%"/></span>
+					</div>
+				</div>			
 				<c:if test="${gameplay.input == 'status' || gameplay.input == 'Status'}">
 					<div style="width: 200px; display: inline-block; float: right; margin-top: 30%;">
 						<h2>Status Inquiry</h2>
