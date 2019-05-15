@@ -125,17 +125,30 @@ public class GameplayController
 		} 
 		else if(input.contains("examine"))
 		{
-			db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
-			
-			if (itemsInRoom.size() == 0)
-			{
-				db.addToCommands("There are no items in the room"); 
-			}
-			else
-			{
-				for (Item item : itemsInRoom)
+			if(input.contains("examine ")) {
+				for (Item item : usersInventory)
 				{
-					db.addToCommands("There is a " + item.getName() + " in the room"); 
+					if(input.contains(item.getName())) {
+						db.addToCommands(item.getItemDescription());
+					}
+					else {
+						db.addToCommands("You dont have that item");
+					}
+				}
+			}
+			else {
+				db.addToCommands(db.getLocationDescriptionLong(userLocation)); 
+				
+				if (itemsInRoom.isEmpty())
+				{
+					db.addToCommands("There are no items in the room"); 
+				}
+				else
+				{
+					for (Item item : itemsInRoom)
+					{
+						db.addToCommands("There is a " + item.getName() + " in the room"); 
+					}
 				}
 			}
 		} 
