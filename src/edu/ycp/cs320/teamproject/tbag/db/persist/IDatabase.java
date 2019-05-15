@@ -35,5 +35,7 @@ public interface IDatabase{
 	public void setUserFilePath(String username);
 	public void resetGame();
 	public Integer getUserScore();
-	public Integer getUserHealth(); 
+	public Integer getUserHealth();
+	public void setUserHealth(int healthPoints);
+	void setUserScore(int scorePoints); 
 }

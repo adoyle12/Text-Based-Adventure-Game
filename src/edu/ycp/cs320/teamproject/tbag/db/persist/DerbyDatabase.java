@@ -721,6 +721,34 @@ public class DerbyDatabase implements IDatabase{
 
 	//Updates the users location in the gamestate table
 	@Override
+	public void setUserLocation(final int location) {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt1 = null;
+					
+					try {
+						stmt1 = conn.prepareStatement( 
+								" update gameState " +
+								" 	set location_id = ? " 
+							
+						);
+						stmt1.setInt(1, location);
+						
+						stmt1.executeUpdate();
+						
+					}
+					finally {
+						DBUtil.closeQuietly(stmt1);
+					}
+					return true;
+					
+				}
+			});
+		}
+		
+	//Get the user's current health 
+	@Override
 	public Integer getUserHealth() {
 		return executeTransaction(new Transaction<Integer>() {
 			@Override
@@ -758,6 +786,35 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 	
+	//Changes the users health by the number specified 
+	@Override
+	public void setUserHealth(final int healthPoints) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				
+				try {
+					stmt1 = conn.prepareStatement( 
+							" update gameState " +
+							" 	set health = health + ? " 
+						
+					);
+					stmt1.setInt(1, healthPoints);
+					
+					stmt1.executeUpdate();
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt1);
+				}
+				return true;
+				
+			}
+		});
+	}
+	
+	//Get the user's current score
 	@Override
 	public Integer getUserScore() {
 		return executeTransaction(new Transaction<Integer>() {
@@ -795,8 +852,10 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//Changes the users current score by the number specified 
 	@Override
-	public void setUserLocation(final int location) {
+	public void setUserScore(final int scorePoints) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -805,10 +864,10 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					stmt1 = conn.prepareStatement( 
 							" update gameState " +
-							" 	set location_id = ? " 
+							" 	set score = score + ? " 
 						
 					);
-					stmt1.setInt(1, location);
+					stmt1.setInt(1, scorePoints);
 					
 					stmt1.executeUpdate();
 					
@@ -821,6 +880,7 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
 	
 	//Gets an agents location to compare with the users location during agent encounters
 	@Override
