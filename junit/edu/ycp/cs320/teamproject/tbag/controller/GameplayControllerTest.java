@@ -122,24 +122,12 @@ public class GameplayControllerTest
 		db.setUserFilePath(username);
 		db.setUserLocation(1);
 		
-		controller.gameLogic("go up");
-		int userLocation = db.getUserLocation();
-		assertEquals(10, userLocation);
-		
-	}
-	
-	@Test
-	public void testGoDown() {
-
-		db.setUserFilePath(username);
-		db.setUserLocation(10);
-		
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		controller.gameLogic("go down");
+		controller.gameLogic("go up");
 		int userLocation = db.getUserLocation();
-		assertEquals(1, userLocation);
+		assertEquals(10, userLocation);
 		
 	}
 	
@@ -218,43 +206,28 @@ public class GameplayControllerTest
 	}
 	
 	@Test
-	public void testMoveDown() {
-
-		db.setUserFilePath(username);
-		db.setUserLocation(17);
-		
-		controller = new GameplayController(username, false);
-		controller.setModel(model);
-		
-		controller.gameLogic("move down");
-		int userLocation = db.getUserLocation();
-		assertEquals(8, userLocation);
-		
-	}
-	
-	@Test
 	public void testPickUpItem() {
 	
 		db.setUserFilePath(username);
-		db.setUserLocation(4);//set user's location to the room with the key
+		db.setUserLocation(11);//set user's location to the room with the green potion
 		int userLocation = db.getUserLocation();
-		assertEquals(4, userLocation);//check that the user is in room 4
+		assertEquals(11, userLocation);//check that the user is in room 11
 		
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 4
-		assertEquals(1, itemsInRoom.size());//check that there is only one item in room 4
-		item = itemsInRoom.get(0); //there should only be a key in room 4
-		assertEquals("key", item.getName());//check that the item in the room is a key
-		int itemLocation = db.getItemLocationID("key");
-		assertEquals(4, itemLocation);//checks that the key's location is room 4, where it should be
+		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 11
+		assertEquals(1, itemsInRoom.size());//check that there is only one item in room 11
+		item = itemsInRoom.get(0); //there should only be a green potion in room 11
+		assertEquals("green potion", item.getName());//check that the item in the room is a key
+		int itemLocation = db.getItemLocationID("green potion");
+		assertEquals(11, itemLocation);//checks that the green potion's location is room 11, where it should be
 		
-		controller.gameLogic("pick up key");
-		itemLocation = db.getItemLocationID("key");
-		assertEquals(0, itemLocation);//check that key's location was updated to the user's inventory
+		controller.gameLogic("pick up green potion");
+		itemLocation = db.getItemLocationID("green potion");
+		assertEquals(0, itemLocation);//check that green potion's location was updated to the user's inventory
 		
-		db.setItemLocation("key", 4);//place key back in room 4
+		db.setItemLocation("green potion", 11);//return the green potion to original room
 		
 	}
 	
@@ -312,22 +285,21 @@ public class GameplayControllerTest
 	public void testCantTakeItem() {
 	
 		db.setUserFilePath(username);
-		db.setUserLocation(4);//place user in a room with no items
+		db.setUserLocation(6);//place user in a room with no items
 		int userLocation = db.getUserLocation();
-		assertEquals(4, userLocation);//check that the user is in room 4 now
+		assertEquals(6, userLocation);//check that the user is in room 6 now
 		
 		List<Item> usersInventory = db.getItemsInLocation(0);
 		
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 4
-		assertEquals(0, itemsInRoom.size());//check that there are no items in room 4
-		item = itemsInRoom.get(0); //there should only be the bag of things in room 5
+		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 6
+		assertEquals(0, itemsInRoom.size());//check that there are no items in room 6
 		
-		controller.gameLogic("take bag of things");
-		int itemLocation = db.getItemLocationID("bag of things");//location of bag of things should be room 5 still
-		assertEquals(0, itemLocation);							 //because the user couldn't pick it up
+		controller.gameLogic("take sword");
+		int itemLocation = db.getItemLocationID("sword");//location of sword should still be 19
+		assertEquals(19, itemLocation);					//because the user couldn't pick it up
 		
 		assertTrue(usersInventory.isEmpty());//user's inventory should still be empty then
 		
@@ -344,7 +316,6 @@ public class GameplayControllerTest
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		List<Item> itemsInRoom = db.getItemsInLocation(db.getUserLocation());//get the items in room 5
 		int itemLocation = db.getItemLocationID("note");
 		assertEquals(0, itemLocation);//checks that the note is still in the user's inventory
 		
@@ -357,21 +328,21 @@ public class GameplayControllerTest
 	@Test
 	public void testPuzzleFailRoom8() {
 		
-		//test for user attempting to enter room 8
+		//test for user attempting to leave room 8 and enter room 17
 		//user inventory is empty in this case
-		//they do not have the required item to enter room 8
+		//they do not have the required item to enter room 17
 
 		db.setUserFilePath(username);
-		db.setUserLocation(9);//set user's location to the room before the puzzle
+		db.setUserLocation(8);//set user's location to the room before the puzzle
 		int userLocation = db.getUserLocation();
-		assertEquals(9, userLocation);//check that the user is in room 9 now
+		assertEquals(8, userLocation);//check that the user is in room 8 now
 		
 		controller = new GameplayController(username, false);
 		controller.setModel(model);
 		
-		controller.gameLogic("move west");
+		controller.gameLogic("move up");
 		userLocation = db.getUserLocation();
-		assertEquals(9, userLocation); //user should have not been allowed to enter room 8
+		assertEquals(8, userLocation); //user should have not been allowed to enter room 17
 		
 	}
 	
