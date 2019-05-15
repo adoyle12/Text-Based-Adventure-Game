@@ -126,14 +126,20 @@ public class GameplayController
 		else if(input.contains("examine"))
 		{
 			if(input.contains("examine ")) {
+				List<Item> examinedItems = new ArrayList<Item>();
 				for (Item item : usersInventory)
 				{
 					if(input.contains(item.getName())) {
+						examinedItems.add(item);
+					}
+				}
+				if(!examinedItems.isEmpty()) {
+					for(Item item : examinedItems) {
 						db.addToCommands(item.getItemDescription());
 					}
-					else {
-						db.addToCommands("You dont have that item");
-					}
+				}
+				else {
+					db.addToCommands("You don't have the requested item(s)");
 				}
 			}
 			else {
