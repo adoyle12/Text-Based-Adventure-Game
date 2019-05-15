@@ -221,6 +221,12 @@ public class GameplayController
 				else if (db.getUserLocation() == 21) {
 					
 					db.setUserHealth(-10);
+					db.setAgentLocation(2, 28);
+					db.addToCommands("You have bested Squall but he has ran off!");
+					
+				} else if (db.getUserLocation() == 28) {
+					
+					db.setUserHealth(-10);
 					db.setAgentLocation(2, 0);
 					db.addToCommands("You have bested Squall and triumphed over his gunblade!");
 					
@@ -229,7 +235,7 @@ public class GameplayController
 					
 					db.setUserHealth(-15);
 					db.setAgentLocation(3, 0);
-					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!");
+					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!"); 
 					
 				}
 				
@@ -240,7 +246,6 @@ public class GameplayController
 				if(db.getUserLocation() == 12) {
 					
 					db.setUserHealth(-5);
-					db.setAgentLocation(1, 0);
 					db.setUserLocation(15);
 					db.addToCommands("Hercules punches you with his god-like strength sending you flying into another room.");
 					
@@ -248,7 +253,6 @@ public class GameplayController
 				else if (db.getUserLocation() == 16) {
 					
 					db.setUserHealth(-10);
-					db.setAgentLocation(4, 0);
 					db.setUserLocation(15);
 					db.addToCommands("Asterion utters words of a spell, creating a fireball of azure flames and sends them hurtling into you."
 							+ " Somewhat singed, you suddenly find yourself forced into another room.");
@@ -257,7 +261,13 @@ public class GameplayController
 				else if (db.getUserLocation() == 21) {
 					
 					db.setUserHealth(-10);
-					db.setAgentLocation(2, 0);
+					db.setUserLocation(24);
+					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
+							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
+					
+				} else if (db.getUserLocation() == 28) {
+					
+					db.setUserHealth(-10);
 					db.setUserLocation(24);
 					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
 							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
@@ -266,7 +276,6 @@ public class GameplayController
 				else if(db.getUserLocation() == 20) {
 					
 					db.setUserHealth(-15);
-					db.setAgentLocation(3, 0);
 					db.setUserLocation(23);
 					db.addToCommands("Theseus bests you again, beaten you are forced back into the labyrinth whence you came.");
 					
