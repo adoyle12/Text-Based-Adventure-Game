@@ -4,6 +4,10 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class RegisterController 
 {
 
@@ -12,7 +16,7 @@ public class RegisterController
 	
 	public RegisterController()
 	{
-		//creating DB instance here - thanks CS320 Library Reference
+		
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance(); 
 	}

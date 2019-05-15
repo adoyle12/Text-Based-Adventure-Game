@@ -1,6 +1,8 @@
 package edu.ycp.cs320.teamproject.tbag.db.persist;
 
-//________________________________"Borrowed" From CS320_Example_______________________________________
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
 
 public class PersistenceException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-//________________________________"Borrowed" From CS320_Example_______________________________________
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class ReadCSV implements Closeable {
 	private BufferedReader reader;
 	

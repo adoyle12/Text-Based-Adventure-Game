@@ -7,6 +7,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class Launcher {
 	/**
 	 * Create a {@link Server}, but do not start it.

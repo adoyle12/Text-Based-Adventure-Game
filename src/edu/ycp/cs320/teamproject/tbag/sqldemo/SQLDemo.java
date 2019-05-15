@@ -18,6 +18,10 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 /**
  * An interactive query tool for SQLite.
  */

@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.teamproject.tbag.controller.GameplayController;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class ChooseServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -70,16 +74,5 @@ public class ChooseServlet extends HttpServlet
 		resp.sendRedirect(req.getContextPath() + "/gameplay");
 		return; 
 		
-//		//Come back - country roads
-//		Gameplay model = new Gameplay(); 
-//		controller.setModel(model);
-//
-//		
-//		req.setAttribute("gameplay", model);
-//		
-//
-//		
-//		// Forward to view to render the result HTML document
-//		req.getRequestDispatcher("/_view/choose.jsp").forward(req, resp);
 	}
 }

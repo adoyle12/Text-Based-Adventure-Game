@@ -10,6 +10,9 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
 
 public class GameplayController 
 {
@@ -27,7 +30,7 @@ public class GameplayController
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
 		db.setUserFilePath(username);
-
+		
 		
 		if (!newGame)
 		{
@@ -37,11 +40,18 @@ public class GameplayController
 			userScore = db.getUserScore(); 
 			userHealth = db.getUserHealth(); 
 			
+			
+			
 		}
 		else
 		{
 			db.resetGame();	
+
+			db.addToCommands(db.getLocationDescriptionLong(1)); //Get room 1's description on new game since you don't "move" there
 		}
+		
+		
+			
 		
 	}
 	
@@ -53,6 +63,7 @@ public class GameplayController
 		String input = rawInput.toLowerCase();
 		db.setUserScore(1);
 		
+	
 		
 		// ___________________Movement_______________________
 		if(input.contains("move") || input.contains("go ")) {

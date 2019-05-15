@@ -11,6 +11,10 @@ import edu.ycp.cs320.teamproject.tbag.model.Item;
 import edu.ycp.cs320.teamproject.tbag.model.Location;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class InitialData 
 {
 	

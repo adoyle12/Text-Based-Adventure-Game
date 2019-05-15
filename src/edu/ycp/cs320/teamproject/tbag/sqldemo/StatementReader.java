@@ -3,6 +3,10 @@ package edu.ycp.cs320.teamproject.tbag.sqldemo;
 import java.io.IOException;
 import java.io.Reader;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 /**
  * Read the text of SQL statements from a Reader.
  * Each SQL statement must be terminated by a semicolon.

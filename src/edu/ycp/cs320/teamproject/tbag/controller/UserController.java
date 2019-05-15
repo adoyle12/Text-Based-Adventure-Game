@@ -4,6 +4,9 @@ import edu.ycp.cs320.teamproject.tbag.db.persist.DatabaseProvider;
 import edu.ycp.cs320.teamproject.tbag.db.persist.DerbyDatabase;
 import edu.ycp.cs320.teamproject.tbag.db.persist.IDatabase;
 import edu.ycp.cs320.teamproject.tbag.model.User;
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
 
 public class UserController {
 	private User model; 

@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.teamproject.tbag.controller.GameplayController;
 import edu.ycp.cs320.teamproject.tbag.model.Gameplay;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class GameplayServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;

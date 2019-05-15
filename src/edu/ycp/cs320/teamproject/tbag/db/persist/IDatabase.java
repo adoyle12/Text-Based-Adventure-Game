@@ -3,6 +3,9 @@ package edu.ycp.cs320.teamproject.tbag.db.persist;
 import java.util.ArrayList;
 import java.util.List;
 import edu.ycp.cs320.teamproject.tbag.model.Item;
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
 
 public interface IDatabase{
 	

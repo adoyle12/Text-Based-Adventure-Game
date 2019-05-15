@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 import edu.ycp.cs320.teamproject.tbag.controller.UserController;
 import edu.ycp.cs320.teamproject.tbag.model.User;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
 
 public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;

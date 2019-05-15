@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.teamproject.tbag.controller.RegisterController;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 public class RegisterServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	

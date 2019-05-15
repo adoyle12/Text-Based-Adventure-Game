@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+ * Some or all code borrowed from CS320 Library Example
+ */
+
 /**
  * Some database utility functions.
  */
