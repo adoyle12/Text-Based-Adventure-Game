@@ -27,6 +27,8 @@ public class GameplayController
 		DatabaseProvider.setInstance(new DerbyDatabase());
 		db = DatabaseProvider.getInstance();
 		db.setUserFilePath(username);
+
+		
 		if (!newGame)
 		{
 			userLocation = db.getUserLocation();
@@ -34,10 +36,11 @@ public class GameplayController
 			usersInventory = db.getItemsInLocation(0); 
 			userScore = db.getUserScore(); 
 			userHealth = db.getUserHealth(); 
+			
 		}
 		else
 		{
-			db.resetGame();	//OH FUCK	
+			db.resetGame();	
 		}
 		
 	}
@@ -49,6 +52,7 @@ public class GameplayController
 		model.setInput(rawInput);
 		String input = rawInput.toLowerCase();
 		db.setUserScore(1);
+		
 		
 		// ___________________Movement_______________________
 		if(input.contains("move") || input.contains("go ")) {
@@ -205,46 +209,55 @@ public class GameplayController
 			//if the user has found and obtained the sword
 			if(db.getItemLocationID("sword") == 0) {
 				
-				if(db.getUserLocation() == 12) {
+				if(userLocation == 12) {
 					
 					db.setUserHealth(-5);
 					db.setAgentLocation(1, 0);
 					db.addToCommands("You have defeated the mighty Hercules! Your path is now clear!");
 					
 				}
-				else if (db.getUserLocation() == 16) {
+				else if (userLocation == 16) {
 					
 					db.setUserHealth(-10);
 					db.setAgentLocation(4, 0);
 					db.addToCommands("You have slain Asterion! He no longer blocks your way!");
 					
 				}
-				else if (db.getUserLocation() == 21) {
+				else if (userLocation == 21) {
 					
 					db.setUserHealth(-10);
 					db.setAgentLocation(2, 28);
 					db.addToCommands("You have bested Squall but he has ran off!");
 					
-				} else if (db.getUserLocation() == 28) {
+				} else if (userLocation == 28) {
 					
 					db.setUserHealth(-10);
 					db.setAgentLocation(2, 0);
 					db.addToCommands("You have bested Squall and triumphed over his gunblade!");
+					db.setItemLocation("gunblade", userLocation);
 					
 				}
-				else if(db.getUserLocation() == 20) {
+				else if(userLocation == 20) {
 					
 					db.setUserHealth(-15);
-					db.setAgentLocation(3, 0);
-					db.addToCommands("Finally, you have had your revenge against Theseus. Freedom beckons!"); 
+					db.setUserLocation(23);
+					db.setAgentLocation(3, 20);
+					db.addToCommands("Theseus bests you again, you might want to drop that sword & get something better");
 					
 				}
 				
 			}
+			else if (db.getItemLocationID("gunblade") == 0 && db.getItemLocationID("sword") != 0)
+			{
+				db.setUserHealth(-5);
+				db.setUserLocation(20);
+				db.setAgentLocation(3, 0);
+				db.addToCommands("Finally you have had your revenge against Theseus, freedom beckons!"); 
+			}
 			//if the user does not possess the sword
 			else {
 				
-				if(db.getUserLocation() == 12) {
+				if(userLocation == 12) {
 					
 					db.setUserHealth(-5);
 					db.setUserLocation(15);
@@ -252,7 +265,7 @@ public class GameplayController
 					db.addToCommands("Hercules punches you with his god-like strength sending you flying into another room.");
 					
 				}
-				else if (db.getUserLocation() == 16) {
+				else if (userLocation == 16) {
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(15);
@@ -261,15 +274,15 @@ public class GameplayController
 							+ " Somewhat singed, you suddenly find yourself forced into another room.");
 					
 				}
-				else if (db.getUserLocation() == 21) {
+				else if (userLocation == 21 && db.getAgentLocation(2) == 21) {
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(24);
-					db.setAgentLocation(2, 21);
+					db.setAgentLocation(2, 28);
 					db.addToCommands("Squall slashes at you with his gunblade while simultaneously firing the trigger."
 							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
 					
-				} else if (db.getUserLocation() == 28) {
+				} else if (userLocation == 28) {
 					
 					db.setUserHealth(-10);
 					db.setUserLocation(24);
@@ -278,50 +291,41 @@ public class GameplayController
 							+ " The blast from the bullet along with the strength weilded behind his sword blast you into another room.");
 					
 				}
-				else if(db.getUserLocation() == 20) {
-					
-					db.setUserHealth(-15);
-					db.setUserLocation(23);
-					db.setAgentLocation(3, 20);
-					db.addToCommands("Theseus bests you again, beaten you are forced back into the labyrinth whence you came.");
-					
-				}
-				
 			}
 			
 		}
 		
 		else if(input.contains("run")) {
 			
-			if(db.getUserLocation() == 12) {
+			if(userLocation == 12) {
 				
 				db.setUserLocation(15);
 				db.setAgentLocation(1, 12);
 				db.addToCommands("Intimidated by Hercules' god-like strength, you desperately flee into another room.");
 				
 			}
-			else if (db.getUserLocation() == 16) {
+			else if (userLocation == 16) {
 				
 				db.setUserLocation(15);
 				db.setAgentLocation(4, 16);
 				db.addToCommands("The sounds of Asterion uttering a spell under his breath frightens you. You escape to another room.");
 				
 			}
-			else if (db.getUserLocation() == 21) {
+			else if (userLocation == 21 && db.getAgentLocation(2) == 21) {
 				
-				db.setUserLocation(22);
-				db.setAgentLocation(2, 21);
+				db.setUserLocation(24);
+				db.setAgentLocation(2, 28);
 				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
 				
 			}
-			else if(db.getUserLocation() == 28) {
+			else if(userLocation == 28) {
 				
 				db.setUserLocation(22);
 				db.setAgentLocation(2, 28);
 				db.addToCommands("The sound of gunfire reverberates off the walls, assaulting your ears and causing you to run back.");
 				
 			}
-			else if(db.getUserLocation() == 20) {
+			else if(userLocation == 20) {
 				
 				db.setUserLocation(23);
 				db.setAgentLocation(3, 20);
@@ -329,6 +333,23 @@ public class GameplayController
 				
 			}
 			
+		}
+		else if (input.contains("drink"))
+		{
+			for (Item item : usersInventory)
+			{
+				String itemName = item.getName(); 
+				if (itemName.equals("green potion") || itemName.equals("pleasant potion"))
+				{
+					if (input.contains("drink " + itemName))
+					{
+						db.setUserHealth(30);
+						db.setItemLocation(itemName, -1);
+						db.addToCommands("You drank " + itemName); 
+						
+					}
+				}
+			}
 		}
 		
 		else {

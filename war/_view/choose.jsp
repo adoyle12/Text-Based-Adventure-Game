@@ -110,14 +110,14 @@
 			</form>
 			<div style="width: 40%; margin: auto; float: left; text-align: right; height: 250px;">	
 				<form action="${pageContext.servletContext.contextPath}/gameplay" method="get">
-					<input type="Button" name="gameplay" value="CONTINUE"  style="border-color: #05a305; border-radius: 25px; font-size: 25px; height: 25px; width: 40%; line-height: 50%; text-align: center;" 
+					<input type="Button" name="gameplay" value="CONTINUE"  style="border-color: #05a305; border-radius: 25px; font-size: 15px; height: 25px; width: 40%; line-height: 50%; text-align: center;" 
 					onclick="window.location = 'http://localhost:8081/tbag/gameplay';">
 				</form>
 			</div>
 			
 			<div style="width: 40%; margin: auto; float: right; text-align: left; height: 250px;">
 				<form action="${pageContext.servletContext.contextPath}/choose" method="post">
-					<input type="Submit" name="new" value="NEW GAME" style="border-color: #05a305; border-radius: 25px; font-size: 25px; height: 25px; width: 40%; line-height: 50%; text-align: center;">
+					<input type="Submit" name="new" value="NEW GAME" style="border-color: #05a305; border-radius: 25px; font-size: 15px; height: 25px; width: 40%; line-height: 50%; text-align: center;">
 				</form>
 			</div>
 			
