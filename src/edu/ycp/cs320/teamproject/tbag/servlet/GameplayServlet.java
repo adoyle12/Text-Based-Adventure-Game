@@ -66,9 +66,20 @@ public class GameplayServlet extends HttpServlet
 		System.out.println("Gameplay Servlet: doPost");
 		
 		String errorMessage = null;
+		String username = null;
 		
+		try {
 		// Get the current user from the session
-		String username = req.getSession().getAttribute("username").toString();
+		username = req.getSession().getAttribute("username").toString();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		if(username == null) {
+			resp.sendRedirect(req.getContextPath() + "/login");
+			return;
+		}
 		
 		/*
 		 * Initiate the controller and model

@@ -19,6 +19,9 @@ public class GameplayController
 	private int userLocation;
 	private List<Item> itemsInRoom;
 	private List<Item> usersInventory; 
+	private int userScore; 
+	private int userHealth; 
+	
 	
 	public GameplayController(String username, Boolean newGame) {
 		DatabaseProvider.setInstance(new DerbyDatabase());
@@ -29,6 +32,8 @@ public class GameplayController
 			userLocation = db.getUserLocation();
 			itemsInRoom = db.getItemsInLocation(userLocation);
 			usersInventory = db.getItemsInLocation(0); 
+			userScore = db.getUserScore(); 
+			userHealth = db.getUserHealth(); 
 		}
 		else
 		{
@@ -39,14 +44,14 @@ public class GameplayController
 	
 
 	
-	public void gameLogic(String input) {
-		db.addToCommands(input); 
-		model.setInput(input);
-		input = input.toLowerCase();
-		
+	public void gameLogic(String rawInput) {
+		db.addToCommands(rawInput); 
+		model.setInput(rawInput);
+		String input = rawInput.toLowerCase();
+		db.setUserScore(1);
 		
 		// ___________________Movement_______________________
-		if(input.contains("move") || input.contains("go")) {
+		if(input.contains("move") || input.contains("go ")) {
 			if(input.contains("north")) {
 				moveTo(0);
 			}
@@ -134,25 +139,43 @@ public class GameplayController
 				}
 			}
 		} 
-		else if (input.contains("inventory"))
+		else if (input.contains("status"))
 		{
 			List<String> itemNames = new ArrayList<String>(); 
-			for (Item item : usersInventory)
+			List<String> noItems = new ArrayList<String>(); 
+			
+			noItems.add("No items found"); 
+		
+			
+			if (usersInventory.size() == 0)
 			{
-				itemNames.add(item.getName()); 
+				
+				model.addInventory(noItems);
 			}
-			model.addInventory(itemNames);
+			else 
+			{
+				for (Item item : usersInventory)
+				{
+					
+					itemNames.add(item.getName()); 
+				}
+				
+				model.addInventory(itemNames);
+				
+			}
+			db.setUserScore(4);
+			userScore = db.getUserScore(); 
+			model.setHealth(userHealth);
+			model.setScore(userScore);
+			model.setPlayerLocation(userLocation);
+			
+			db.addToCommands("------------------------->"); 
 		}
 		else {
 			System.out.println("Unknown command");
 			db.addToCommands("Unknown command");
 		}
 				
-		
-		// ____________________Agent Encounter ___________________
-		for(int i = 1; i < 5; i++) {
-			agentEncounter(db.getAgentLocation(i), db.getUserLocation());
-		}
 		
 		output();
 	}
@@ -174,22 +197,22 @@ public class GameplayController
 	
 		int nextLocation = -1;
 		if(direction == 0) {
-			nextLocation = db.getLocationNorth(db.getUserLocation());
+			nextLocation = db.getLocationNorth(userLocation);
 		}
 		else if(direction == 1) {
-			nextLocation = db.getLocationSouth(db.getUserLocation());
+			nextLocation = db.getLocationSouth(userLocation);
 		}
 		else if(direction == 2) {
-			nextLocation = db.getLocationEast(db.getUserLocation());
+			nextLocation = db.getLocationEast(userLocation);
 		}
 		else if(direction == 3){
-			nextLocation = db.getLocationWest(db.getUserLocation());
+			nextLocation = db.getLocationWest(userLocation);
 		}
 		else if(direction == 4){
-			nextLocation = db.getLocationUp(db.getUserLocation());
+			nextLocation = db.getLocationUp(userLocation);
 		} 
 		else if(direction == 5){
-			nextLocation = db.getLocationDown(db.getUserLocation());
+			nextLocation = db.getLocationDown(userLocation);
 		}
 		
 		if(userLocation == nextLocation) 
@@ -198,10 +221,12 @@ public class GameplayController
 			db.addToCommands("Can't move that way");
 		}
 		//__________________Puzzle_______________________
-		else if(puzzle(nextLocation) == false) {
+		else if(puzzle(nextLocation) == false) 
+		{
 			System.out.println("Room locked, need an item");
 			db.addToCommands("Room locked, need an item");
-		} else {
+		} 
+		else {
 			
 			db.setUserLocation(nextLocation);
 			String roomDescription = null;
@@ -212,7 +237,12 @@ public class GameplayController
 			else if(db.getPlayerHasBeen(nextLocation) == 1) {
 				roomDescription = db.getLocationDescriptionShort(nextLocation);
 			}
-			db.addToCommands(roomDescription);			
+			db.addToCommands(roomDescription);		
+			
+			// ____________________Agent Encounter ___________________
+			for(int i = 1; i < 5; i++) {
+				agentEncounter(db.getAgentLocation(i), db.getUserLocation());
+			}
 		}
 		if(nextLocation == -1) {
 			System.out.println("Movement failed, legs gone.");
@@ -231,18 +261,14 @@ public class GameplayController
 		for(Item item : usersInventory) {
 			// if playerHas item and NextLocation == puzzleRoom
 			String itemName = item.getName();
-			if(nextLocation == 8 && itemName.equals("sword")){
+			if(nextLocation == 17 && itemName.equals("key")){
 				return true;
-			} else if(nextLocation == 13 && itemName.equals("shield")){
-				return true;
-			} else if(nextLocation == 24 && itemName.equals("bigger stick")){
-				return true;
-			}
+			} 
 		}
 		
 		// IF USER INVENTORY EMPTY
 		// Do not let the player enter these rooms
-		if(nextLocation == 8 || nextLocation == 13 || nextLocation == 24) {
+		if(nextLocation == 17) {
 			return false;
 		}
 		return true;

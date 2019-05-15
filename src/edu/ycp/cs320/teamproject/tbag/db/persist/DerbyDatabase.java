@@ -22,9 +22,8 @@ public class DerbyDatabase implements IDatabase{
 	
 	String userFilePath = null; 
 	
-	Boolean loggedIn = false; 
-	
 	//sets the file path to switch to correct data base when registering, logging in, and clearing game.
+
 	public void setUserFilePath(String userFilePath)
 	{
 		this.userFilePath = userFilePath; 
@@ -597,6 +596,7 @@ public class DerbyDatabase implements IDatabase{
 			
 		}); 
 	}
+	
 	// The main method creates the users table
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating Users table...");
@@ -722,6 +722,73 @@ public class DerbyDatabase implements IDatabase{
 	//Updates the users location in the gamestate table
 	@Override
 	public void setUserLocation(final int location) {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt1 = null;
+					
+					try {
+						stmt1 = conn.prepareStatement( 
+								" update gameState " +
+								" 	set location_id = ? " 
+							
+						);
+						stmt1.setInt(1, location);
+						
+						stmt1.executeUpdate();
+						
+					}
+					finally {
+						DBUtil.closeQuietly(stmt1);
+					}
+					return true;
+					
+				}
+			});
+		}
+		
+	//Get the user's current health 
+	@Override
+	public Integer getUserHealth() {
+		return executeTransaction(new Transaction<Integer>() {
+			@Override
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement getHealth = null;
+				ResultSet resultSet = null;
+				
+				try {
+					getHealth = conn.prepareStatement( 
+							" select health " +
+							" 	from gameState "
+						
+					);
+					
+					resultSet = getHealth.executeQuery();
+					
+					Integer currentHealth = -1;
+					
+					if(resultSet.next()) {
+						currentHealth = resultSet.getInt("health");
+					}
+					else
+					{
+						System.out.println("No row found");
+					}
+					
+					return currentHealth;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(getHealth);
+				}
+				
+			}
+		});
+	}
+	
+	//Changes the users health by the number specified 
+	@Override
+	public void setUserHealth(final int healthPoints) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -730,10 +797,10 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					stmt1 = conn.prepareStatement( 
 							" update gameState " +
-							" 	set location_id = ? " 
+							" 	set health = health + ? " 
 						
 					);
-					stmt1.setInt(1, location);
+					stmt1.setInt(1, healthPoints);
 					
 					stmt1.executeUpdate();
 					
@@ -746,6 +813,74 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//Get the user's current score
+	@Override
+	public Integer getUserScore() {
+		return executeTransaction(new Transaction<Integer>() {
+			@Override
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement getScore = null;
+				ResultSet resultSet = null;
+				
+				try {
+					getScore = conn.prepareStatement( 
+							" select score " +
+							" 	from gameState "
+						
+					);
+					
+					resultSet = getScore.executeQuery();
+					
+					Integer currentScore = -1;
+					
+					if(resultSet.next()) {
+						currentScore = resultSet.getInt("score");
+					}
+					else
+					{
+						System.out.println("No row found");
+					}
+					
+					return currentScore;
+				}
+				finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(getScore);
+				}
+				
+			}
+		});
+	}
+	
+	//Changes the users current score by the number specified 
+	@Override
+	public void setUserScore(final int scorePoints) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				
+				try {
+					stmt1 = conn.prepareStatement( 
+							" update gameState " +
+							" 	set score = score + ? " 
+						
+					);
+					stmt1.setInt(1, scorePoints);
+					
+					stmt1.executeUpdate();
+					
+				}
+				finally {
+					DBUtil.closeQuietly(stmt1);
+				}
+				return true;
+				
+			}
+		});
+	}
+	
 	
 	//Gets an agents location to compare with the users location during agent encounters
 	@Override
